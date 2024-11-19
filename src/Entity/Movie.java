@@ -1,3 +1,4 @@
+package src.Entity;
 public class Movie{
     public String title;
     public String genre;

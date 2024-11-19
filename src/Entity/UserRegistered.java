@@ -1,3 +1,4 @@
+package src.Entity;
 public class UserRegistered extends UserOrdinary{
     public String cardNumber;
     public String cardExpiration;
@@ -14,7 +15,7 @@ public class UserRegistered extends UserOrdinary{
     }
 
     public void createAccount(String name, String email, String password){
-    }????
+    }
 
     public void login(String email, String password){
         // check email and password match??
