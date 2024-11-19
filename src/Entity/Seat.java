@@ -31,6 +31,11 @@ public class Seat {
         return isAvailable;
     }
 
-    public void setAvailable(boolean isAvailable) {
-        this.isAvailable = isAvailable;
+    public void setAvailable(boolean sisAvailable) {
+        this.isAvailable = true;
     }
+
+    public void setUnavailable() {
+        this.isAvailable = false;
+    }
+}
