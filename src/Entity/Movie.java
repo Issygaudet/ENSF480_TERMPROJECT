@@ -17,31 +17,17 @@ public class Movie {
         return movieId;
     }
 
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     public int getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+// no setters- done in db
 }

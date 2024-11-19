@@ -30,12 +30,8 @@ public class Seat {
     public boolean isAvailable() {
         return isAvailable;
     }
-
-    public void setAvailable(boolean sisAvailable) {
-        this.isAvailable = true;
-    }
-
     public void setUnavailable() {
         this.isAvailable = false;
     }
+    // seats set as available in ctor-changed to unavailable if seleceted
 }
