@@ -15,23 +15,12 @@ public class Showtime {
         return showtimeId;
     }
 
-    public void setShowtimeId(int showtimeId) {
-        this.showtimeId = showtimeId;
-    }
-
     public int getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
 
     public String getTime() {
         return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 }

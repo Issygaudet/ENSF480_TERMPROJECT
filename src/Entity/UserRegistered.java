@@ -1,26 +1,25 @@
 package src.Entity;
-public class UserRegistered extends UserOrdinary{
-    public String cardNumber;
-    public String cardExpiration;
-    public String cardCVV;
 
-    public UserRegistered(String name, String email, String password){
+public class UserRegistered extends UserOrdinary {
+    private String address;
+    private String creditCard;
+    private String debitCard;
+    private boolean annualFeePaid;
+
+    public UserRegistered(String name, String email, String password, String address, String creditCard, String debitCard) {
         super(name, email, password);
+        this.address = address;
+        this.creditCard = creditCard;
+        this.debitCard = debitCard;
+        this.annualFeePaid = false;
     }
 
-    public void addCard(String cardNumber, String cardExpiration, String cardCVV){
-        this.cardNumber = cardNumber;
-        this.cardExpiration = cardExpiration;
-        this.cardCVV = cardCVV;
+    public void payAnnualFee() {
+        // Implementation to pay the annual fee
+        this.annualFeePaid = true;
     }
 
-    public void createAccount(String name, String email, String password){
+    public boolean isAnnualFeePaid() {
+        return annualFeePaid;
     }
-
-    public void login(String email, String password){
-        // check email and password match??
-    }
-    public void logout(){
-    }
-
 }
