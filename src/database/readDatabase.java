@@ -2,6 +2,7 @@ package database;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import entity.*;
 
@@ -39,7 +40,7 @@ public class ReadDatabase {
 			}
 
 			Date foundDate = new Date(Integer.parseInt(argList[7]),Integer.parseInt(argList[8]),Integer.parseInt(argList[9]));
-			database_control.addUser(new RegisteredUser(Integer.parseInt(argList[0]),argList[1],argList[2],argList[3],argList[4],argList[5],database_control.searchBankingInfo(Integer.parseInt(argList[6])),foundDate));
+			database_control.addUser(new UserRegistered(Integer.parseInt(argList[0]),argList[1],argList[2],argList[3],argList[4],argList[5],database_control.searchBankingInfo(Integer.parseInt(argList[6])),foundDate));
 		}
 		fstream.close();
 	}
@@ -98,7 +99,7 @@ public class ReadDatabase {
 			if(argList[0].compareTo("") == 0){
 				break;
 			}
-			database_control.addTheatre(new Theatre(Integer.parseInt(argList[0]), argList[1]));
+			database_control.addTheatre(new Theatre(Integer.parseInt(argList[0]), argList[1], argList[1]));
 		}
 		fstream.close();
 		gettingAuditoriums();
@@ -118,7 +119,6 @@ public class ReadDatabase {
 			}
 			UserBankInfo temp = new UserBankInfo(Integer.parseInt(argList[0]), argList[1], argList[2]);
 			database_control.addBankingInfo(temp);
-			database_control.getInst().account_addition(temp);
 		}
 		fstream.close();
 

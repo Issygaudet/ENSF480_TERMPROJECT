@@ -65,7 +65,7 @@ public class UserOrdinary {
         System.out.println("Viewing booking details.");
     }
 
-    public void cancelBooking(){
+    public void cancelBooking(int bookingId) {
         
         System.out.println("Booking cancelled with 85% refund.");
     }

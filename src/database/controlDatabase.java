@@ -16,7 +16,7 @@ public class ControlDatabase {
 	private ArrayList<Theatre> list_of_theatres;
 	private ArrayList<UserBankInfo> list_of_banks;
 	private ArrayList<Ticket> list_of_tickets;
-	private BankInfo inst;
+	private UserBankInfo inst;
 
     private ControlDatabase() {
 		setlist_of_movies(new ArrayList<Movie>());
@@ -29,7 +29,6 @@ public class ControlDatabase {
 		setlist_of_banks(new ArrayList<UserBankInfo>());
 		setlist_of_pay(new ArrayList<Payment>());
 		setlist_of_receipts(new ArrayList<Receipt>());
-		inst = new BankInfo("name", "number");
 	}
 
     public static ControlDatabase getobject() {
@@ -122,11 +121,11 @@ public class ControlDatabase {
         return list_of_receipts;
     }
 
-    public void setInst(BankInfo inst) {
+    public void setInst(UserBankInfo inst) {
         this.inst = inst;
     }
 
-    public BankInfo getInst() {
+    public UserBankInfo getInst() {
         return inst;
     }
 
@@ -174,11 +173,10 @@ public class ControlDatabase {
         if (searchTheatre == null || searchMovie == null) {
             return null;
         }
-        ArrayList<Showtime> tempShowtime = new ArrayList<>();
         for (int i = 0; i < list_of_showtimes.size(); i++) {
             if (list_of_showtimes.get(i).getMovie() == searchMovie
                     && list_of_showtimes.get(i).getTheatre() == searchTheatre
-                    && list_of_showtimes.get(i).getDate_of_show().toString().compareTo(date.toString()) == 0) {
+                    && list_of_showtimes.get(i).getTime().compareTo(date.toString()) == 0) {
                 return list_of_showtimes.get(i);
             }
         }
@@ -192,8 +190,8 @@ public class ControlDatabase {
         ArrayList<Theatre> searchList = new ArrayList<Theatre>();
         for (int i = 0; i < list_of_showtimes.size(); i++) {
             if (list_of_showtimes.get(i).getMovie() == searchMovie) {
-                if (!searchList.contains(list_of_showtimes.get(i).getaudi().getTheatre())) {
-                    searchList.add(list_of_showtimes.get(i).getaudi().getTheatre());
+                if (!searchList.contains(list_of_showtimes.get(i).getTheatre())) {
+                    searchList.add(list_of_showtimes.get(i).getTheatre());
                 }
             }
         }
@@ -220,7 +218,7 @@ public class ControlDatabase {
 
     public ScreeningRoom searchAuditorium(int id){
         for(int i = 0; i < getlist_of_auditoriums().size(); i++){
-            if(id == getlist_of_auditoriums().get(i).getAuditoriumID()){
+            if(id == getlist_of_auditoriums().get(i).getRoomId()){
                 return getlist_of_auditoriums().get(i);
             }
         }
@@ -229,7 +227,7 @@ public class ControlDatabase {
 
     public UserBankInfo searchBankingInfo(int id){
         for(int i = 0; i < getlist_of_banks().size(); i++){
-            if(id == getlist_of_banks().get(i).getID_for_bank()){
+            if(id == getlist_of_banks().get(i).getUserId()){
                 return getlist_of_banks().get(i);
             }
         }
@@ -238,7 +236,7 @@ public class ControlDatabase {
 
     public Showtime searchShowtimeInfo(int id){
         for(int i = 0; i < getlist_of_showtimes().size(); i++){
-            if(id == getlist_of_showtimes().get(i).getID_for_showtime()){
+            if(id == getlist_of_showtimes().get(i).getMovieId()){
                 return getlist_of_showtimes().get(i);
             }
         }

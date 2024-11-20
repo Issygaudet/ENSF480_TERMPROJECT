@@ -4,69 +4,36 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import database.ControlDatabase;
+
 public class Admin {
-    private Connection connect() {
-        // SQLite connection string
-        String url = "jdbc:sqlite:DB480.db";
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return conn;
+    private ControlDatabase database_control;
+
+    public Admin() {
+        database_control = ControlDatabase.getobject();
     }
 
     public void addMovie(String movieName, String genre, int duration) {
-        String sql = "INSERT INTO movies(name, genre, duration) VALUES(?,?,?)";
-
-        try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, movieName);
-            pstmt.setString(2, genre);
-            pstmt.setInt(3, duration);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        database_control.addMovie(new Movie(duration, movieName, genre, duration));
     }
 
     public void modifyMovie(int movieId, String movieName, String genre, int duration) {
-        String sql = "UPDATE movies SET name = ?, genre = ?, duration = ? WHERE id = ?";
-
-        try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, movieName);
-            pstmt.setString(2, genre);
-            pstmt.setInt(3, duration);
-            pstmt.setInt(4, movieId);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        database_control.modifyMovie(movieId, movieName, genre, duration);
     }
 
     public void removeMovie(int movieId) {
-        String sql = "DELETE FROM movies WHERE id = ?";
-
-        try (Connection conn = this.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, movieId);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        database_control.removeMovie(movieId);
     }
 
-    public void addShowtime() {
-        // Implementation here
+    public void addShowtime(Showtime showtime) {
+        database_control.addShowtime(showtime);
     }
 
-    public void modifyShowtime() {
-        // Implementation here
+    public void updateShowtime(Showtime showtime) {
+        database_control.updateShowtime(showtime);
     }
 
-    public void removeShowtime() {
-        // Implementation here
+    public void removeShowtime(Showtime showtime) {
+        database_control.removeShowtime(showtime);
     }
 }
