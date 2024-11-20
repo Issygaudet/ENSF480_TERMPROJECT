@@ -13,40 +13,60 @@ public class UserOrdinary {
     }
 
     public Vector<Movie> searchMovie(String query){
-   
-        return new Vector<>();
+      
+        Vector<Movie> movies = new Vector<>();
+        
+        System.out.println("Searching for movies with low access for ordinary users with query: " + query);
+        return movies;
     }
 
     public void selectMovie(Movie movie){
-  
+   
+        System.out.println("Selected movie: " + movie.getName());
     }
 
     public void selectTheater(Theatre theater){
-      
+       
+        System.out.println("Selected theater: " + theater.getName());
     }
 
     public Vector<Showtime> viewShowtimes(){
+       
+        Vector<Showtime> showtimes = new Vector<>();
      
-        return new Vector<>();
+        System.out.println("Viewing showtimes.");
+        return showtimes;
     }
 
     public void selectShowtime(Showtime showtime){
+        
+        System.out.println("Selected showtime: " + showtime.getTime());
     }
 
     public Vector<Seat> viewSeats(){
-        return new Vector<>();
+        Vector<Seat> seats = new Vector<>();
+        
+        System.out.println("Viewing seats.");
+        return seats;
     }
 
     public void selectSeat(Seat seat){
-
+    
+        System.out.println("Selected seat: " + seat.getSeatId());
     }
 
-    public void makePayment(){
+    public void makePayment(Payment payment){
+        /// will have to prompt user for bank info and create vaninfo object
+        System.out.println("Payment made with amount: " + payment.getAmount());
     }
 
     public void viewBooking(){
+
+        System.out.println("Viewing booking details.");
     }
 
     public void cancelBooking(){
+        
+        System.out.println("Booking cancelled with 85% refund.");
     }
 }
