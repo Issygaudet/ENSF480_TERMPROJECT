@@ -1,4 +1,4 @@
-package src.Entity;
+package Entity;
 
 public class PaymentController {
     public void processPayment(Receipt receipt) {

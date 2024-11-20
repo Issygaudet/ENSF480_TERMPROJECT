@@ -1,4 +1,4 @@
-package src.Boundary;
+package Boundary;
 
 public class RegistrationView {
     

@@ -1,9 +1,10 @@
 package database;
 
-import Entity.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
+
+import Entity.*;
+
 import java.io.FileInputStream;
 
 public class readDatabase {

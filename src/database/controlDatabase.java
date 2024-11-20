@@ -1,5 +1,6 @@
 package database;
 import java.util.ArrayList;
+
 import Entity.*;
 import src.Entity.UserRegistered;
 

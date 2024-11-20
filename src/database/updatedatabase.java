@@ -1,10 +1,11 @@
 package database;
 
-import Entity.*;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+
+import Entity.*;
 
 public class updatedatabase {
     ControlDB databaseController;

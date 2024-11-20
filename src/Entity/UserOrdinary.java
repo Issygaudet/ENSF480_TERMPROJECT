@@ -1,4 +1,4 @@
-package src.Entity;
+package Entity;
 import java.util.Vector;
 
 public class UserOrdinary {

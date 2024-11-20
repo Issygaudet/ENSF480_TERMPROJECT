@@ -1,4 +1,4 @@
-package src.Entity;
+package Entity;
 
 public class Date {
     private int day;
