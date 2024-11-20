@@ -19,19 +19,39 @@ public class Showtime {
         return showtimeId;
     }
 
+    public void setShowtimeId(int showtimeId) {
+        this.showtimeId = showtimeId;
+    }
+
     public int getMovieId() {
         return movieId;
+    }
+
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     public Movie getMovie() {
         return movie;
     }
 
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
     public Theatre getTheatre() {
         return theatre;
+    }
+
+    public void setTheatre(Theatre theatre) {
+        this.theatre = theatre;
     }
     
     public String getTime() {
         return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

@@ -248,8 +248,44 @@ public class ControlDatabase {
         list_of_movies.add(movie);
     }
 
+    public void updateMovie(int movieId, String movieName, String genre, int duration) {
+        for (int i = 0; i < list_of_movies.size(); i++) {
+            if (list_of_movies.get(i).getMovieId() == movieId) {
+                list_of_movies.get(i).setName(movieName);
+                list_of_movies.get(i).setGenre(genre);
+                list_of_movies.get(i).setDuration(duration);
+            }
+        }
+    }
+
+    public void removeMovie(int movieId) {
+        for (int i = 0; i < list_of_movies.size(); i++) {
+            if (list_of_movies.get(i).getMovieId() == movieId) {
+                list_of_movies.remove(i);
+            }
+        }
+    }
+
     public void addShowtime(Showtime showtime) {
         list_of_showtimes.add(showtime);
+    }
+
+    public void updateShowtime(Showtime showtime) {
+        for (int i = 0; i < list_of_showtimes.size(); i++) {
+            if (list_of_showtimes.get(i).getMovieId() == showtime.getMovieId()) {
+                list_of_showtimes.get(i).setMovie(showtime.getMovie());
+                list_of_showtimes.get(i).setTheatre(showtime.getTheatre());
+                list_of_showtimes.get(i).setTime(showtime.getTime());
+            }
+        }
+    }
+
+    public void removeShowtime(Showtime showtime) {
+        for (int i = 0; i < list_of_showtimes.size(); i++) {
+            if (list_of_showtimes.get(i).getMovieId() == showtime.getMovieId()) {
+                list_of_showtimes.remove(i);
+            }
+        }
     }
 
     public void addTheatre(Theatre theatre) {

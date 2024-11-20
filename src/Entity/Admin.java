@@ -1,8 +1,4 @@
 package entity;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import database.ControlDatabase;
 
@@ -17,8 +13,8 @@ public class Admin {
         database_control.addMovie(new Movie(duration, movieName, genre, duration));
     }
 
-    public void modifyMovie(int movieId, String movieName, String genre, int duration) {
-        database_control.modifyMovie(movieId, movieName, genre, duration);
+    public void updateMovie(int movieId, String movieName, String genre, int duration) {
+        database_control.updateMovie(movieId, movieName, genre, duration);
     }
 
     public void removeMovie(int movieId) {
