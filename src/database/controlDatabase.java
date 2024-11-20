@@ -1,10 +1,9 @@
 package database;
 import java.util.ArrayList;
 
-import Entity.*;
-import src.Entity.UserRegistered;
+import entity.*;
 
-public class controlDatabase {
+public class ControlDatabase {
     private static ControlDatabase object;
 
     private ArrayList<UserRegistered> list_of_users;
@@ -19,7 +18,7 @@ public class controlDatabase {
 	private ArrayList<Ticket> list_of_tickets;
 	private BankInfo inst;
 
-    private ControlDB() {
+    private ControlDatabase() {
 		setlist_of_movies(new ArrayList<Movie>());
 		setlist_of_showtimes(new ArrayList<Showtime>());
 		setlist_of_theatres(new ArrayList<Theatre>());
@@ -30,18 +29,18 @@ public class controlDatabase {
 		setlist_of_banks(new ArrayList<UserBankInfo>());
 		setlist_of_pay(new ArrayList<Payment>());
 		setlist_of_receipts(new ArrayList<Receipt>());
-		inst = new BankInfo("");
+		inst = new BankInfo("name", "number");
 	}
 
-    public static ControlDB getobject() {
+    public static ControlDatabase getobject() {
 		if (object == null) {
-			object = new ControlDB();
+			object = new ControlDatabase();
 		}
 		return object;
 	}
 
-    public static void setobject(ControlDB object) {
-		ControlDB.object = object;
+    public static void setobject(ControlDatabase object) {
+		ControlDatabase.object = object;
 	}
 
     //Setters & Getters
@@ -136,7 +135,7 @@ public class controlDatabase {
             return null;
         }
         for (int i = 0; i < list_of_movies.size(); i++) {
-            if (list_of_movies.get(i).gettitle_of_movie().compareTo(title_of_movie) == 0) {
+            if (list_of_movies.get(i).getName().compareTo(title_of_movie) == 0) {
                 return list_of_movies.get(i);
             }
         }
@@ -149,7 +148,7 @@ public class controlDatabase {
             return null;
         }
         for (int i = 0; i < list_of_theatres.size(); i++) {
-            if (list_of_theatres.get(i).getname_of_theatre().compareTo(name) == 0) {
+            if (list_of_theatres.get(i).getName().compareTo(name) == 0) {
                 return list_of_theatres.get(i);
             }
         }
@@ -164,7 +163,7 @@ public class controlDatabase {
         ArrayList<Showtime> tempShowtime = new ArrayList<>();
         for (int i = 0; i < list_of_showtimes.size(); i++) {
             if (list_of_showtimes.get(i).getMovie() == searchMovie
-                    && list_of_showtimes.get(i).getaudi().getTheatre() == searchTheatre) {
+                    && list_of_showtimes.get(i).getTheatre() == searchTheatre) {
                 tempShowtime.add(list_of_showtimes.get(i));
             }
         }
@@ -178,7 +177,7 @@ public class controlDatabase {
         ArrayList<Showtime> tempShowtime = new ArrayList<>();
         for (int i = 0; i < list_of_showtimes.size(); i++) {
             if (list_of_showtimes.get(i).getMovie() == searchMovie
-                    && list_of_showtimes.get(i).getaudi().getTheatre() == searchTheatre
+                    && list_of_showtimes.get(i).getTheatre() == searchTheatre
                     && list_of_showtimes.get(i).getDate_of_show().toString().compareTo(date.toString()) == 0) {
                 return list_of_showtimes.get(i);
             }
@@ -203,7 +202,7 @@ public class controlDatabase {
 
     public Movie searchMovie(int id){
         for(int i = 0; i < getlist_of_movies().size(); i++){
-            if(id == getlist_of_movies().get(i).getID_of_movie()){
+            if(id == getlist_of_movies().get(i).getMovieId()){
                 return getlist_of_movies().get(i);
             }
         }
@@ -212,7 +211,7 @@ public class controlDatabase {
 
     public Theatre searchTheatre(int id){
         for(int i = 0; i < getlist_of_theatres().size(); i++){
-            if(id == getlist_of_theatres().get(i).getID_for_theatre()){
+            if(id == getlist_of_theatres().get(i).getTheatreId()){
                 return getlist_of_theatres().get(i);
             }
         }

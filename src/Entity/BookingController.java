@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 public class BookingController {
     public void createReservation(Reservation reservation) {

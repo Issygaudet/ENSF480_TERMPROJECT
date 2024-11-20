@@ -5,13 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import Entity.*;
+import database.*;
+import entity.*;
 
-public class updatedatabase {
-    ControlDB databaseController;
+public class UpdateDatabase {
+    ControlDatabase databaseController;
 
     public UpdateDB() {
-        databaseController = ControlDB.getobject();
+        databaseController = ControlDatabase.getobject();
     }
 
     public void write_to_Database() throws IOException {

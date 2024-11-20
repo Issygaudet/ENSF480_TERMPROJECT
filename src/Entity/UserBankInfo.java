@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 public class UserBankInfo {
     private int userId;

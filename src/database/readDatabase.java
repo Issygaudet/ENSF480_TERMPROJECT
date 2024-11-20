@@ -3,16 +3,16 @@ package database;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import Entity.*;
+import entity.*;
 
 import java.io.FileInputStream;
 
-public class readDatabase {
-	ControlDB database_control;
+public class ReadDatabase {
+	ControlDatabase database_control;
 	
 
-	public ReadDB() {
-		database_control = ControlDB.getobject();
+	public ReadDatabase() {
+		database_control = ControlDatabase.getobject();
 	}
 
 	public void loadDatabase() throws IOException{

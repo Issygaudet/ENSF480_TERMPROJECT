@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 public class Movie {
     private int movieId;

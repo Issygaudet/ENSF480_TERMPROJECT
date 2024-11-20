@@ -1,4 +1,4 @@
-package Entity;
+package entity;
 
 public class PaymentController {
     public void processPayment(Receipt receipt) {
