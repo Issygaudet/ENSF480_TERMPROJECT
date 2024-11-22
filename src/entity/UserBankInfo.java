@@ -2,8 +2,10 @@ package entity;
 
 public class UserBankInfo {
     private int userId;
-    private String bankName;
-    private String accountNumber;
+    private String cardNumber;
+    private String cardHolder;
+    private String expiryDate;
+    private String cvv;
 
     public UserBankInfo(int userId, String bankName, String accountNumber) {
         this.userId = userId;

@@ -2,13 +2,11 @@ package entity;
 
 public class Theatre {
     private int theatreId;
-    private String name;
     private String location;
     private float price;
 
     public Theatre(int theatreId, String name, String location, float price) {
         this.theatreId = theatreId;
-        this.name = name;
         this.location = location;
         this.price = price;
     }
@@ -17,11 +15,9 @@ public class Theatre {
         return theatreId;
     }
 
-
-    public String getName() {
-        return name;
+    public void setTheatreId(int theatreId) {
+        this.theatreId = theatreId;
     }
-
 
     public String getLocation() {
         return location;
@@ -29,6 +25,10 @@ public class Theatre {
 
     public float getPrice() {
         return price;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
 }
