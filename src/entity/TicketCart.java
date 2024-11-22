@@ -9,11 +9,11 @@ public class TicketCart {
 
     public void addToCart(Ticket ticket) {
         tickets_in_cart.add(ticket);
-        totalPrice += Theatre.getPrice();
+        totalPrice += ticket.getShowtime().getTheatre().getPrice();
     }
     public void removeFromCart(Ticket ticket) {
         tickets_in_cart.remove(ticket);
-        totalPrice -= Theatre.getPrice();
+        totalPrice -= ticket.getShowtime().getTheatre().getPrice();
     }
     public ArrayList<Ticket> getTicketsInCart() {
         return tickets_in_cart;

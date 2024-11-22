@@ -1,24 +1,14 @@
 package entity;
 
 public class Payment {
-    private int paymentId;
     private int userId;
-    private double amount;
-    private String date;
+    private float amount;
+    private Date date;
 
-    public Payment(int paymentId, int userId, double amount, String date) {
-        this.paymentId = paymentId;
+    public Payment(int userId, float amount, Date date) {
         this.userId = userId;
         this.amount = amount;
         this.date = date;
-    }
-
-    public int getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
     }
 
     public int getUserId() {
@@ -33,15 +23,15 @@ public class Payment {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

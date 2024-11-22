@@ -2,13 +2,11 @@ package entity;
 
 public class Receipt {
     private int receiptId;
-    private int reservationId;
-    private double amount;
-    private String date;
+    private float amount;
+    private Date date;
 
-    public Receipt(int receiptId, int reservationId, double amount, String date) {
+    public Receipt(int receiptId, float amount, Date date) {
         this.receiptId = receiptId;
-        this.reservationId = reservationId;
         this.amount = amount;
         this.date = date;
     }
@@ -21,27 +19,19 @@ public class Receipt {
         this.receiptId = receiptId;
     }
 
-    public int getReservationId() {
-        return reservationId;
-    }
-
-    public void setReservationId(int reservationId) {
-        this.reservationId = reservationId;
-    }
-
     public double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

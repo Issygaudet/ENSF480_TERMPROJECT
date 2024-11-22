@@ -27,7 +27,7 @@ public class UserOrdinary {
 
     public void selectTheater(Theatre theater){
        
-        System.out.println("Selected theater: " + theater.getName());
+        System.out.println("Selected theater: " + theater.getLocation());
     }
 
     public Vector<Showtime> viewShowtimes(){

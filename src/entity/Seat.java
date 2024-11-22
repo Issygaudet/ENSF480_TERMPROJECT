@@ -11,7 +11,7 @@ public class Seat {
         this.isAvailable = isAvailable;
     }
 
-    public String getSeatId() {
+    public int getSeatId() {
         return seatId;
     }
 

@@ -7,10 +7,12 @@ public class UserBankInfo {
     private String expiryDate;
     private String cvv;
 
-    public UserBankInfo(int userId, String bankName, String accountNumber) {
+    public UserBankInfo(int userId, String cardNumber, String cardHolder, String expiryDate, String cvv) {
         this.userId = userId;
-        this.bankName = bankName;
-        this.accountNumber = accountNumber;
+        this.cardNumber = cardNumber;
+        this.cardHolder = cardHolder;
+        this.expiryDate = expiryDate;
+        this.cvv = cvv;
     }
 
     public int getUserId() {
@@ -21,19 +23,37 @@ public class UserBankInfo {
         this.userId = userId;
     }
 
-    public String getBankName() {
-        return bankName;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public String getCardHolder() {
+        return cardHolder;
+    }   
+
+    public void setCardHolder(String cardHolder) {
+        this.cardHolder = cardHolder;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public String getExpiryDate() {
+        return expiryDate;
     }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
+    }
+
+
 }
