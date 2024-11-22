@@ -1,7 +1,7 @@
 package entity;
 
 public class Seat {
-    private String seatId;
+    private int seatId;
     private int roomId;
     private boolean isAvailable;
 
@@ -11,7 +11,7 @@ public class Seat {
         this.isAvailable = isAvailable;
     }
 
-    public int getSeatId() {
+    public String getSeatId() {
         return seatId;
     }
 

@@ -21,6 +21,7 @@ public class TicketCart {
     public float getTotalPrice() {
         return totalPrice;
     }
+    public void Checkout() {}
 
 
 }
