@@ -58,23 +58,6 @@ VALUES
     (208, 'Eternal Echoes', 'Drama', 2023, 'Olivia Moore', 105.0, 7.7, 'ee', 9.49, 'A family struggles to overcome the loss of a loved one while finding hope.'),
     (209, 'Zookeeper\'s Paradise', 'Family', 2023, 'Liam Johnson', 95.0, 7.0, 'zp', 8.49, 'A young boy discovers his ability to communicate with animals at a magical zoo.');
 
-DROP TABLE IF EXISTS SCREENING_ROOM;
-CREATE TABLE SCREENING_ROOM (
-	ID_no					integer,
-    Row_Numbers				integer,
-    Column_Numbers			integer,
-    Theatre_Number			integer,
-    primary key (ID_no)
-);
-
-INSERT INTO SCREENING_ROOM(ID_no, Row_Numbers, Column_Numbers, Theatre_Number)
-VALUES
-	(300, 8, 7, 400),
-	(301, 6, 6, 403), 
-	(302, 7, 8, 401), 
-	(303, 6, 8, 402), 
-	(304, 8, 5, 403); 
-
 DROP TABLE IF EXISTS THEATRE;
 CREATE TABLE THEATRE(
 	ID_no				integer,
@@ -89,6 +72,24 @@ VALUES
 (403, 'Landmark Cinemas Market Mall'),
 (404, 'Cineplex Odeon Sunridge'),
 (405, 'Cineplex Odeon Westhills');
+
+DROP TABLE IF EXISTS SCREENING_ROOM;
+CREATE TABLE SCREENING_ROOM (
+	ID_no					integer,
+    Row_Numbers				integer,
+    Column_Numbers			integer,
+    Theatre_Number			integer,
+    primary key (ID_no),
+    foreign key (Theatre_Number) references THEATRE(ID_no)
+);
+
+INSERT INTO SCREENING_ROOM(ID_no, Row_Numbers, Column_Numbers, Theatre_Number)
+VALUES
+	(300, 8, 7, 400),
+	(301, 6, 6, 403), 
+	(302, 7, 8, 401), 
+	(303, 6, 8, 402), 
+	(304, 8, 5, 403); 
 
 DROP TABLE IF EXISTS BANK_INFO;
 CREATE TABLE BANK_INFO (
@@ -112,7 +113,9 @@ CREATE TABLE SHOWS(
     Screening_Room		integer,
     Time_in_Hours		integer, 
     Time_in_Minutes		integer,
-    primary key (ID_no)
+    primary key (ID_no), 
+    foreign key (Movie_ID) references MOVIE(ID_no), 
+    foreign key (Screening_Room) references SCREENING_ROOM(ID_no)
 );
 
 INSERT INTO SHOWS(ID_no, Movie_ID, Screening_Room, Time_in_Hours, Time_in_Minutes)
@@ -125,7 +128,6 @@ VALUES
     (705, 204, 304, 1, 9);
 
 
-	
 DROP TABLE IF EXISTS ANNOUNCEMENTS;
 CREATE TABLE ANNOUNCEMENTS(
 	ID_no				integer,
