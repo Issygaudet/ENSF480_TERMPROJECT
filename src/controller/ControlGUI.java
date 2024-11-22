@@ -8,6 +8,7 @@ import entity.*;
 
 public class ControlGUI {
 	private InitGUI frontEnd;
+	private InstanceController instance = InstanceController.getInstance();
 
 	public ControlGUI(InitGUI frontEnd) {
 		this.setFrontEnd(frontEnd);

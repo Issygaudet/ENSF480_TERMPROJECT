@@ -6,13 +6,15 @@ public class Showtime {
     private Movie movie;
     private String time;
     private Theatre theatre;
+    private Date date;
 
-    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, String time) {
+    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, String time, Date date) {
         this.showtimeId = showtimeId;
         this.movieId = movieId;
         this.movie = movie;
         this.theatre = theatre;
         this.time = time;
+        this.date = date;
     }
 
     public int getShowtimeId() {
@@ -53,5 +55,13 @@ public class Showtime {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

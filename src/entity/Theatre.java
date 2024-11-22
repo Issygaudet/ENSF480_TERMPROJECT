@@ -4,11 +4,13 @@ public class Theatre {
     private int theatreId;
     private String name;
     private String location;
+    private float price;
 
-    public Theatre(int theatreId, String name, String location) {
+    public Theatre(int theatreId, String name, String location, float price) {
         this.theatreId = theatreId;
         this.name = name;
         this.location = location;
+        this.price = price;
     }
 
     public int getTheatreId() {
@@ -23,6 +25,10 @@ public class Theatre {
 
     public String getLocation() {
         return location;
+    }
+
+    public float getPrice() {
+        return price;
     }
 
 }

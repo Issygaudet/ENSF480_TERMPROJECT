@@ -1,12 +1,17 @@
 package entity;
 
+import java.util.ArrayList;
+
 public class ScreeningRoom {
     private int roomId;
-    private int capacity;
+    private int rows; 
+    private int columns;
+    private ArrayList<Seat> seats = new ArrayList<>();
 
-    public ScreeningRoom(int roomId, int capacity) {
+    public ScreeningRoom(int roomId, int rows, int columns) {
         this.roomId = roomId;
-        this.capacity = capacity;
+        this.rows = rows;
+        this.columns = columns;
     }
 
     public int getRoomId() {
@@ -18,10 +23,14 @@ public class ScreeningRoom {
     }
 
     public int getCapacity() {
-        return capacity;
+        return rows * columns;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    // 
+
+    public Seat getSeat(int row, int column) {
+        int coloff = (row - 1) * columns;
+        return seats.get(coloff + (column - 1));
     }
+
 }

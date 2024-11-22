@@ -1,8 +1,17 @@
 package entity;
 
 public class PaymentController {
-    public void processPayment(Receipt receipt) {
+
+    public Receipt processPayment() {
         // Implementation here
+
+        // make request to database
+
+        // if success
+        // return receipt
+        // else
+        // return null
+        return null;
     }
 
     public void refundPayment(int receiptId) {
