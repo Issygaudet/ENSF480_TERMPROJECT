@@ -1,6 +1,0 @@
-400;Cineplex Crowfoot
-401;Cineplex University District
-402;Landmark Cinemas Country Hills
-403;Landmark Cinemas Market Mall
-404:Cineplex Odeon Sunridge
-405;Cineplex Odeon Westhills
