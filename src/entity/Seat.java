@@ -1,7 +1,7 @@
 package entity;
 
 public class Seat {
-    private int seatId;
+    private String seatId;
     private int roomId;
     private boolean isAvailable;
 
