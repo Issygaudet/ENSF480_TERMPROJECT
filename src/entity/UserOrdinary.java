@@ -2,11 +2,12 @@ package entity;
 import java.util.Vector;
 
 public class UserOrdinary {
-    public String name;
-    public String email;
-    public String password;
+    private String name;
+    private String email;
+    private String password;
+    private int userID;
 
-    public UserOrdinary(String name, String email, String password){
+    public UserOrdinary(int userID, String name, String email, String password){
         this.name = name;
         this.email = email;
         this.password = password;
@@ -68,5 +69,37 @@ public class UserOrdinary {
     public void cancelBooking(int bookingId) {
         
         System.out.println("Booking cancelled with 85% refund.");
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 }

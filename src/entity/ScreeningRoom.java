@@ -6,6 +6,7 @@ public class ScreeningRoom {
     private int roomId;
     private int rows; 
     private int columns;
+    private Theatre theatre;
     private ArrayList<Seat> seats = new ArrayList<>();
 
     public ScreeningRoom(int roomId, int rows, int columns) {
@@ -33,4 +34,11 @@ public class ScreeningRoom {
         return seats.get(coloff + (column - 1));
     }
 
+    public Theatre getTheatre() {
+        return theatre;
+    }
+
+    public void setTheatre(Theatre theatre) {
+        this.theatre = theatre;
+    }
 }

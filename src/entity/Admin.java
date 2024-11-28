@@ -6,7 +6,7 @@ public class Admin {
     private ControlDatabase database_control;
 
     public Admin() {
-        database_control = ControlDatabase.getobject();
+        database_control = ControlDatabase.getInstance();
     }
 
     public void addMovie(String movieName, String genre, int duration) {
