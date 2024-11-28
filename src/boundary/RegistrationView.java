@@ -75,7 +75,7 @@ public class RegistrationView extends JPanel {
 
         
         backToLoginButton.addActionListener(e -> {
-            LoginView loginView = new LoginView(parentFrame, new Login());
+            LoginView loginView = new LoginView(parentFrame);  // Remove new Login()
             parentFrame.setContentPane(loginView);
             parentFrame.revalidate();
             parentFrame.repaint();

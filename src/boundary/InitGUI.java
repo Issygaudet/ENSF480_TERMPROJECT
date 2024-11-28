@@ -2,7 +2,7 @@ package boundary;
 
 import javax.swing.*;
 import java.awt.*;
-import entity.Login;
+import entity.*;
 
 public class InitGUI {
     private JFrame mainFrame;
@@ -20,8 +20,8 @@ public class InitGUI {
         mainFrame.setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         mainFrame.setLocationRelativeTo(null);
         
-        // Start with login view
-        LoginView loginView = new LoginView(mainFrame, new Login());
+        // Start with login view - removed Login parameter
+        LoginView loginView = new LoginView(mainFrame);
         mainFrame.setContentPane(loginView);
     }
 

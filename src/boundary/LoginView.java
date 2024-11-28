@@ -6,19 +6,20 @@ import entity.*;
 import controller.InstanceController;
 
 public class LoginView extends JPanel {
-  private JTextField usernameField;
-  private JPasswordField passwordField;
-  public JButton submitLoginButton;
-  private JButton registerButton;
-  private InstanceController instance;
-  private JFrame parentFrame;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    public JButton submitLoginButton;
+    private JButton registerButton;
+    private InstanceController instance;
+    private JFrame parentFrame;
 
-  public LoginView(JFrame parent, Login backend) {
-    this.parentFrame = parent;
-    this.instance = InstanceController.getInstance();
-    setLayout(new GridBagLayout());
-    initializeComponents();
-  }
+    public LoginView(JFrame parent) {  // Remove Login parameter
+        this.parentFrame = parent;
+        this.instance = InstanceController.getInstance();
+        setLayout(new GridBagLayout());
+        initializeComponents();
+    }
+  
 
   private void initializeComponents() {
     GridBagConstraints gbc = new GridBagConstraints();
