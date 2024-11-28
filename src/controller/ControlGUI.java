@@ -1,41 +1,35 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-
-import boundary.*;
-import entity.*;
+import boundary.InitGUI;
+import javax.swing.SwingUtilities;
 
 public class ControlGUI {
-	private InitGUI frontEnd;
-	private InstanceController instance = InstanceController.getInstance();
+    private InitGUI gui;
+    private static ControlGUI instance = null;
 
-	public ControlGUI(InitGUI frontEnd) {
-		this.setFrontEnd(frontEnd);
-	}
+    private ControlGUI() {
+        gui = new InitGUI();
+    }
 
-	public static void main(String[] args) throws IOException{
-		InitGUI frontEnd = null;
-		Login backEnd = new Login();
-		frontEnd = new InitGUI(backEnd);
+    public static ControlGUI getInstance() {
+        if (instance == null) {
+            instance = new ControlGUI();
+        }
+        return instance;
+    }
 
-		// ReadDB dp = new ReadDB();
-		// dp.loadDatabase();
+    public void startGUI() {
+        SwingUtilities.invokeLater(() -> {
+            gui.show();
+        });
+    }
 
-		ControlGUI controller = new ControlGUI(frontEnd);
-		controller.runClient();
-	}
+    public static void main(String[] args) {
+        ControlGUI controller = ControlGUI.getInstance();
+        controller.startGUI();
+    }
 
-	public InitGUI getFrontEnd() {
-		return frontEnd;
-	}
-
-	public void setFrontEnd(InitGUI frontEnd) {
-		this.frontEnd = frontEnd;
-	}
-
-	public void runClient() {
-		getFrontEnd().displayGUI();
-	}
-
+    public InitGUI getGUI() {
+        return gui;
+    }
 }
