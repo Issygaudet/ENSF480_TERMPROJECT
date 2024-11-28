@@ -1,6 +1,9 @@
 package boundary;
 
 import javax.swing.*;
+
+import controller.InstanceController;
+
 import java.awt.*;
 import entity.*;
 
@@ -12,6 +15,12 @@ public class RegistrationView extends JPanel {
     private JButton registerButton;
     private JButton backToLoginButton;
     private JFrame parentFrame;
+
+    private JTextField cardNumberField;
+    private JTextField cardExpiryField;
+    private JTextField cardCVVField;
+    private JTextField cardHolderField;
+    private final float MONTHLY_FEE = 20.0f;
 
     public RegistrationView(JFrame parent) {
         this.parentFrame = parent;
@@ -45,11 +54,25 @@ public class RegistrationView extends JPanel {
         // Confirm Password field
         addField("Confirm Password:", confirmPasswordField = new JPasswordField(20), gbc, 4);
 
+        // Add credit card fields
+        JLabel paymentLabel = new JLabel("Payment Information - $20 Monthly Fee");
+        paymentLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(20, 5, 10, 5);
+        add(paymentLabel, gbc);
+
+        addField("Card Holder Name:", cardHolderField = new JTextField(20), gbc, 6);
+        addField("Card Number:", cardNumberField = new JTextField(16), gbc, 7);
+        addField("Expiry Date (MM/YY):", cardExpiryField = new JTextField(5), gbc, 8);
+        addField("CVV:", cardCVVField = new JTextField(3), gbc, 9);
+
         // Buttons Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
-        
-        registerButton = new JButton("Register");
-        registerButton.setPreferredSize(new Dimension(100, 30));
+            
+        registerButton = new JButton("Register & Pay");
+        registerButton.setPreferredSize(new Dimension(120, 30));
         buttonPanel.add(registerButton);
 
         backToLoginButton = new JButton("Back to Login");
@@ -57,25 +80,51 @@ public class RegistrationView extends JPanel {
         buttonPanel.add(backToLoginButton);
 
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 10;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(30, 5, 5, 5);
         add(buttonPanel, gbc);
 
         // Add action listeners
 
-        registerButton.addActionListener(e -> {
-            // Here you would normally validate registration info
-            // For now, just navigate to MainView
+          registerButton.addActionListener(e -> {
+        if (validateFields()) {
+            // Create UserBankInfo object
+            UserBankInfo bankInfo = new UserBankInfo(
+                0, // temporary userId
+                cardNumberField.getText(),
+                cardHolderField.getText(),
+                cardExpiryField.getText(),
+                cardCVVField.getText()
+            );
+
+            // Create UserRegistered object
+            UserRegistered newUser = new UserRegistered(
+                nameField.getText(),
+                emailField.getText(),
+                new String(passwordField.getPassword()),
+                bankInfo
+            );
+
+            // Process initial payment
+            Payment initialPayment = new Payment(0, MONTHLY_FEE, new Date(1, 1, 2024)); // Example date
+            newUser.makePayment(initialPayment);
+            newUser.payAnnualFee(); // Mark as paid
+
+            // Set user in InstanceController
+            InstanceController.getInstance().setUser(newUser);
+
+            
+            // Navigate to MainView
             MainView mainView = new MainView(parentFrame);
             parentFrame.setContentPane(mainView);
             parentFrame.revalidate();
             parentFrame.repaint();
-        });
-
+        }
+    });
         
         backToLoginButton.addActionListener(e -> {
-            LoginView loginView = new LoginView(parentFrame);  // Remove new Login()
+            LoginView loginView = new LoginView(parentFrame); 
             parentFrame.setContentPane(loginView);
             parentFrame.revalidate();
             parentFrame.repaint();
@@ -93,5 +142,26 @@ public class RegistrationView extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = row;
         add(field, gbc);
+    }
+
+    private boolean validateFields() {
+        // Basic validation
+        if (nameField.getText().isEmpty() || 
+            emailField.getText().isEmpty() ||
+            passwordField.getPassword().length == 0 ||
+            cardHolderField.getText().isEmpty() ||
+            cardNumberField.getText().isEmpty() ||
+            cardExpiryField.getText().isEmpty() ||
+            cardCVVField.getText().isEmpty()) {
+            
+            JOptionPane.showMessageDialog(this,
+                "Please fill in all fields",
+                "Validation Error",
+                JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    
+        // Add additional validation as needed (card number format, expiry date format, etc.)
+        return true;
     }
 }

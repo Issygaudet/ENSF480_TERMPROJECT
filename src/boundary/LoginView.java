@@ -71,6 +71,10 @@ public class LoginView extends JPanel {
     registerButton.setPreferredSize(new Dimension(100, 30));
     buttonPanel.add(registerButton);
 
+    JButton guestButton = new JButton("Continue as Guest");
+    guestButton.setPreferredSize(new Dimension(150, 30));
+    buttonPanel.add(guestButton);
+
     gbc.gridx = 0;
     gbc.gridy = 3;
     gbc.gridwidth = 2;
@@ -94,6 +98,18 @@ public class LoginView extends JPanel {
       parentFrame.revalidate();
       parentFrame.repaint();
     });
+
+    guestButton.addActionListener(e -> {
+      // Create ordinary user and set in InstanceController
+      UserOrdinary guestUser = new UserOrdinary("Guest", "guest@example.com", "");
+      instance.setUser(guestUser);
+      
+      // Navigate to MainView
+      MainView mainView = new MainView(parentFrame);
+      parentFrame.setContentPane(mainView);
+      parentFrame.revalidate();
+      parentFrame.repaint();
+  });
 
   }
 
