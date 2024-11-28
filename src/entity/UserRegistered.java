@@ -6,8 +6,8 @@ public class UserRegistered extends UserOrdinary {
     private boolean annualFeePaid;
     private UserBankInfo bankInfo;
 
-    public UserRegistered(String name, String email, String password, UserBankInfo bankInfo) {
-        super(name, email, password);
+    public UserRegistered(int userID, String name, String email, String password, UserBankInfo bankInfo) {
+        super(userID, name, email, password);
         this.annualFeePaid = false;
         this.bankInfo = bankInfo;
     }

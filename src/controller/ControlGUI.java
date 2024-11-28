@@ -16,8 +16,8 @@ public class ControlGUI {
 
 	public static void main(String[] args) throws IOException{
 		InitGUI frontEnd = null;
-		Login backEnd = new Login();
-		frontEnd = new InitGUI(backEnd);
+//		Login backEnd = new Login();
+//		frontEnd = new InitGUI(backEnd);
 
 		// ReadDB dp = new ReadDB();
 		// dp.loadDatabase();

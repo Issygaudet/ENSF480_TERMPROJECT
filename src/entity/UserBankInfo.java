@@ -1,33 +1,33 @@
 package entity;
 
 public class UserBankInfo {
-    private int userId;
-    private String cardNumber;
+    private int bankInfoID;
+    private int cardNumber;
     private String cardHolder;
-    private String expiryDate;
-    private String cvv;
+    private Date expiryDate;
+    private int cvv;
 
-    public UserBankInfo(int userId, String cardNumber, String cardHolder, String expiryDate, String cvv) {
-        this.userId = userId;
+    public UserBankInfo(int bankInfoID, int cardNumber, String cardHolder, Date expiryDate, int cvv) {
+        this.bankInfoID = bankInfoID;
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
         this.expiryDate = expiryDate;
         this.cvv = cvv;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getBankInfoID() {
+        return bankInfoID;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setBankInfoID(int bankInfoID) {
+        this.bankInfoID = bankInfoID;
     }
 
-    public String getCardNumber() {
+    public int getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(String cardNumber) {
+    public void setCardNumber(int cardNumber) {
         this.cardNumber = cardNumber;
     }
 
@@ -39,19 +39,19 @@ public class UserBankInfo {
         this.cardHolder = cardHolder;
     }
 
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    public String getCvv() {
+    public int getCvv() {
         return cvv;
     }
 
-    public void setCvv(String cvv) {
+    public void setCvv(int cvv) {
         this.cvv = cvv;
     }
 
