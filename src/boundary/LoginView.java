@@ -100,17 +100,16 @@ public class LoginView extends JPanel {
     });
 
     guestButton.addActionListener(e -> {
-      // Create ordinary user and set in InstanceController
-      UserOrdinary guestUser = new UserOrdinary("Guest", "guest@example.com", "");
-      instance.setUser(guestUser);
-      
-      // Navigate to MainView
-      MainView mainView = new MainView(parentFrame);
-      parentFrame.setContentPane(mainView);
-      parentFrame.revalidate();
-      parentFrame.repaint();
-  });
-
+        // Create ordinary user and set in InstanceController
+        UserOrdinary guestUser = new UserOrdinary(0, "Guest", "guest@example.com", "");
+        instance.setUser(guestUser);
+        
+        // Navigate to MainView
+        MainView mainView = new MainView(parentFrame);
+        parentFrame.setContentPane(mainView);
+        parentFrame.revalidate();
+        parentFrame.repaint();
+    });
   }
 
   public String getUsername() {

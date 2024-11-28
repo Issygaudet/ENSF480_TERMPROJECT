@@ -7,8 +7,7 @@ public class UserBankInfo {
     private Date expiryDate;
     private int cvv;
 
-    public UserBankInfo(int bankInfoID, int cardNumber, String cardHolder, Date expiryDate, int cvv) {
-        this.bankInfoID = bankInfoID;
+    public UserBankInfo(int bankInfoID, int cardNumber, String cardHolder, Date expiryDate, int cvv){
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
         this.expiryDate = expiryDate;

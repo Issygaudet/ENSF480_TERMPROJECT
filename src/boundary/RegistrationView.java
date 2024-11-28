@@ -90,17 +90,18 @@ public class RegistrationView extends JPanel {
           registerButton.addActionListener(e -> {
         if (validateFields()) {
             // Create UserBankInfo object
-            UserBankInfo bankInfo = new UserBankInfo(
-                0, // temporary userId
-                cardNumberField.getText(),
+                UserBankInfo bankInfo = new UserBankInfo(
+                0, // bankInfoID
+                Integer.parseInt(cardNumberField.getText()), // convert string to int
                 cardHolderField.getText(),
-                cardExpiryField.getText(),
-                cardCVVField.getText()
+                new Date(1, 1, 2024), // example expiry date
+                Integer.parseInt(cardCVVField.getText()) // convert string to int
             );
 
             // Create UserRegistered object
             UserRegistered newUser = new UserRegistered(
-                nameField.getText(),
+                0,  // Add userID as first parameter
+                nameField.getText(), 
                 emailField.getText(),
                 new String(passwordField.getPassword()),
                 bankInfo
@@ -113,7 +114,6 @@ public class RegistrationView extends JPanel {
 
             // Set user in InstanceController
             InstanceController.getInstance().setUser(newUser);
-
             
             // Navigate to MainView
             MainView mainView = new MainView(parentFrame);
