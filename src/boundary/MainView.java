@@ -22,6 +22,7 @@ public class MainView extends JPanel {
     private JFrame parentFrame;
     private Map<String, Movie> movieMap; // Map to store movie names and corresponding Movie objects
 
+    private JButton backButton;
 
     public MainView(JFrame parent) {
         this.parentFrame = parent;
@@ -84,8 +85,10 @@ public class MainView extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         addToCartButton = new JButton("Add to Cart");
         viewCartButton = new JButton("View Cart");
+        backButton = new JButton("Return to Login Page");
         buttonPanel.add(addToCartButton);
         buttonPanel.add(viewCartButton);
+        buttonPanel.add(backButton);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -154,6 +157,15 @@ public class MainView extends JPanel {
             parentFrame.revalidate();
             parentFrame.repaint();
         });
+
+        // back button functionality
+        backButton.addActionListener(e -> {
+            LoginView lv = new LoginView(parentFrame);
+            parentFrame.setContentPane(lv);
+            parentFrame.revalidate();
+            parentFrame.repaint();
+        });
+
     }
     
     private void updatePriceLabel() {

@@ -75,7 +75,7 @@ public class RegistrationView extends JPanel {
         registerButton.setPreferredSize(new Dimension(120, 30));
         buttonPanel.add(registerButton);
 
-        backToLoginButton = new JButton("Back to Login");
+        backToLoginButton = new JButton("Return to Login Page");
         backToLoginButton.setPreferredSize(new Dimension(120, 30));
         buttonPanel.add(backToLoginButton);
 
