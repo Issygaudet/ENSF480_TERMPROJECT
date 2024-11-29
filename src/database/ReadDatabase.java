@@ -17,7 +17,7 @@ public class ReadDatabase {
         controlDatabase = ControlDatabase.getInstance();
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_theatre_app?" +
-                    "user=admin&password=admin_pass");
+            "user=registered_user&password=registered_pass");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             conn = null;
@@ -74,6 +74,7 @@ public class ReadDatabase {
             //TODO add announcement class?
         }
     }
+
     private void getBankInfo() throws SQLException {
         Statement statement = getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM movie_theatre_app.bank_info;");
