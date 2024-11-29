@@ -103,6 +103,8 @@ VALUES
 	(101, 'Spiro', 'Douvis', 732792), 
     (102, 'Issy', 'Douvis', 732792), 
     (103, 'Spiro', 'Douvis', 732792); 
+    alter TABLE REGISTERED_USER
+    add foreign key (User_Bank_Info) references BANK_INFO(ID_no);
     
 DROP TABLE IF EXISTS SHOWS;
 CREATE TABLE SHOWS(

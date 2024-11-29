@@ -24,20 +24,20 @@ public class ControlDatabase {
   private Map<Integer, Theatre> theatreMap;
 
   // Database credentials
-    private static final String URL = "jdbc:mysql://localhost:3306/MOVIE_THEATRE_APP";  // Update with your database URL
-    private static final String USER = "registered_user";  // Your database username
-    private static final String PASSWORD = "registered_pass";  // Your database password
-    
-    // Method to get the connection
-    public static Connection getConnection() throws SQLException {
-        try {
-            // Load the database driver (this may vary depending on your database)
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new SQLException("Failed to create database connection.", e);
-        }
-    }
+  private static final String URL = "jdbc:mysql://localhost:3306/movie_theatre_app";  // Updated to match exact database name
+  private static final String USER = "registered_user";      // From SQL file
+  private static final String PASSWORD = "registered_pass";  // From SQL file
+  
+  // Method to get the connection
+  public static Connection getConnection() throws SQLException {
+      try {
+          // Load the MySQL JDBC driver
+          Class.forName("com.mysql.cj.jdbc.Driver");
+          return DriverManager.getConnection(URL, USER, PASSWORD);
+      } catch (ClassNotFoundException | SQLException e) {
+          throw new SQLException("Failed to create database connection.", e);
+      }
+  }
   
 
   public static ControlDatabase getInstance() {
@@ -188,7 +188,7 @@ public class ControlDatabase {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             // Retrieve data from result set
-            int cardNumber = rs.getInt("CardNumber");
+            String cardNumber = rs.getString("CardNumber");
             String cardHolder = rs.getString("CardHolder");
             Date expiryDate = convertSqlDateToEntityDate(rs.getDate("ExpiryDate"));  // Assuming you have a Date object in the database
             int cvv = rs.getInt("CVV");
