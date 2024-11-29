@@ -9,7 +9,6 @@ USE MOVIE_THEATRE_APP;
 DROP TABLE IF EXISTS REGISTERED_USER;
 CREATE TABLE REGISTERED_USER (
 	ID_no						integer,
-    Username					varchar(50) not null,
 	User_Password				varchar(50) not null,
 	First_Name					varchar(50) not null,
     Last_Name					varchar(50) not null,
@@ -21,12 +20,12 @@ CREATE TABLE REGISTERED_USER (
 	primary key (ID_no)
 );
 
-INSERT INTO REGISTERED_USER (ID_no, Username, User_Password, First_Name, Last_Name, User_Email, User_Bank_Info, User_Day, User_Month, User_Year)
+INSERT INTO REGISTERED_USER (ID_no, User_Password, First_Name, Last_Name, User_Email, User_Bank_Info, User_Day, User_Month, User_Year)
 VALUES
-    (0, 'K.Ghorbanzadeh', 'pwd', 'Kamand', 'Ghorbanzadeh', 'kghorbanzadeh@gmail.com', 100, 3, 12, 2024),
-    (1, 'S.Douvis', 'pwd', 'Spiro', 'Douvis', 'sdouvis@gmail.com', 101, 2, 12, 2024),
-    (2, 'Issy.Gaudet', 'pwd', 'Issy', 'Gaudet', 'igaudet@gmail.com', 102, 3, 12, 2024),
-    (3, 'D.Wenaas', 'pwd', 'Dylan', 'Wenaas', 'dwenaas@gmail.com', 103, 4, 7, 2024);
+    (0, 'pwd', 'Kamand', 'Ghorbanzadeh', 'kghorbanzadeh@gmail.com', 100, 3, 12, 2024),
+    (1, 'pwd', 'Spiro', 'Douvis', 'sdouvis@gmail.com', 101, 2, 12, 2024),
+    (2, 'pwd', 'Issy', 'Gaudet', 'igaudet@gmail.com', 102, 3, 12, 2024),
+    (3, 'pwd', 'Dylan', 'Wenaas', 'dwenaas@gmail.com', 103, 4, 7, 2024);
 
 
 DROP TABLE IF EXISTS MOVIE;
@@ -48,15 +47,14 @@ CREATE TABLE MOVIE (
 INSERT INTO MOVIE(ID_no, Movie_Name, Genre, Release_Year, Director, Duration, Rating, Movie_Code, Movie_Price, Movie_Description)
 VALUES
     (200, 'The Adventures of Quantum Cat', 'Sci-Fi', 2023, 'Jane Doe', 120.0, 8.5, 'qcat', 12.99, 'Follow the thrilling journey of a cat that can teleport across galaxies.'),
-    (201, 'Romance in the Rain', 'Romance', 2023, 'John Smith', 115.0, 7.2, 'rir', 9.99, 'Two strangers meet during a rainstorm and change each other\'s lives forever.'),
+    (201, 'Romance in the Rain', 'Romance', 2023, 'John Smith', 115.0, 7.2, 'rir', 9.99, 'Two strangers meet during a rainstorm and change each other"s lives forever.'),
     (202, 'Battle of the Titans', 'Action', 2023, 'Michael Brown', 140.0, 8.0, 'bot', 14.99, 'An epic showdown between rival warriors fighting for the fate of their world.'),
     (203, 'The Haunted Melody', 'Horror', 2023, 'Emily Clark', 100.0, 6.9, 'hm', 8.99, 'A cursed music box unleashes terror on those who dare to play its tune.'),
     (204, 'Laugh Out Loud', 'Comedy', 2023, 'Chris Wilson', 90.0, 7.4, 'lol', 7.99, 'A group of friends embarks on a hilarious road trip full of unexpected surprises.'),
     (205, 'Planet Ocean', 'Documentary', 2023, 'Sophia Taylor', 95.0, 8.3, 'po', 10.49, 'Explore the wonders of the deep blue sea and the creatures that call it home.'),
     (206, 'Chasing Shadows', 'Mystery', 2023, 'Robert Davis', 110.0, 7.8, 'cs', 11.99, 'A detective uncovers a series of cryptic clues to solve a decades-old disappearance.'),
     (207, 'The Digital Heist', 'Thriller', 2023, 'David Martinez', 130.0, 7.5, 'tdh', 13.49, 'A group of hackers plans the ultimate cyber robbery.'),
-    (208, 'Eternal Echoes', 'Drama', 2023, 'Olivia Moore', 105.0, 7.7, 'ee', 9.49, 'A family struggles to overcome the loss of a loved one while finding hope.'),
-    (209, 'Zookeeper\'s Paradise', 'Family', 2023, 'Liam Johnson', 95.0, 7.0, 'zp', 8.49, 'A young boy discovers his ability to communicate with animals at a magical zoo.');
+    (208, 'Eternal Echoes', 'Drama', 2023, 'Olivia Moore', 105.0, 7.7, 'ee', 9.49, 'A family struggles to overcome the loss of a loved one while finding hope.');
 
 DROP TABLE IF EXISTS THEATRE;
 CREATE TABLE THEATRE(

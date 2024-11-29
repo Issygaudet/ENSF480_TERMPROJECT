@@ -4,6 +4,7 @@ import entity.*;
 import entity.Date;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class ReadDatabase {
     private ControlDatabase controlDatabase;
@@ -15,7 +16,7 @@ public class ReadDatabase {
         }
         controlDatabase = ControlDatabase.getInstance();
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_theatre_app?" +
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/MOVIE_THEATRE_APP" +
                     "user=ensf480&password=ensf480");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -93,16 +94,18 @@ public class ReadDatabase {
         ResultSet resultSet = statement.executeQuery("SELECT * FROM movie_theatre_app.registered_user;");
         while (resultSet.next()) {
             int userID = resultSet.getInt(1);
-            String username = resultSet.getString(2);
-            String password = resultSet.getString(3);
-            String firstName = resultSet.getString(4);
-            String lastName = resultSet.getString(5);
-            String email = resultSet.getString(6);
-            int bankID = resultSet.getInt(7);
-            int day = resultSet.getInt(8);
-            int month = resultSet.getInt(9);
-            int year = resultSet.getInt(10);
-            UserRegistered registered = new UserRegistered(userID, username, email, password, controlDatabase.getBankInfo(bankID));
+            //String username = resultSet.getString(2);
+            String password = resultSet.getString(2);
+            String firstName = resultSet.getString(3);
+            String lastName = resultSet.getString(4);
+            String email = resultSet.getString(5);
+            int bankID = resultSet.getInt(6);
+            int day = resultSet.getInt(7);
+            int month = resultSet.getInt(8);
+            int year = resultSet.getInt(9);
+            String name = firstName + " " + lastName;
+            Date registrationDate = new Date(day, month, year);
+            UserRegistered registered = new UserRegistered(userID, name, email, password, controlDatabase.getBankInfo(bankID), registrationDate);
             controlDatabase.addRegisteredUser(registered);
         }
     }

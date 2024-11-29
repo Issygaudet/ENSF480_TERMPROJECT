@@ -34,7 +34,7 @@ public class RegistrationView extends JPanel {
 
         // Title
         JLabel titleLabel = new JLabel("New User Registration");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -98,13 +98,16 @@ public class RegistrationView extends JPanel {
                 Integer.parseInt(cardCVVField.getText()) // convert string to int
             );
 
+            Date registrationDate = new Date(1, 1, 2024);
+
             // Create UserRegistered object
             UserRegistered newUser = new UserRegistered(
                 0,  // Add userID as first parameter
                 nameField.getText(), 
                 emailField.getText(),
                 new String(passwordField.getPassword()),
-                bankInfo
+                bankInfo, 
+                registrationDate
             );
 
             // Process initial payment

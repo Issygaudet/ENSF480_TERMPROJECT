@@ -5,22 +5,25 @@ import java.util.Vector;
 public class UserRegistered extends UserOrdinary {
     private boolean annualFeePaid;
     private UserBankInfo bankInfo;
+    private Date dateJoined;
 
-    public UserRegistered(int userID, String name, String email, String password, UserBankInfo bankInfo) {
+    public UserRegistered(int userID, String name, String email, String password, UserBankInfo bankInfo, Date dateJoined) {
         super(userID, name, email, password);
         this.annualFeePaid = false;
         this.bankInfo = bankInfo;
+        this.dateJoined = dateJoined;
     }
 
-    public void payAnnualFee() {
-        // Implementation to pay the annual fee
-        this.annualFeePaid = true;
-    }
-
+    // Getter and Setter for Annual Fee Paid
     public boolean isAnnualFeePaid() {
         return annualFeePaid;
     }
 
+    public void payAnnualFee() {
+        this.annualFeePaid = true;
+    }
+
+    // Getter and Setter for Bank Info
     public UserBankInfo getBankInfo() {
         return bankInfo;
     }
@@ -29,25 +32,55 @@ public class UserRegistered extends UserOrdinary {
         this.bankInfo = bankInfo;
     }
 
-    //THE 10% THING
+    // Split Full Name into First and Last Name
+    public String getFirstName() {
+        String[] parts = this.getName().split(" ");
+        return parts.length > 0 ? parts[0] : "";
+    }
+
+    public String getLastName() {
+        String[] parts = this.getName().split(" ");
+        return parts.length > 1 ? parts[1] : "";
+    }
+
+    // Getter and Setter for Join Date
+    public Date getdateJoined() {
+        return dateJoined;
+    }
+
+    public void setdateJoined(Date dateJoined) {
+        this.dateJoined = dateJoined;
+    }
+
+    // Access Join Date Components
+    public int getJoinDay() {
+        return dateJoined.getDay();
+    }
+
+    public int getJoinMonth() {
+        return dateJoined.getMonth();
+    }
+
+    public int getJoinYear() {
+        return dateJoined.getYear();
+    }
+
+    // Special Access Seat Selection
     public void selectSpecialAccessSeats() {
-        // Implementation to select special access seats for registered users
         System.out.println("Selecting special access seats for registered users.");
     }
 
-    @Override 
+    // Movie Search with Priority
+    @Override
     public Vector<Movie> searchMovie(String query) {
-        // Implementation to search for movies with priority access for registered users
         Vector<Movie> movies = super.searchMovie(query);
-        // Add logic to prioritize movies for registered users
         System.out.println("Searching for movies with priority access for registered users.");
         return movies;
     }
 
-    //already have card info....
+    // Override Make Payment
     @Override
     public void makePayment(Payment payment) {
-        // Implementation to make a payment using registered user's bank info
         if (this.annualFeePaid) {
             // Process payment without admin fee
         } else {
@@ -55,8 +88,9 @@ public class UserRegistered extends UserOrdinary {
         }
     }
 
+    // Override Cancel Booking
     @Override
     public void cancelBooking(int bookingId) {
-        // gives 100 refund NOT 85
+        System.out.println("Refund 100% for registered users, not 85%.");
     }
 }

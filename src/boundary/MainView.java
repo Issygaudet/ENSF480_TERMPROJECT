@@ -3,7 +3,11 @@ package boundary;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import entity.*;
+import database.ControlDatabase;
 
 public class MainView extends JPanel {
     private JComboBox<String> movieSelector;
@@ -13,11 +17,15 @@ public class MainView extends JPanel {
     private JButton viewCartButton;
     private JLabel priceLabel;
     private JFrame parentFrame;
+    private Map<String, Movie> movieMap; // Map to store movie names and corresponding Movie objects
+
 
     public MainView(JFrame parent) {
         this.parentFrame = parent;
+        this.movieMap = new HashMap<>(); // Initialize the map
         setLayout(new GridBagLayout());
         initializeComponents();
+        loadMoviesFromDatabase(); // Fetch movies from the database
     }
 
     private void initializeComponents() {
@@ -38,7 +46,7 @@ public class MainView extends JPanel {
         gbc.gridwidth = 1;
         add(movieLabel, gbc);
 
-        movieSelector = new JComboBox<>(new String[]{"Movie 1", "Movie 2", "Movie 3"});
+        movieSelector = new JComboBox<>();
         gbc.gridx = 1;
         add(movieSelector, gbc);
 
@@ -84,7 +92,27 @@ public class MainView extends JPanel {
         setupActionListeners();
     }
 
+    private void loadMoviesFromDatabase() {
+        ControlDatabase database = ControlDatabase.getInstance(); // Get the database instance
+        database.fetchAllMovies(); // Fetch movies from the database
+    
+        ArrayList<Movie> movies = new ArrayList<>(database.getAllMovies());
+        movieSelector.removeAllItems(); // Clear existing items in the dropdown
+        movieMap.clear(); // Clear the movie map to avoid stale data
+    
+        for (Movie movie : movies) {
+            movieSelector.addItem(movie.getName()); // Add movie names to the dropdown
+            movieMap.put(movie.getName(), movie); // Store the mapping between name and movie object
+        }
+    
+        updatePriceLabel(); // Set the initial price label
+    }
+
     private void setupActionListeners() {
+        // Update price label when a new movie is selected
+        movieSelector.addActionListener(e -> updatePriceLabel());
+    
+        // View cart button functionality
         viewCartButton.addActionListener(e -> {
             CartView cartView = new CartView(parentFrame);
             parentFrame.setContentPane(cartView);
@@ -92,5 +120,14 @@ public class MainView extends JPanel {
             parentFrame.repaint();
         });
     }
+    
+    private void updatePriceLabel() {
+        String selectedMovieName = (String) movieSelector.getSelectedItem();
+        if (selectedMovieName != null && movieMap.containsKey(selectedMovieName)) {
+            Movie selectedMovie = movieMap.get(selectedMovieName);
+            priceLabel.setText("Price per ticket: $" + String.format("%.2f", selectedMovie.getPrice()));
+        } else {
+            priceLabel.setText("Price per ticket: N/A");
+        }
+    }
 }
-
