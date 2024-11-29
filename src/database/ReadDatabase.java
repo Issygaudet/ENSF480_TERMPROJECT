@@ -16,7 +16,7 @@ public class ReadDatabase {
         }
         controlDatabase = ControlDatabase.getInstance();
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/MOVIE_THEATRE_APP" +
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_theatre_app?" +
                     "user=ensf480&password=ensf480");
         } catch (Exception e) {
             System.out.println(e.getMessage());
