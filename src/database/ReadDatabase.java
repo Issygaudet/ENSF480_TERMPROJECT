@@ -16,7 +16,7 @@ public class ReadDatabase {
         }
         controlDatabase = ControlDatabase.getInstance();
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/MOVIE_THEATRE_APP" +
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_theatre_app?" +
                     "user=ensf480&password=ensf480");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -82,7 +82,7 @@ public class ReadDatabase {
             int bankInfoID = resultSet.getInt(1);
             String firstName = resultSet.getString(2);
             String lastName = resultSet.getString(3);
-            int cardNumber = resultSet.getInt(4);
+            String cardNumber = resultSet.getString(4);
             UserBankInfo info = new UserBankInfo(bankInfoID, cardNumber,
                     firstName + " " + lastName, new Date(0, 6, 2028), 123);
             ControlDatabase.getInstance().addBankInfo(info);
