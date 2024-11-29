@@ -91,12 +91,12 @@ public class RegistrationView extends JPanel {
         if (validateFields()) {
             // Create UserBankInfo object
                 UserBankInfo bankInfo = new UserBankInfo(
-                0, // bankInfoID
-                Integer.parseInt(cardNumberField.getText()), // convert string to int
-                cardHolderField.getText(),
-                new Date(1, 1, 2024), // example expiry date
-                Integer.parseInt(cardCVVField.getText()) // convert string to int
-            );
+                    0, // bankInfoID
+                    cardNumberField.getText(), // No need to parse as int anymore
+                    cardHolderField.getText(),
+                    new Date(1, 1, 2024), // example expiry date
+                    Integer.parseInt(cardCVVField.getText())
+                );
 
             Date registrationDate = new Date(1, 1, 2024);
 

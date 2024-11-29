@@ -82,7 +82,7 @@ public class ReadDatabase {
             int bankInfoID = resultSet.getInt(1);
             String firstName = resultSet.getString(2);
             String lastName = resultSet.getString(3);
-            int cardNumber = resultSet.getInt(4);
+            String cardNumber = resultSet.getString(4);
             UserBankInfo info = new UserBankInfo(bankInfoID, cardNumber,
                     firstName + " " + lastName, new Date(0, 6, 2028), 123);
             ControlDatabase.getInstance().addBankInfo(info);
