@@ -167,10 +167,45 @@ public class MainView extends JPanel {
 
     private void setupActionListeners() {
         // Update movie list based on the selected theatre
-        theaterSelector.addActionListener(e -> updateMovieSelector());
+        theaterSelector.addActionListener(e -> {
+            updateMovieSelector();
+            showtimeSelector.removeAllItems(); // Clear showtimes when theatre changes
+            showtimeSelector.setEnabled(false); // Disable until movie is selected
+            ticketQuantity.setEnabled(false); // Disable until showtime is selected
+        });
     
         // Update price label when a new movie is selected
-        movieSelector.addActionListener(e -> updatePriceLabel());
+        movieSelector.addActionListener(e -> {
+            updatePriceLabel();
+
+            
+            String selectedMovieName = (String) movieSelector.getSelectedItem();
+            String selectedTheatreName = (String) theaterSelector.getSelectedItem();
+            
+            if (selectedMovieName != null && selectedTheatreName != null) {
+                Movie selectedMovie = movieMap.get(selectedMovieName);
+                Theatre selectedTheatre = theatreMap.get(selectedTheatreName);
+                
+                // Fetch and populate showtimes
+                ArrayList<Showtime> showtimes = ControlDatabase.getInstance()
+                    .fetchShowtimesForMovieAndTheatre(selectedMovie.getMovieId(), selectedTheatre.getTheatreId());
+                
+                showtimeSelector.removeAllItems();
+                showtimeMap.clear();
+                
+                for (Showtime showtime : showtimes) {
+                    String timeStr = showtime.getFormattedTime();
+                    showtimeSelector.addItem(timeStr);
+                    showtimeMap.put(timeStr, showtime);
+                }
+                
+                showtimeSelector.setEnabled(true);
+            }
+        });
+
+        showtimeSelector.addActionListener(e -> {
+            ticketQuantity.setEnabled(true);
+        });
     
         // Add to Cart button functionality
         addToCartButton.addActionListener(e -> {
