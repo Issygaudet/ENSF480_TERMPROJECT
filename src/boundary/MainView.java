@@ -19,6 +19,8 @@ public class MainView extends JPanel {
     private JSpinner ticketQuantity;
     private JButton addToCartButton;
     private JButton viewCartButton;
+    private JButton backButton;
+    private JButton logoutButton;
     private JLabel priceLabel;
     private JFrame parentFrame;
     private Map<String, Movie> movieMap; // Map to store movie names and corresponding Movie objects
@@ -200,6 +202,21 @@ public class MainView extends JPanel {
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             }
+        });
+
+        backButton.addActionListener(e -> {
+            LoginView loginView = new LoginView(parentFrame);
+            parentFrame.setContentPane(loginView);
+            parentFrame.revalidate();
+            parentFrame.repaint();
+        });
+    
+        logoutButton.addActionListener(e -> {
+            InstanceController.getInstance().setUser(null);
+            LoginView loginView = new LoginView(parentFrame);
+            parentFrame.setContentPane(loginView);
+            parentFrame.revalidate();
+            parentFrame.repaint();
         });
 
         // View cart button functionality

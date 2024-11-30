@@ -246,29 +246,31 @@ public class ControlDatabase {
     public void removeShowtime(Showtime showtime) {
         showtimeMap.remove(showtime.getShowtimeId());
     }
-    public ArrayList<Showtime> fetchShowtimesForMovieAndTheatre(int movieId, int theatreId) {
-    ArrayList<Showtime> showtimes = new ArrayList<>();
-    try {
-        String query = "SELECT * FROM SHOW_TIME WHERE Movie_ID = ? AND Screening_Room = ?";
-        PreparedStatement stmt = connection.prepareStatement(query);
-        stmt.setInt(1, movieId);
-        stmt.setInt(2, theatreId);
-
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            int showtimeId = rs.getInt("ID_no");
-            int movieIdFromDB = rs.getInt("Movie_ID");
-            int screeningRoom = rs.getInt("Screening_Room");
-            Time showtime = rs.getTime("Showtime");  // Retrieve showtime as Time
-
-            Showtime show = new Showtime(showtimeId, movieIdFromDB, null, null, showtime);  // Passing null for movie and theatre for now
-            showtimes.add(show);
+        public ArrayList<Showtime> fetchShowtimesForMovieAndTheatre(int movieId, int theatreId) {
+        ArrayList<Showtime> showtimes = new ArrayList<>();
+        try {
+            // Use getConnection() method instead of undefined connection variable
+            Connection conn = getConnection();
+            String query = "SELECT * FROM SHOW_TIME WHERE Movie_ID = ? AND Screening_Room = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, movieId);
+            stmt.setInt(2, theatreId);
+    
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int showtimeId = rs.getInt("ID_no");
+                int movieIdFromDB = rs.getInt("Movie_ID");
+                int screeningRoom = rs.getInt("Screening_Room");
+                Time showtime = rs.getTime("Showtime");
+    
+                Showtime show = new Showtime(showtimeId, movieIdFromDB, null, null, showtime);
+                showtimes.add(show);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return showtimes;
     }
-    return showtimes;
-}
 
   
   // Method to fetch a movie by its ID
