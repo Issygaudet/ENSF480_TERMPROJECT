@@ -246,33 +246,44 @@ public class ControlDatabase {
     public void removeShowtime(Showtime showtime) {
         showtimeMap.remove(showtime.getShowtimeId());
     }
-        public ArrayList<Showtime> fetchShowtimesForMovieAndTheatre(int movieId, int theatreId) {
-        ArrayList<Showtime> showtimes = new ArrayList<>();
-        try {
-            // Use getConnection() method instead of undefined connection variable
-            Connection conn = getConnection();
-            String query = "SELECT * FROM SHOW_TIME WHERE Movie_ID = ? AND Screening_Room = ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, movieId);
-            stmt.setInt(2, theatreId);
-    
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                int showtimeId = rs.getInt("ID_no");
-                int movieIdFromDB = rs.getInt("Movie_ID");
-                int screeningRoom = rs.getInt("Screening_Room");
-                Time showtime = rs.getTime("Showtime");
-    
-                Showtime show = new Showtime(showtimeId, movieIdFromDB, null, null, showtime);
-                showtimes.add(show);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return showtimes;
-    }
 
-  
+    public ArrayList<Showtime> fetchShowtimesForMovieAndTheatre(int movieId, int theatreId) {
+            ArrayList<Showtime> showtimes = new ArrayList<>();
+            try {
+                String query = "SELECT s.* FROM SHOWS s " +
+                              "JOIN SCREENING_ROOM sr ON s.Screening_Room = sr.ID_no " +
+                              "WHERE s.Movie_ID = ? AND sr.Theatre_Number = ?";
+                              
+                try (Connection conn = getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    
+                    stmt.setInt(1, movieId);
+                    stmt.setInt(2, theatreId);
+                    
+                    System.out.println("Fetching showtimes for Movie ID: " + movieId + ", Theatre ID: " + theatreId); // Debug log
+                    
+                    ResultSet rs = stmt.executeQuery();
+                    while (rs.next()) {
+                        int showtimeId = rs.getInt("ID_no");
+                        int hours = rs.getInt("Time_in_Hours");
+                        int minutes = rs.getInt("Time_in_Minutes");
+                        
+                        Time time = Time.valueOf(String.format("%02d:%02d:00", hours, minutes));
+                        Movie movie = getMovie(movieId);
+                        Theatre theatre = getTheatre(theatreId);
+                        
+                        Showtime show = new Showtime(showtimeId, movieId, movie, theatre, time);
+                        showtimes.add(show);
+                        
+                        System.out.println("Found showtime: " + hours + ":" + minutes); // Debug log
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return showtimes;
+        }
+
   // Method to fetch a movie by its ID
   public Movie getMovieById(int movieId) {
     Movie movie = null;

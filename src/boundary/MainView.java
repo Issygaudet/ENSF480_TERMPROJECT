@@ -12,6 +12,8 @@ import java.util.Map;
 import entity.*;
 import database.ControlDatabase;
 
+import java.util.Calendar;
+
 public class MainView extends JPanel {
     private JComboBox<String> theaterSelector; // Add a JComboBox for theater selection
     private JComboBox<String> movieSelector;
@@ -177,8 +179,6 @@ public class MainView extends JPanel {
         // Update price label when a new movie is selected
         movieSelector.addActionListener(e -> {
             updatePriceLabel();
-
-            
             String selectedMovieName = (String) movieSelector.getSelectedItem();
             String selectedTheatreName = (String) theaterSelector.getSelectedItem();
             
@@ -186,27 +186,35 @@ public class MainView extends JPanel {
                 Movie selectedMovie = movieMap.get(selectedMovieName);
                 Theatre selectedTheatre = theatreMap.get(selectedTheatreName);
                 
-                // Fetch and populate showtimes
-                ArrayList<Showtime> showtimes = ControlDatabase.getInstance()
-                    .fetchShowtimesForMovieAndTheatre(selectedMovie.getMovieId(), selectedTheatre.getTheatreId());
-                
-                showtimeSelector.removeAllItems();
-                showtimeMap.clear();
-                
-                for (Showtime showtime : showtimes) {
-                    String timeStr = showtime.getFormattedTime();
-                    showtimeSelector.addItem(timeStr);
-                    showtimeMap.put(timeStr, showtime);
+                if (selectedMovie != null && selectedTheatre != null) {
+                    // Fetch and populate showtimes
+                    ArrayList<Showtime> showtimes = ControlDatabase.getInstance()
+                        .fetchShowtimesForMovieAndTheatre(selectedMovie.getMovieId(), selectedTheatre.getTheatreId());
+                    
+                    showtimeSelector.removeAllItems();
+                    showtimeMap.clear();
+                    
+                    for (Showtime showtime : showtimes) {
+                        if (showtime != null && showtime.getTime() != null) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(showtime.getTime());
+                            String timeStr = String.format("%02d:%02d", 
+                                calendar.get(Calendar.HOUR_OF_DAY),
+                                calendar.get(Calendar.MINUTE));
+                            showtimeSelector.addItem(timeStr);
+                            showtimeMap.put(timeStr, showtime);
+                        }
+                    }
+                    
+                    showtimeSelector.setEnabled(!showtimes.isEmpty());
                 }
-                
-                showtimeSelector.setEnabled(true);
             }
         });
-
+        
         showtimeSelector.addActionListener(e -> {
             ticketQuantity.setEnabled(true);
         });
-    
+
         // Add to Cart button functionality
         addToCartButton.addActionListener(e -> {
             // Logic to add selected movie, showtime, and quantity to the cart
