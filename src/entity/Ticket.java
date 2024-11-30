@@ -1,4 +1,7 @@
 package entity;
+
+import java.util.Random;
+
 public class Ticket {
     public String ticketID;
     public Showtime showtime;
@@ -9,6 +12,13 @@ public class Ticket {
         this.showtime = showtime;
         this.seat = seat;
     }
+
+    public Ticket(Movie movie, Theatre theatre, String date, Showtime showtime, String seat) {
+        this.ticketID = new Random().nextInt(5) + "";
+        this.showtime = showtime;
+        this.seat = seat;
+    }
+
 
     public String getTicketID() {
         return ticketID;

@@ -16,7 +16,7 @@ public class WriteDatabase {
         controlDatabase = ControlDatabase.getInstance();
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_theatre_app?" +
-                    "user=ensf480&password=ensf480");
+            "user=registered_user&password=registered_pass");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             conn = null;

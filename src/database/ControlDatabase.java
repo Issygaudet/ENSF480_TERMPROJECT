@@ -25,29 +25,29 @@ public class ControlDatabase {
     private Map<Integer, Showtime> showtimeMap;
     private Map<Integer, Theatre> theatreMap;
 
-    // Database credentials
-    private static final String URL = "jdbc:mysql://localhost:3306/MOVIE_THEATRE_APP";  // Update with your database URL
-    private static final String USER = "admin";  // Your database username
-    private static final String PASSWORD = "admin_pass";  // Your database password
-    
-    // Method to get the connection
-    public static Connection getConnection() throws SQLException {
-        try {
-            // Load the database driver (this may vary depending on your database)
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(URL, USER, PASSWORD);
-        } catch (ClassNotFoundException | SQLException e) {
-            throw new SQLException("Failed to create database connection.", e);
-        }
-    }
+  // Database credentials
+  private static final String URL = "jdbc:mysql://localhost:3306/movie_theatre_app";  // Updated to match exact database name
+  private static final String USER = "registered_user";      // From SQL file
+  private static final String PASSWORD = "registered_pass";  // From SQL file
+  
+  // Method to get the connection
+  public static Connection getConnection() throws SQLException {
+      try {
+          // Load the MySQL JDBC driver
+          Class.forName("com.mysql.cj.jdbc.Driver");
+          return DriverManager.getConnection(URL, USER, PASSWORD);
+      } catch (ClassNotFoundException | SQLException e) {
+          throw new SQLException("Failed to create database connection.", e);
+      }
+  }
+  
 
-    // Singleton pattern
-    public static ControlDatabase getInstance() {
-        if (instance == null) {
-            instance = new ControlDatabase();
-        }
-        return instance;
+  public static ControlDatabase getInstance() {
+    if (instance == null) {
+      instance = new ControlDatabase();
     }
+    return instance;
+  }
 
     public ControlDatabase() {
         this.bankInfoMap = new HashMap<>();
@@ -378,13 +378,13 @@ public Theatre getTheatreById(int theatreId) {
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setInt(1, bankInfoId);  // Set the bankInfoID parameter
 
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                // Retrieve data from result set
-                int cardNumber = rs.getInt("CardNumber");
-                String cardHolder = rs.getString("CardHolder");
-                Date expiryDate = convertSqlDateToEntityDate(rs.getDate("ExpiryDate"));  // Assuming you have a Date object in the database
-                int cvv = rs.getInt("CVV");
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            // Retrieve data from result set
+            String cardNumber = rs.getString("CardNumber");
+            String cardHolder = rs.getString("CardHolder");
+            Date expiryDate = convertSqlDateToEntityDate(rs.getDate("ExpiryDate"));  // Assuming you have a Date object in the database
+            int cvv = rs.getInt("CVV");
 
                 // Create a new UserBankInfo object using the retrieved data
                 bankInfo = new UserBankInfo(bankInfoId, cardNumber, cardHolder, expiryDate, cvv);

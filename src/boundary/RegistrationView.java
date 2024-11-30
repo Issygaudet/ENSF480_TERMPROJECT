@@ -75,7 +75,7 @@ public class RegistrationView extends JPanel {
         registerButton.setPreferredSize(new Dimension(120, 30));
         buttonPanel.add(registerButton);
 
-        backToLoginButton = new JButton("Back to Login");
+        backToLoginButton = new JButton("Return to Login Page");
         backToLoginButton.setPreferredSize(new Dimension(120, 30));
         buttonPanel.add(backToLoginButton);
 
@@ -91,12 +91,12 @@ public class RegistrationView extends JPanel {
         if (validateFields()) {
             // Create UserBankInfo object
                 UserBankInfo bankInfo = new UserBankInfo(
-                0, // bankInfoID
-                Integer.parseInt(cardNumberField.getText()), // convert string to int
-                cardHolderField.getText(),
-                new Date(1, 1, 2024), // example expiry date
-                Integer.parseInt(cardCVVField.getText()) // convert string to int
-            );
+                    0, // bankInfoID
+                    cardNumberField.getText(), // No need to parse as int anymore
+                    cardHolderField.getText(),
+                    new Date(1, 1, 2024), // example expiry date
+                    Integer.parseInt(cardCVVField.getText())
+                );
 
             Date registrationDate = new Date(1, 1, 2024);
 

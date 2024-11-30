@@ -2,12 +2,12 @@ package entity;
 
 public class UserBankInfo {
     private int bankInfoID;
-    private int cardNumber;
+    private String cardNumber;
     private String cardHolder;
     private Date expiryDate;
     private int cvv;
 
-    public UserBankInfo(int bankInfoID, int cardNumber, String cardHolder, Date expiryDate, int cvv){
+    public UserBankInfo(int bankInfoID, String cardNumber, String cardHolder, Date expiryDate, int cvv){
         this.cardNumber = cardNumber;
         this.cardHolder = cardHolder;
         this.expiryDate = expiryDate;
@@ -22,11 +22,11 @@ public class UserBankInfo {
         this.bankInfoID = bankInfoID;
     }
 
-    public int getCardNumber() {
+    public String getCardNumber() {
         return cardNumber;
     }
 
-    public void setCardNumber(int cardNumber) {
+    public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
 

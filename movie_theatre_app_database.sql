@@ -138,25 +138,23 @@ CREATE TABLE BANK_INFO (
 -- Insert data into BANK_INFO table
 INSERT INTO BANK_INFO (ID_no, First_Name, Last_Name, Card_Number)
 VALUES
-    (100, 'Kamand', 'Ghorbanzadeh', 1290283),
-    (101, 'Spiro', 'Douvis', 732792),
-    (102, 'Issy', 'Douvis', 732792),
-    (103, 'Spiro', 'Douvis', 732792);
-
-alter table REGISTERED_USER
-add FOREIGN KEY (User_Bank_Info) REFERENCES BANK_INFO(ID_no);
-
--- Drop the SHOW_TIME table if it exists, then create it
-DROP TABLE IF EXISTS SHOW_TIME;
-
-CREATE TABLE SHOW_TIME (
-    ID_no              INTEGER,
-    Movie_ID           INTEGER,
-    Screening_Room     INTEGER,
-    Showtime           TIME,  -- Add a single TIME column
-    PRIMARY KEY (ID_no),
-    FOREIGN KEY (Movie_ID) REFERENCES MOVIE(ID_no),
-    FOREIGN KEY (Screening_Room) REFERENCES SCREENING_ROOM(ID_no)
+	(100, 'Kamand', 'Ghorbanzadeh', 1290283),
+	(101, 'Spiro', 'Douvis', 732792), 
+    (102, 'Issy', 'Douvis', 732792), 
+    (103, 'Spiro', 'Douvis', 732792); 
+    alter TABLE REGISTERED_USER
+    add foreign key (User_Bank_Info) references BANK_INFO(ID_no);
+    
+DROP TABLE IF EXISTS SHOWS;
+CREATE TABLE SHOWS(
+	ID_no				integer,
+    Movie_ID			integer,
+    Screening_Room		integer,
+    Time_in_Hours		integer, 
+    Time_in_Minutes		integer,
+    primary key (ID_no), 
+    foreign key (Movie_ID) references MOVIE(ID_no), 
+    foreign key (Screening_Room) references SCREENING_ROOM(ID_no)
 );
 
 -- Insert data into SHOW_TIME table with showtime as a single column

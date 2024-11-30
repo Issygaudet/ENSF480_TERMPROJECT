@@ -1,6 +1,9 @@
 package boundary;
 
 import javax.swing.*;
+
+import controller.InstanceController;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,8 +98,12 @@ public class MainView extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         addToCartButton = new JButton("Add to Cart");
         viewCartButton = new JButton("View Cart");
+        backButton = new JButton("Return to Login Page");
+        logoutButton = new JButton("Logout");
         buttonPanel.add(addToCartButton);
         buttonPanel.add(viewCartButton);
+        buttonPanel.add(backButton);
+        buttonPanel.add(logoutButton);
 
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -162,9 +169,38 @@ public class MainView extends JPanel {
     
         // Update price label when a new movie is selected
         movieSelector.addActionListener(e -> updatePriceLabel());
-        
-        // Add a listener for the movie selection to update showtimes based on selected theatre and movie
-        movieSelector.addActionListener(e -> updateShowtimeSelector());
+    
+        // Add to Cart button functionality
+        addToCartButton.addActionListener(e -> {
+            // Logic to add selected movie, showtime, and quantity to the cart
+            String selectedMovieName = (String) movieSelector.getSelectedItem();
+            String selectedShowtime = (String) showtimeSelector.getSelectedItem();
+            int quantity = (int) ticketQuantity.getValue();
+
+            if (selectedMovieName != null && selectedShowtime != null) {
+                Movie selectedMovie = movieMap.get(selectedMovieName);
+                // (Movie movie, Theatre theatre, String date, Showtime showtime, String seat) 
+                Ticket ticket = new Ticket(selectedMovie, null, null, null, "A5");
+                InstanceController.getInstance().getTicketCart().addToCart(ticket);
+                
+
+                JOptionPane.showMessageDialog(parentFrame, 
+                    "Added to cart successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+                // Refresh the MainView
+                MainView mainView = new MainView(parentFrame);
+                parentFrame.setContentPane(mainView);
+                parentFrame.revalidate();
+                parentFrame.repaint();
+            } else {
+                JOptionPane.showMessageDialog(parentFrame, 
+                    "Please select a movie and showtime.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        });
 
         // View cart button functionality
         viewCartButton.addActionListener(e -> {

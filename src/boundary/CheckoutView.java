@@ -1,9 +1,14 @@
 package boundary;
 
 import javax.swing.*;
+
+import controller.InstanceController;
+import entity.UserRegistered;
+
 import java.awt.*;
 
 public class CheckoutView extends JPanel {
+    private JTextField cardHolder;
     private JTextField cardNumberField;
     private JTextField expiryField;
     private JTextField cvvField;
@@ -40,14 +45,19 @@ public class CheckoutView extends JPanel {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
 
-        // Card Number
-        addField("Card Number:", cardNumberField = new JTextField(16), gbc, 2);
-        
-        // Expiry Date
-        addField("Expiry (MM/YY):", expiryField = new JTextField(5), gbc, 3);
-        
-        // CVV
-        addField("CVV:", cvvField = new JTextField(3), gbc, 4);
+        // ONLY RQST CARD DETAILS IF NOT RU
+        if (!(InstanceController.getInstance().getUser() instanceof UserRegistered)) {
+            // Card Holder
+            addField("Card Holder:", cardHolder = new JTextField(20), gbc, 2);
+            // Card Number
+            addField("Card Number:", cardNumberField = new JTextField(16), gbc, 3);
+            
+            // Expiry Date
+            addField("Expiry (MM/YY):", expiryField = new JTextField(5), gbc, 4);
+            
+            // CVV
+            addField("CVV:", cvvField = new JTextField(3), gbc, 5);
+        }
 
         // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
@@ -57,7 +67,8 @@ public class CheckoutView extends JPanel {
         buttonPanel.add(confirmButton);
 
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        // gbc.gridy = 5;
+        gbc.gridy= (InstanceController.getInstance().getUser() == null) ?2:6;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(buttonPanel, gbc);
