@@ -1,6 +1,9 @@
 package boundary;
 
 import javax.swing.*;
+
+import controller.InstanceController;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +22,8 @@ public class MainView extends JPanel {
     private JFrame parentFrame;
     private Map<String, Movie> movieMap; // Map to store movie names and corresponding Movie objects
 
+    private JButton backButton;
+    private JButton logoutButton;
 
     public MainView(JFrame parent) {
         this.parentFrame = parent;
@@ -81,8 +86,12 @@ public class MainView extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout());
         addToCartButton = new JButton("Add to Cart");
         viewCartButton = new JButton("View Cart");
+        backButton = new JButton("Return to Login Page");
+        logoutButton = new JButton("Logout");
         buttonPanel.add(addToCartButton);
         buttonPanel.add(viewCartButton);
+        buttonPanel.add(backButton);
+        buttonPanel.add(logoutButton);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -112,6 +121,38 @@ public class MainView extends JPanel {
         // Update price label when a new movie is selected
         movieSelector.addActionListener(e -> updatePriceLabel());
     
+        // Add to Cart button functionality
+        addToCartButton.addActionListener(e -> {
+            // Logic to add selected movie, showtime, and quantity to the cart
+            String selectedMovieName = (String) movieSelector.getSelectedItem();
+            String selectedShowtime = (String) showtimeSelector.getSelectedItem();
+            int quantity = (int) ticketQuantity.getValue();
+
+            if (selectedMovieName != null && selectedShowtime != null) {
+                Movie selectedMovie = movieMap.get(selectedMovieName);
+                // (Movie movie, Theatre theatre, String date, Showtime showtime, String seat) 
+                Ticket ticket = new Ticket(selectedMovie, null, null, null, "A5");
+                InstanceController.getInstance().getTicketCart().addToCart(ticket);
+                
+
+                JOptionPane.showMessageDialog(parentFrame, 
+                    "Added to cart successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+                // Refresh the MainView
+                MainView mainView = new MainView(parentFrame);
+                parentFrame.setContentPane(mainView);
+                parentFrame.revalidate();
+                parentFrame.repaint();
+            } else {
+                JOptionPane.showMessageDialog(parentFrame, 
+                    "Please select a movie and showtime.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         // View cart button functionality
         viewCartButton.addActionListener(e -> {
             CartView cartView = new CartView(parentFrame);
@@ -120,25 +161,31 @@ public class MainView extends JPanel {
             parentFrame.repaint();
         });
 
-        addToCartButton.addActionListener(e -> {
-            String selectedMovieName = (String) movieSelector.getSelectedItem();
-            if (selectedMovieName != null && movieMap.containsKey(selectedMovieName)) {
-                Movie selectedMovie = movieMap.get(selectedMovieName);
-                int quantity = (Integer) ticketQuantity.getValue();
-                
-                // Get screening room from database based on selected movie and showtime
-                ScreeningRoom room = ControlDatabase.getInstance()
-                    .getScreeningRoomForShowtime(selectedMovie.getMovieId(), 
-                        (String) showtimeSelector.getSelectedItem());
-                
-                // Open seat selection view
-                SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity);
-                parentFrame.setContentPane(seatMapView);
-                parentFrame.revalidate();
-                parentFrame.repaint();
-            }
+        // back button functionality
+        backButton.addActionListener(e -> {
+            LoginView lv = new LoginView(parentFrame);
+            parentFrame.setContentPane(lv);
+            parentFrame.revalidate();
+            parentFrame.repaint();
         });
 
+         // Logout button functionality
+         logoutButton.addActionListener(e -> {
+            // Perform logout
+            // InstanceController.getInstance().logout();
+
+            // Show logout success message
+            JOptionPane.showMessageDialog(parentFrame, 
+                "Logged out successfully!",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+
+            // Navigate to login view
+            LoginView loginView = new LoginView(parentFrame);
+            parentFrame.setContentPane(loginView);
+            parentFrame.revalidate();
+            parentFrame.repaint();
+        });
 
     }
     
