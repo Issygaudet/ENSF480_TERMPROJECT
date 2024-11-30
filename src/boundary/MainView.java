@@ -215,11 +215,10 @@ public class MainView extends JPanel {
 
         // Add to Cart button functionality
         addToCartButton.addActionListener(e -> {
-            // Logic to add selected movie, showtime, and quantity to the cart
             String selectedMovieName = (String) movieSelector.getSelectedItem();
             String selectedShowtime = (String) showtimeSelector.getSelectedItem();
-            int quantity = (int) ticketQuantity.getValue();
-
+            int quantity = (Integer) ticketQuantity.getValue();
+        
             if (selectedMovieName != null && selectedShowtime != null) {
                 Movie selectedMovie = movieMap.get(selectedMovieName);
                 Showtime showtime = showtimeMap.get(selectedShowtime);
@@ -241,9 +240,9 @@ public class MainView extends JPanel {
                 parentFrame.revalidate();
                 parentFrame.repaint();
             } else {
-                JOptionPane.showMessageDialog(parentFrame, 
+                JOptionPane.showMessageDialog(this,
                     "Please select a movie and showtime.",
-                    "Error",
+                    "Selection Error",
                     JOptionPane.ERROR_MESSAGE);
             }
         });
