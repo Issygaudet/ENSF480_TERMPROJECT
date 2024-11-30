@@ -123,32 +123,30 @@ public class MainView extends JPanel {
     
         // Add to Cart button functionality
         addToCartButton.addActionListener(e -> {
-            // Logic to add selected movie, showtime, and quantity to the cart
             String selectedMovieName = (String) movieSelector.getSelectedItem();
             String selectedShowtime = (String) showtimeSelector.getSelectedItem();
-            int quantity = (int) ticketQuantity.getValue();
-
+            int quantity = (Integer) ticketQuantity.getValue();
+        
             if (selectedMovieName != null && selectedShowtime != null) {
                 Movie selectedMovie = movieMap.get(selectedMovieName);
-                // (Movie movie, Theatre theatre, String date, Showtime showtime, String seat) 
-                Ticket ticket = new Ticket(selectedMovie, null, null, null, "A5");
-                InstanceController.getInstance().getTicketCart().addToCart(ticket);
-                
-
-                JOptionPane.showMessageDialog(parentFrame, 
-                    "Added to cart successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-                // Refresh the MainView
-                MainView mainView = new MainView(parentFrame);
-                parentFrame.setContentPane(mainView);
-                parentFrame.revalidate();
-                parentFrame.repaint();
+                ScreeningRoom room = ControlDatabase.getInstance()
+                    .getScreeningRoomForShowtime(selectedMovie.getMovieId(), selectedShowtime);
+        
+                if (room != null) {
+                    SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity);
+                    parentFrame.setContentPane(seatMapView);
+                    parentFrame.revalidate();
+                    parentFrame.repaint();
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        "No screening room found for the selected movie and showtime.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(parentFrame, 
+                JOptionPane.showMessageDialog(this,
                     "Please select a movie and showtime.",
-                    "Error",
+                    "Selection Error",
                     JOptionPane.ERROR_MESSAGE);
             }
         });
