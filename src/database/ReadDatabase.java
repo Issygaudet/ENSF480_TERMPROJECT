@@ -5,6 +5,7 @@ import entity.Date;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ReadDatabase {
     private ControlDatabase controlDatabase;
@@ -16,7 +17,7 @@ public class ReadDatabase {
         }
         controlDatabase = ControlDatabase.getInstance();
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/MOVIE_THEATRE_APP" +
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_" +
                     "user=ensf480&password=ensf480");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -110,18 +111,16 @@ public class ReadDatabase {
         }
     }
     private void getTheatres() throws SQLException {
-        this.controlDatabase = ControlDatabase.getInstance();
         Statement statement = getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM movie_theatre_app.theatre;");
         while (resultSet.next()) {
             int theatreId = resultSet.getInt(1);
-            String name = resultSet.getString(2);
-            Theatre theatre = new Theatre(theatreId, name, name, 0);
+            String location = resultSet.getString(2);
+            Theatre theatre = new Theatre(theatreId, location, new ArrayList<Movie>());  
             controlDatabase.addTheatre(theatre);
         }
     }
     private void getScreeningRooms() throws SQLException {
-        controlDatabase = ControlDatabase.getInstance();
         Statement statement = getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM movie_theatre_app.screening_room;");
         while (resultSet.next()) {
@@ -130,27 +129,34 @@ public class ReadDatabase {
             int columns = resultSet.getInt(3);
             int theatreID = resultSet.getInt(4);
             ScreeningRoom room = new ScreeningRoom(roomID, rows, columns);
-            room.setTheatre(controlDatabase.getTheatre(theatreID));
-            ControlDatabase.getInstance().addScreeningRoom(room);
+            room.setTheatre(controlDatabase.getTheatre(theatreID));  // Associate room with the correct theater
+            controlDatabase.addScreeningRoom(room);
         }
-    }
-    private void getShows() throws SQLException {
-        controlDatabase = ControlDatabase.getInstance();
+    }private void getShows() throws SQLException {
         Statement statement = getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM movie_theatre_app.shows;");
         while (resultSet.next()) {
-//            (int showtimeId, int movieId, Movie movie, Theatre theatre, String time, Date date)
-            int showID = resultSet.getInt(1);
-            int movieID = resultSet.getInt(2);
-            Movie movie = controlDatabase.getMovie(movieID);
-            int roomID = resultSet.getInt(3);
-            int hour = resultSet.getInt(3);
-            int mins = resultSet.getInt(3);
-            Showtime show = new Showtime(showID, movieID, movie, controlDatabase.getScreeningRoom(roomID).getTheatre()
-            , hour + ":" + mins, new Date(0,0,0));//TODO fix date and time format
+            int showID = resultSet.getInt(1);        // Showtime ID
+            int movieID = resultSet.getInt(2);       // Movie ID
+            Movie movie = controlDatabase.getMovie(movieID);  // Retrieve Movie object by movieID
+            int roomID = resultSet.getInt(3);        // Screening room ID
+            int hour = resultSet.getInt(4);          // Hour part of the time
+            int mins = resultSet.getInt(5);          // Minute part of the time
+            
+            // Create a Time object from the hour and minutes
+            Time showtime = Time.valueOf(String.format("%02d:%02d:00", hour, mins));  // Format as HH:mm:ss
+            
+            // Assuming you need a Date object for the 'date' field. This could be modified if you want to use the actual show date.
+            Date date = new Date();  // Current date for now, or could be updated as needed
+            
+            // Create the Showtime object using the Time and Date
+            Showtime show = new Showtime(showID, movieID, movie, controlDatabase.getScreeningRoom(roomID).getTheatre(), showtime, date);
+            
+            // Add the Showtime to the database instance
             ControlDatabase.getInstance().addShowtime(show);
         }
     }
+    
 
 
     public static void main(String[] args) {

@@ -1,20 +1,21 @@
 package entity;
 
+import java.sql.Time;
+
 public class Showtime {
     private int showtimeId;
     private int movieId;
     private Movie movie;
-    private String time;
+    private Time time;  // Change from String to Time
     private Theatre theatre;
-    private Date date;
 
-    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, String time, Date date) {
+    // Constructor updated to use java.sql.Time for time
+    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, Time time) {
         this.showtimeId = showtimeId;
         this.movieId = movieId;
         this.movie = movie;
         this.theatre = theatre;
         this.time = time;
-        this.date = date;
     }
 
     public int getShowtimeId() {
@@ -48,20 +49,17 @@ public class Showtime {
     public void setTheatre(Theatre theatre) {
         this.theatre = theatre;
     }
-    
-    public String getTime() {
-        return time;
+
+    public Time getTime() {
+        return time;  // Return time as Time object
     }
 
-    public void setTime(String time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    // Utility method to get formatted time as String if needed
+    public String getFormattedTime() {
+        return time.toString();  // Returns the time in HH:mm:ss format
     }
 }

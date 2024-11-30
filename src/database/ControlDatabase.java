@@ -1,6 +1,8 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.Time;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,19 +16,19 @@ import java.util.Set;
 import entity.*;
 
 public class ControlDatabase {
-  private static ControlDatabase instance;
-  private Map<Integer, UserBankInfo> bankInfoMap;
-  private Map<Integer, Movie> moviesMap;
-  private Map<Integer, UserRegistered> registeredUsersMap;
-  private Map<Integer, ScreeningRoom> screeningRoomsMap;
-  private Map<Integer, Receipt> receiptMap;
-  private Map<Integer, Showtime> showtimeMap;
-  private Map<Integer, Theatre> theatreMap;
+    private static ControlDatabase instance;
+    private Map<Integer, UserBankInfo> bankInfoMap;
+    private Map<Integer, Movie> moviesMap;
+    private Map<Integer, UserRegistered> registeredUsersMap;
+    private Map<Integer, ScreeningRoom> screeningRoomsMap;
+    private Map<Integer, Receipt> receiptMap;
+    private Map<Integer, Showtime> showtimeMap;
+    private Map<Integer, Theatre> theatreMap;
 
-  // Database credentials
+    // Database credentials
     private static final String URL = "jdbc:mysql://localhost:3306/MOVIE_THEATRE_APP";  // Update with your database URL
-    private static final String USER = "registered_user";  // Your database username
-    private static final String PASSWORD = "registered_pass";  // Your database password
+    private static final String USER = "admin";  // Your database username
+    private static final String PASSWORD = "admin_pass";  // Your database password
     
     // Method to get the connection
     public static Connection getConnection() throws SQLException {
@@ -38,170 +40,360 @@ public class ControlDatabase {
             throw new SQLException("Failed to create database connection.", e);
         }
     }
-  
 
-  public static ControlDatabase getInstance() {
-    if (instance == null) {
-      instance = new ControlDatabase();
+    // Singleton pattern
+    public static ControlDatabase getInstance() {
+        if (instance == null) {
+            instance = new ControlDatabase();
+        }
+        return instance;
     }
-    return instance;
-  }
 
-  public ControlDatabase() {
-    this.bankInfoMap = new HashMap<>();
-    this.moviesMap = new HashMap<>();
-    this.registeredUsersMap = new HashMap<>();
-    this.screeningRoomsMap = new HashMap<>();
-    this.receiptMap = new HashMap<>();
-    this.showtimeMap = new HashMap<>();
-    this.theatreMap = new HashMap<>();
-  }
+    public ControlDatabase() {
+        this.bankInfoMap = new HashMap<>();
+        this.moviesMap = new HashMap<>();
+        this.registeredUsersMap = new HashMap<>();
+        this.screeningRoomsMap = new HashMap<>();
+        this.receiptMap = new HashMap<>();
+        this.showtimeMap = new HashMap<>();
+        this.theatreMap = new HashMap<>();
+    }
 
-  public UserBankInfo getBankInfo(int id) {
-    return this.bankInfoMap.getOrDefault(id, null);
-  }
+    public UserBankInfo getBankInfo(int id) {
+        return this.bankInfoMap.getOrDefault(id, null);
+    }
 
-  public Movie getMovie(int id) {
-    return this.moviesMap.getOrDefault(id, null);
-  }
-  public List<Movie> getAllMovies() {
-    return new ArrayList<>(this.moviesMap.values());
+    public Movie getMovie(int id) {
+        return this.moviesMap.getOrDefault(id, null);
+    }
+
+    public List<Movie> getAllMovies() {
+        return new ArrayList<>(this.moviesMap.values());
+    }
+
+    public UserRegistered getUserRegistered(int id) {
+        return this.registeredUsersMap.getOrDefault(id, null);
+    }
+
+    public ScreeningRoom getScreeningRoom(int id) {
+        return this.screeningRoomsMap.getOrDefault(id, null);
+    }
+
+    public Map<Integer, UserRegistered> getAllRegisteredUsers() {
+        return this.registeredUsersMap;
+    }
+
+    public Receipt getReceipt(int id) {
+        return this.receiptMap.getOrDefault(id, null);
+    }
+
+    public Theatre getTheatre(int id) {
+        return this.theatreMap.getOrDefault(id, null);
+    }
+
+    public Set<Integer> getMovieIDs() {
+        return this.moviesMap.keySet();
+    }
+
+    public Set<Integer> getRegisteredUserIDs() {
+        return this.registeredUsersMap.keySet();
+    }
+
+    public void addBankInfo(UserBankInfo bankInfo) {
+        this.bankInfoMap.put(bankInfo.getBankInfoID(), bankInfo);
+    }
+
+    public void addMovie(Movie movie) {
+        this.moviesMap.put(movie.getMovieId(), movie);
+    }
+
+    public void addRegisteredUser(UserRegistered user) {
+        this.registeredUsersMap.put(user.getUserID(), user);
+    }
+
+    public void addTheatre(Theatre theatre) {
+        this.theatreMap.put(theatre.getTheatreId(), theatre);
+    }
+
+    public void addScreeningRoom(ScreeningRoom room) {
+        this.screeningRoomsMap.put(room.getRoomId(), room);
+    }
+
+    public void updateMovie(int movieId, String movieName, String genre, float duration) {
+        Movie movie = getMovie(movieId);
+        movie.setName(movieName);
+        movie.setGenre(genre);
+        movie.setDuration(duration);
+    }
+
+    public void removeMovie(int movieId) {
+        moviesMap.remove(movieId);
+    }
+
+    // Fetch all movies from the database and add them to the movies map
+    public void fetchAllMovies() {
+        String query = "SELECT * FROM MOVIE"; // SQL query to fetch all movies
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                int movieId = rs.getInt("ID_no");
+                String name = rs.getString("Movie_Name");
+                String genre = rs.getString("Genre");
+                int year = rs.getInt("Release_Year");
+                String director = rs.getString("Director");
+                float duration = rs.getFloat("Duration");
+                float rating = rs.getFloat("Rating");
+                String code = rs.getString("Movie_Code");
+                float price = rs.getFloat("Movie_Price");
+                String description = rs.getString("Movie_Description");
+
+                Movie movie = new Movie(movieId, name, genre, year, director, duration, rating, code, price, description);
+                this.moviesMap.put(movieId, movie); // Add movie to the map
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public List<Movie> getMoviesForTheatre(int theatreId) {
+      List<Movie> theatreMovies = new ArrayList<>();
+      String query = "SELECT m.ID_no, m.Movie_Name, m.Genre, m.Release_Year, m.Director, " +
+                     "m.Duration, m.Rating, m.Movie_Code, m.Movie_Price, m.Movie_Description " +
+                     "FROM MOVIE m " +
+                     "JOIN THEATRE_MOVIE tm ON m.ID_no = tm.Movie_ID " +
+                     "WHERE tm.Theatre_ID = ?";
+  
+      try (Connection conn = getConnection();
+           PreparedStatement stmt = conn.prepareStatement(query)) {
+          stmt.setInt(1, theatreId); // Bind the theatre ID
+  
+          try (ResultSet rs = stmt.executeQuery()) {
+              while (rs.next()) {
+                  int movieId = rs.getInt("ID_no");
+                  String name = rs.getString("Movie_Name");
+                  String genre = rs.getString("Genre");
+                  int year = rs.getInt("Release_Year");
+                  String director = rs.getString("Director");
+                  float duration = rs.getFloat("Duration");
+                  float rating = rs.getFloat("Rating");
+                  String code = rs.getString("Movie_Code");
+                  float price = rs.getFloat("Movie_Price");
+                  String description = rs.getString("Movie_Description");
+  
+                  // Create and add a Movie object to the list
+                  Movie movie = new Movie(movieId, name, genre, year, director, duration, rating, code, price, description);
+                  theatreMovies.add(movie);
+              }
+          }
+      } catch (SQLException e) {
+          e.printStackTrace(); // Log the SQL error
+      }
+      return theatreMovies;
   }
   
+  public void fetchAllTheatres() {
+    if (this.theatreMap.isEmpty()) { // Only fetch if the map is empty to avoid redundant calls
+        String query = "SELECT * FROM THEATRE";
+        try (Connection conn = getConnection(); // Get the database connection
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
-  public UserRegistered getUserRegistered(int id) {
-    return this.registeredUsersMap.getOrDefault(id, null);
-  }
+            while (rs.next()) {
+                int theatreId = rs.getInt("ID_no");
+                String location = rs.getString("Theatre_Name");
+                List<Movie> movies = getMoviesForTheatre(theatreId); // Fetch movies for the theatre
 
-  public ScreeningRoom getScreeningRoom(int id) {
-    return this.screeningRoomsMap.getOrDefault(id, null);
-  }
-
-  public Map<Integer, UserRegistered> getAllRegisteredUsers() {
-    return this.registeredUsersMap;
-  }
-
-  public Receipt getReceipt(int id) {
-    return this.receiptMap.getOrDefault(id, null);
-  }
-
-  public Theatre getTheatre(int id) {return this.theatreMap.getOrDefault(id, null);}
-  public Set<Integer> getMovieIDs() {
-    return this.moviesMap.keySet();
-  }
-
-  public Set<Integer> getRegisteredUserIDs() {
-    return this.registeredUsersMap.keySet();
-  }
-
-
-  public void addBankInfo(UserBankInfo bankInfo) {
-    this.bankInfoMap.put(bankInfo.getBankInfoID(), bankInfo);
-  }
-
-  public void addMovie(Movie movie) {
-    this.moviesMap.put(movie.getMovieId(), movie);
-  }
-
-  public void addRegisteredUser(UserRegistered user) {
-    this.registeredUsersMap.put(user.getUserID(), user);
-  }
-
-  public void addTheatre(Theatre theatre) {
-    this.theatreMap.put(theatre.getTheatreId(), theatre);
-  }
-
-  public void addScreeningRoom(ScreeningRoom room) {
-    this.screeningRoomsMap.put(room.getRoomId(), room);
-  }
-
-
-  public void updateMovie(int movieId, String movieName, String genre, float duration) {
-    Movie movie = getMovie(movieId);
-    movie.setName(movieName);
-    movie.setGenre(genre);
-    movie.setDuration(duration);
-  }
-
-  public void removeMovie(int movieId) {
-    moviesMap.remove(movieId);
-  }
-  public void fetchAllMovies() {
-    String query = "SELECT * FROM MOVIE"; // SQL query to fetch all movies
-    try (Connection conn = getConnection();
-         PreparedStatement stmt = conn.prepareStatement(query);
-         ResultSet rs = stmt.executeQuery()) {
-        
+                Theatre theatre = new Theatre(theatreId, location, movies); // Create a Theatre object
+                this.theatreMap.put(theatreId, theatre); // Add it to the map
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log SQL errors
+        }
+    }
+}
+  
+  public List<Theatre> getAllTheatres() {
+    if (this.theatreMap.isEmpty()) { // Populate map if it's empty
+        String query = "SELECT * FROM THEATRE";
+        try (Connection conn = getConnection(); // Use your getConnection() method
+        Statement stmt = conn.createStatement(); // Create a statement object
+        ResultSet rs = stmt.executeQuery(query)) {
         while (rs.next()) {
-            int movieId = rs.getInt("ID_no");
-            String name = rs.getString("Movie_Name");
-            String genre = rs.getString("Genre");
-            int year = rs.getInt("Release_Year");
-            String director = rs.getString("Director");
-            float duration = rs.getFloat("Duration");
-            float rating = rs.getFloat("Rating");
-            String code = rs.getString("Movie_Code");
-            float price = rs.getFloat("Movie_Price");
-            String description = rs.getString("Movie_Description");
+                int theatreId = rs.getInt("ID_no");
+                String location = rs.getString("Theatre_Name");
+                List<Movie> movies = getMoviesForTheatre(theatreId);
+                Theatre theatre = new Theatre(theatreId, location, movies);
+                this.theatreMap.put(theatreId, theatre);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    return new ArrayList<>(this.theatreMap.values());
+}
+    // Add a showtime to the showtime map
+    public void addShowtime(Showtime showtime) {
+        showtimeMap.put(showtime.getShowtimeId(), showtime);
+    }
 
-            Movie movie = new Movie(movieId, name, genre, year, director, duration, rating, code, price, description);
-            this.moviesMap.put(movieId, movie); // Add movie to the map
+    // Update an existing showtime
+    public void updateShowtime(Showtime showtime) {
+        showtimeMap.put(showtime.getShowtimeId(), showtime);
+    }
+
+    // Remove a showtime from the map
+    public void removeShowtime(Showtime showtime) {
+        showtimeMap.remove(showtime.getShowtimeId());
+    }
+    public ArrayList<Showtime> fetchShowtimesForMovieAndTheatre(int movieId, int theatreId) {
+    ArrayList<Showtime> showtimes = new ArrayList<>();
+    try {
+        String query = "SELECT * FROM SHOW_TIME WHERE Movie_ID = ? AND Screening_Room = ?";
+        PreparedStatement stmt = connection.prepareStatement(query);
+        stmt.setInt(1, movieId);
+        stmt.setInt(2, theatreId);
+
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            int showtimeId = rs.getInt("ID_no");
+            int movieIdFromDB = rs.getInt("Movie_ID");
+            int screeningRoom = rs.getInt("Screening_Room");
+            Time showtime = rs.getTime("Showtime");  // Retrieve showtime as Time
+
+            Showtime show = new Showtime(showtimeId, movieIdFromDB, null, null, showtime);  // Passing null for movie and theatre for now
+            showtimes.add(show);
         }
     } catch (SQLException e) {
         e.printStackTrace();
     }
+    return showtimes;
 }
 
-  public void addShowtime(Showtime showtime) {
-    showtimeMap.put(showtime.getShowtimeId(), showtime);
-  }
-
-  public void updateShowtime(Showtime showtime) {
-    showtimeMap.put(showtime.getShowtimeId(), showtime);
-  }
-
-  public void removeShowtime(Showtime showtime){
-    showtimeMap.remove(showtime.getShowtimeId());
-  }
   
-  public static Date convertSqlDateToEntityDate(java.sql.Date sqlDate) {
-    if (sqlDate == null) {
-        return null;
-    }
-    // Extract year, month, and day from java.sql.Date
-    int year = sqlDate.getYear() + 1900; // getYear() returns years since 1900
-    int month = sqlDate.getMonth() + 1;  // getMonth() returns months from 0-11
-    int day = sqlDate.getDate();
-    
-    // Return a new custom Date object
-    return new Date(day, month, year);
-}
+  // Method to fetch a movie by its ID
+  public Movie getMovieById(int movieId) {
+    Movie movie = null;
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
 
-  public UserBankInfo getUserBankInfoById(int bankInfoId) {
-    UserBankInfo bankInfo = null;
-    String query = "SELECT * FROM USER_BANK_INFO WHERE BankInfoID = ?";  // Adjust the table name if necessary
+    try {
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "username", "password");
 
-    try (Connection conn = getConnection();
-         PreparedStatement stmt = conn.prepareStatement(query)) {
-        stmt.setInt(1, bankInfoId);  // Set the bankInfoID parameter
+        String query = "SELECT * FROM MOVIE WHERE ID_no = ?";
+        ps = conn.prepareStatement(query);
+        ps.setInt(1, movieId);
 
-        ResultSet rs = stmt.executeQuery();
+        rs = ps.executeQuery();
+
         if (rs.next()) {
-            // Retrieve data from result set
-            int cardNumber = rs.getInt("CardNumber");
-            String cardHolder = rs.getString("CardHolder");
-            Date expiryDate = convertSqlDateToEntityDate(rs.getDate("ExpiryDate"));  // Assuming you have a Date object in the database
-            int cvv = rs.getInt("CVV");
+            String name = rs.getString("Movie_Name");
+            String genre = rs.getString("Genre");
+            int releaseYear = rs.getInt("Release_Year");
+            String director = rs.getString("Director");
+            float duration = rs.getFloat("Duration");
+            float rating = rs.getFloat("Rating");
+            String movieCode = rs.getString("Movie_Code");
+            float price = rs.getFloat("Movie_Price");
+            String description = rs.getString("Movie_Description");
 
-            // Create a new UserBankInfo object using the retrieved data
-            bankInfo = new UserBankInfo(bankInfoId, cardNumber, cardHolder, expiryDate, cvv);
+            movie = new Movie(movieId, name, genre, releaseYear, director, duration, rating, movieCode, price, description);
         }
     } catch (SQLException e) {
-        e.printStackTrace(); // Handle SQL errors
+        e.printStackTrace();
+    } finally {
+        // Close resources
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-    return bankInfo;
+
+    return movie;
 }
 
+// Method to fetch a theatre by its ID
+public Theatre getTheatreById(int theatreId) {
+    Theatre theatre = null;
+    Connection conn = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
+
+    try {
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/your_database", "username", "password");
+
+        String query = "SELECT * FROM THEATRE WHERE ID_no = ?";
+        ps = conn.prepareStatement(query);
+        ps.setInt(1, theatreId);
+
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            String name = rs.getString("Theatre_Name");
+
+            theatre = new Theatre(theatreId, name); // Assuming Theatre has a constructor like this
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        // Close resources
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return theatre;
+}
+
+
+    
+    // Utility method to convert SQL Date to Entity Date
+    public static Date convertSqlDateToEntityDate(java.sql.Date sqlDate) {
+        if (sqlDate == null) {
+            return null;
+        }
+        // Extract year, month, and day from java.sql.Date
+        int year = sqlDate.getYear() + 1900; // getYear() returns years since 1900
+        int month = sqlDate.getMonth() + 1;  // getMonth() returns months from 0-11
+        int day = sqlDate.getDate();
+        
+        // Return a new custom Date object
+        return new Date(day, month, year);
+    }
+
+    // Method to get bank info by ID
+    public UserBankInfo getUserBankInfoById(int bankInfoId) {
+        UserBankInfo bankInfo = null;
+        String query = "SELECT * FROM USER_BANK_INFO WHERE BankInfoID = ?";  // Adjust the table name if necessary
+
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, bankInfoId);  // Set the bankInfoID parameter
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                // Retrieve data from result set
+                int cardNumber = rs.getInt("CardNumber");
+                String cardHolder = rs.getString("CardHolder");
+                Date expiryDate = convertSqlDateToEntityDate(rs.getDate("ExpiryDate"));  // Assuming you have a Date object in the database
+                int cvv = rs.getInt("CVV");
+
+                // Create a new UserBankInfo object using the retrieved data
+                bankInfo = new UserBankInfo(bankInfoId, cardNumber, cardHolder, expiryDate, cvv);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL errors
+        }
+        return bankInfo;
+    }
   public UserRegistered getUserRegisteredByEmail(String email) {
     UserRegistered user = null;
     String query = "SELECT * FROM REGISTERED_USER WHERE User_Email = ?";  // SQL query

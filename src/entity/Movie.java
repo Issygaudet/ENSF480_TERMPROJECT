@@ -31,7 +31,6 @@ public class Movie {
         this.price = price;
         this.description = description;
     }
-
     public int getMovieId() {
         return movieId;
     }

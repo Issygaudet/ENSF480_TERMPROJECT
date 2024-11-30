@@ -1,9 +1,18 @@
 package entity;
 
+import java.time.LocalDate;
+
 public class Date {
     private int day;
     private int month;
     private int year;
+
+     public Date() {
+        LocalDate currentDate = LocalDate.now(); // Get current date
+        this.day = currentDate.getDayOfMonth();
+        this.month = currentDate.getMonthValue();
+        this.year = currentDate.getYear();
+    }
 
     public Date(int day, int month, int year) {
         this.day = day;
