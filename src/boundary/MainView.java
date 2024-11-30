@@ -119,6 +119,27 @@ public class MainView extends JPanel {
             parentFrame.revalidate();
             parentFrame.repaint();
         });
+
+        addToCartButton.addActionListener(e -> {
+            String selectedMovieName = (String) movieSelector.getSelectedItem();
+            if (selectedMovieName != null && movieMap.containsKey(selectedMovieName)) {
+                Movie selectedMovie = movieMap.get(selectedMovieName);
+                int quantity = (Integer) ticketQuantity.getValue();
+                
+                // Get screening room from database based on selected movie and showtime
+                ScreeningRoom room = ControlDatabase.getInstance()
+                    .getScreeningRoomForShowtime(selectedMovie.getMovieId(), 
+                        (String) showtimeSelector.getSelectedItem());
+                
+                // Open seat selection view
+                SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity);
+                parentFrame.setContentPane(seatMapView);
+                parentFrame.revalidate();
+                parentFrame.repaint();
+            }
+        });
+
+
     }
     
     private void updatePriceLabel() {

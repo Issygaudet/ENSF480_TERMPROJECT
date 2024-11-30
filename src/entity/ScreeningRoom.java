@@ -13,6 +13,22 @@ public class ScreeningRoom {
         this.roomId = roomId;
         this.rows = rows;
         this.columns = columns;
+        initializeSeats();
+    }
+
+    private void initializeSeats() {
+        int totalSeats = rows * columns;
+        for (int i = 0; i < totalSeats; i++) {
+            seats.add(new Seat(i, roomId, true));
+        }
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
     }
 
     public int getRoomId() {
@@ -41,4 +57,6 @@ public class ScreeningRoom {
     public void setTheatre(Theatre theatre) {
         this.theatre = theatre;
     }
+
+
 }

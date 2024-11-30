@@ -202,6 +202,28 @@ public class ControlDatabase {
     return bankInfo;
 }
 
+    public ScreeningRoom getScreeningRoomForShowtime(int movieId, String time) {
+      // Query the SHOWS table to find the screening room for this movie and time
+      String query = "SELECT s.Screening_Room FROM SHOWS s WHERE s.Movie_ID = ? AND " +
+                    "CONCAT(s.Time_in_Hours, ':', s.Time_in_Minutes) = ?";
+      
+      try (Connection conn = getConnection();
+           PreparedStatement stmt = conn.prepareStatement(query)) {
+          
+          stmt.setInt(1, movieId);
+          stmt.setString(2, time);
+          
+          ResultSet rs = stmt.executeQuery();
+          if (rs.next()) {
+              int roomId = rs.getInt("Screening_Room");
+              return screeningRoomsMap.get(roomId);
+          }
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
+      return null;
+  }
+
   public UserRegistered getUserRegisteredByEmail(String email) {
     UserRegistered user = null;
     String query = "SELECT * FROM REGISTERED_USER WHERE User_Email = ?";  // SQL query
