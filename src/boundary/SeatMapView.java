@@ -67,22 +67,24 @@ public class SeatMapView extends JPanel {
         // Action listener for Confirm button
         confirmButton.addActionListener(e -> {
             if (selectedSeats.size() == ticketsToSelect) {
+                // Add selected seats to the cart
                 TicketCart cart = InstanceController.getInstance().getTicketCart();
                 for (Seat seat : selectedSeats) {
                     cart.addToCart(new Ticket(
                         generateTicketId(),
-                        selectedMovie,                // Use the stored movie
+                        selectedMovie,
                         screeningRoom.getTheatre(),
-                        java.time.LocalDate.now().toString(), // Current date
-                        selectedShowtime,             // Use the stored showtime
+                        java.time.LocalDate.now().toString(),
+                        selectedShowtime,
                         "Row " + ((seat.getSeatId() / screeningRoom.getColumns()) + 1) + 
                         " Seat " + ((seat.getSeatId() % screeningRoom.getColumns()) + 1)
                     ));
                 }
-
-                // Navigate to CartView
-                CartView cartView = new CartView(parentFrame);
-                parentFrame.setContentPane(cartView);
+                
+                // Return to MainView and enable Add to Cart button
+                MainView mainView = new MainView(parentFrame);
+                mainView.enableAddToCart(); // Add this method to MainView
+                parentFrame.setContentPane(mainView);
                 parentFrame.revalidate();
                 parentFrame.repaint();
             } else {
@@ -152,7 +154,7 @@ public class SeatMapView extends JPanel {
         
             return button;
         }
-        
+
     /**
      * Generates a unique ticket ID based on the current timestamp.
      * @return A unique ticket identifier.

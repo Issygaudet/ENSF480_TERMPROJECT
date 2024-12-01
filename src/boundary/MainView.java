@@ -27,6 +27,7 @@ public class MainView extends JPanel {
     private JButton viewCartButton;
     private JButton backButton;
     private JLabel priceLabel;
+    private JButton selectSeatsButton;  // Add this field
     private JFrame parentFrame;
     private Map<String, Movie> movieMap; // Map to store movie names and corresponding Movie objects
     private Map<String, Theatre> theatreMap;
@@ -97,16 +98,25 @@ public class MainView extends JPanel {
         gbc.gridx = 1;
         add(ticketQuantity, gbc);
 
-        // Price
-        priceLabel = new JLabel("Price per ticket: $12.00");
+        // Add Select Seats button below ticket quantity
+        selectSeatsButton = new JButton("Select Seats");
+        selectSeatsButton.setEnabled(false); // Initially disabled
         gbc.gridx = 0;
         gbc.gridy = 5;
+        gbc.gridwidth = 2;
+        add(selectSeatsButton, gbc);
+
+        // Price label moved down one row
+        priceLabel = new JLabel("Price per ticket: $12.00");
+        gbc.gridx = 0;
+        gbc.gridy = 6;
         gbc.gridwidth = 2;
         add(priceLabel, gbc);
 
         // Buttons
         JPanel buttonPanel = new JPanel(new FlowLayout());
         addToCartButton = new JButton("Add to Cart");
+        addToCartButton.setEnabled(false); // Initially disabled
         viewCartButton = new JButton("View Cart");
         backButton = new JButton("Return to Login Page");
         viewAccountDetailsButton = new JButton("View Account Details");
@@ -121,7 +131,7 @@ public class MainView extends JPanel {
 
 
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.gridwidth = 2;
         add(buttonPanel, gbc);
     }
@@ -286,6 +296,55 @@ public class MainView extends JPanel {
             parentFrame.repaint();
         });
 
+            // Enable select seats button when quantity is selected
+            ticketQuantity.addChangeListener(e -> {
+                selectSeatsButton.setEnabled(true);
+            });
+        
+            // Select Seats button listener
+            selectSeatsButton.addActionListener(e -> {
+                String selectedMovieName = (String) movieSelector.getSelectedItem();
+                String selectedShowtime = (String) showtimeSelector.getSelectedItem();
+                int quantity = (Integer) ticketQuantity.getValue();
+                
+                if (selectedMovieName != null && selectedShowtime != null) {
+                    Showtime selectedShow = showtimeMap.get(selectedShowtime);
+                    
+                    // Query SHOWS table to get screening room
+                    ControlDatabase database = ControlDatabase.getInstance();
+                    String query = "SELECT Screening_Room FROM SHOWS WHERE ID_no = ?";
+                    
+                    try (Connection conn = database.getConnection();
+                         PreparedStatement stmt = conn.prepareStatement(query)) {
+                        stmt.setInt(1, selectedShow.getShowtimeId());
+                        ResultSet rs = stmt.executeQuery();
+                        if (rs.next()) {
+                            int screeningRoomId = rs.getInt("Screening_Room");
+                            ScreeningRoom room = database.getScreeningRoom(screeningRoomId);
+                            
+                            if (room != null) {
+                                Movie selectedMovie = movieMap.get(selectedMovieName);
+                                SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity, selectedMovie, selectedShow);
+                                parentFrame.setContentPane(seatMapView);
+                                parentFrame.revalidate();
+                                parentFrame.repaint();
+                            }
+                        }
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+        
+            // Add to Cart button listener
+            addToCartButton.addActionListener(e -> {
+                CartView cartView = new CartView(parentFrame);
+                parentFrame.setContentPane(cartView);
+                parentFrame.revalidate();
+                parentFrame.repaint();
+            });
+        
+    
         viewAccountDetailsButton.addActionListener(e -> {
             if (InstanceController.getInstance().getUser() == null ||
                     !(InstanceController.getInstance().getUser() instanceof  UserRegistered)) {
@@ -353,8 +412,11 @@ public class MainView extends JPanel {
             loadShowtimesFromDatabase(selectedMovie, selectedTheatre);
         }
     }
-    
 
+    public void enableAddToCart() {
+        addToCartButton.setEnabled(true);
+    }
+    
     private void updatePriceLabel() {
         String selectedMovieName = (String) movieSelector.getSelectedItem();
         if (selectedMovieName != null && movieMap.containsKey(selectedMovieName)) {
