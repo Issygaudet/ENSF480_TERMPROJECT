@@ -117,6 +117,12 @@ public class RegistrationView extends JPanel {
 
             // Set user in InstanceController
             InstanceController.getInstance().setUser(newUser);
+
+            // message
+            JOptionPane.showMessageDialog(parentFrame, 
+                "Registration and payment successful!",
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE);
             
             // Navigate to MainView
             MainView mainView = new MainView(parentFrame);
@@ -163,8 +169,6 @@ public class RegistrationView extends JPanel {
                 JOptionPane.ERROR_MESSAGE);
             return false;
         }
-    
-        // Add additional validation as needed (card number format, expiry date format, etc.)
         return true;
     }
 }
