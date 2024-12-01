@@ -27,8 +27,8 @@ public class ControlDatabase {
 
   // Database credentials
   private static final String URL = "jdbc:mysql://localhost:3306/movie_theatre_app";  // Updated to match exact database name
-  private static final String USER = "registered_user";      // From SQL file
-  private static final String PASSWORD = "registered_pass";  // From SQL file
+  private static final String USER = "admin";      // From SQL file
+  private static final String PASSWORD = "admin_pass";  // From SQL file
   
   // Method to get the connection
   public static Connection getConnection() throws SQLException {
