@@ -32,13 +32,14 @@ public class ControlDatabase {
   
   // Method to get the connection
   public static Connection getConnection() throws SQLException {
-      try {
-          // Load the MySQL JDBC driver
-          Class.forName("com.mysql.cj.jdbc.Driver");
-          return DriverManager.getConnection(URL, USER, PASSWORD);
-      } catch (ClassNotFoundException | SQLException e) {
-          throw new SQLException("Failed to create database connection.", e);
-      }
+    return new ReadDatabase().getConnection();
+//      try {
+//          // Load the MySQL JDBC driver
+//          Class.forName("com.mysql.cj.jdbc.Driver");
+//          return DriverManager.getConnection(URL, USER, PASSWORD);
+//      } catch (ClassNotFoundException | SQLException e) {
+//          throw new SQLException("Failed to create database connection.", e);
+//      }
   }
   
 
@@ -265,17 +266,15 @@ public class ControlDatabase {
                     ResultSet rs = stmt.executeQuery();
                     while (rs.next()) {
                         int showtimeId = rs.getInt("ID_no");
-                        int hours = rs.getInt("Time_in_Hours");
-                        int minutes = rs.getInt("Time_in_Minutes");
-                        
-                        Time time = Time.valueOf(String.format("%02d:%02d:00", hours, minutes));
+                        String time = rs.getString("Showtime");
+
                         Movie movie = getMovie(movieId);
                         Theatre theatre = getTheatre(theatreId);
                         
                         Showtime show = new Showtime(showtimeId, movieId, movie, theatre, time);
                         showtimes.add(show);
                         
-                        System.out.println("Found showtime: " + hours + ":" + minutes); // Debug log
+                        System.out.println("Found showtime: " + time); // Debug log
                     }
                 }
             } catch (SQLException e) {
@@ -385,7 +384,7 @@ public Theatre getTheatreById(int theatreId) {
     // Method to get bank info by ID
     public UserBankInfo getUserBankInfoById(int bankInfoId) {
         UserBankInfo bankInfo = null;
-        String query = "SELECT * FROM USER_BANK_INFO WHERE BankInfoID = ?";  // Adjust the table name if necessary
+        String query = "SELECT * FROM BANK_INFO WHERE ID_no = ?";  // Adjust the table name if necessary
 
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -394,9 +393,12 @@ public Theatre getTheatreById(int theatreId) {
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {
             // Retrieve data from result set
-            String cardNumber = rs.getString("CardNumber");
-            String cardHolder = rs.getString("CardHolder");
-            Date expiryDate = convertSqlDateToEntityDate(rs.getDate("ExpiryDate"));  // Assuming you have a Date object in the database
+            String cardNumber = rs.getString("Card_Number");
+            String cardHolder = rs.getString("Card_Holder");
+            Date expiryDate = new Date();
+            String date = rs.getString("Expiry_Date");// Assuming you have a Date object in the database
+            expiryDate.setMonth(Integer.valueOf(date.substring(0, 2)));
+            expiryDate.setYear(Integer.valueOf(date.substring(3)));
             int cvv = rs.getInt("CVV");
 
                 // Create a new UserBankInfo object using the retrieved data

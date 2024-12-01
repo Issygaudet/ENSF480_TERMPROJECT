@@ -194,10 +194,11 @@ public class MainView extends JPanel {
                     for (Showtime showtime : showtimes) {
                         if (showtime != null && showtime.getTime() != null) {
                             Calendar calendar = Calendar.getInstance();
-                            calendar.setTime(showtime.getTime());
-                            String timeStr = String.format("%02d:%02d", 
-                                calendar.get(Calendar.HOUR_OF_DAY),
-                                calendar.get(Calendar.MINUTE));
+//                            calendar.setTime(showtime.getTime());
+//                            String timeStr = String.format("%02d:%02d",
+//                                calendar.get(Calendar.HOUR_OF_DAY),
+//                                calendar.get(Calendar.MINUTE));
+                            String timeStr = showtime.getTime();
                             showtimeSelector.addItem(timeStr);
                             showtimeMap.put(timeStr, showtime);
                         }
