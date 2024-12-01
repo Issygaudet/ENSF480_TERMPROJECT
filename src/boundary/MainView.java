@@ -13,6 +13,10 @@ import entity.*;
 import database.ControlDatabase;
 
 import java.util.Calendar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MainView extends JPanel {
     private JComboBox<String> theaterSelector; // Add a JComboBox for theater selection
@@ -217,41 +221,47 @@ public class MainView extends JPanel {
             ticketQuantity.setEnabled(true);
         });
 
-        // Add to Cart button functionality
         addToCartButton.addActionListener(e -> {
-            // Logic to add selected movie, showtime, and quantity to the cart
             String selectedMovieName = (String) movieSelector.getSelectedItem();
             String selectedShowtime = (String) showtimeSelector.getSelectedItem();
-            int quantity = (int) ticketQuantity.getValue();
-
+            int quantity = (Integer) ticketQuantity.getValue();
+            
             if (selectedMovieName != null && selectedShowtime != null) {
-                Movie selectedMovie = movieMap.get(selectedMovieName);
-                Showtime showtime = showtimeMap.get(selectedShowtime);
-                Theatre selectedTheatre = theatreMap.get((String) theaterSelector.getSelectedItem());
+                Showtime selectedShow = showtimeMap.get(selectedShowtime);
+                
+                // Query SHOWS table to get screening room
+                ControlDatabase database = ControlDatabase.getInstance();
+                String query = "SELECT Screening_Room FROM SHOWS WHERE ID_no = ?";
+                int screeningRoomId;
+                
+                try (Connection conn = database.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setInt(1, selectedShow.getShowtimeId());
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        screeningRoomId = rs.getInt("Screening_Room");
+                        ScreeningRoom room = database.getScreeningRoom(screeningRoomId);
+                        
+                        if (room != null) {
+                            Movie selectedMovie = movieMap.get(selectedMovieName);
+                            Showtime selectedShowCShowtime = showtimeMap.get(selectedShowtime);
 
-                for (int i = 0; i < quantity; i++) {
-                    Ticket ticket = new Ticket(selectedMovie, selectedTheatre, showtime.getTime().toString(), showtime, "A" + (i + 1));
-                    InstanceController.getInstance().getTicketCart().addToCart(ticket);
+                            SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity, selectedMovie, selectedShowCShowtime);
+                            parentFrame.setContentPane(seatMapView);
+                                parentFrame.revalidate();
+                                parentFrame.repaint();
+                            }
+                        }
+                    
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this,
+                        "Error retrieving screening room information",
+                        "Database Error",
+                        JOptionPane.ERROR_MESSAGE);
                 }
-
-                JOptionPane.showMessageDialog(parentFrame, 
-                    "Added to cart successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-                // Refresh the MainView
-                MainView mainView = new MainView(parentFrame);
-                parentFrame.setContentPane(mainView);
-                parentFrame.revalidate();
-                parentFrame.repaint();
-            } else {
-                JOptionPane.showMessageDialog(parentFrame, 
-                    "Please select a movie and showtime.",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
             }
         });
-
         backButton.addActionListener(e -> {
             // Check if a user is logged in
             if (InstanceController.getInstance().getUser() != null) {

@@ -3,12 +3,18 @@ package entity;
 import java.util.Random;
 
 public class Ticket {
-    public String ticketID;
-    public Showtime showtime;
-    public String seat;
+    private String ticketID;
+    private Showtime showtime;
+    private String seat;
+    private Movie movie;
+    private Theatre theatre;
+    private String date;
 
     public Ticket(String ticketID, Movie movie, Theatre theatre, String date, Showtime showtime, String seat) {
         this.ticketID = ticketID;
+        this.movie = movie;
+        this.theatre = theatre;
+        this.date = date;
         this.showtime = showtime;
         this.seat = seat;
     }
@@ -42,5 +48,29 @@ public class Ticket {
 
     public void setSeat(String seat) {
         this.seat = seat;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public Theatre getTheatre() {
+        return theatre;
+    }
+
+    public void setTheatre(Theatre theatre) {
+        this.theatre = theatre;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
