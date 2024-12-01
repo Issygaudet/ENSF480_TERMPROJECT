@@ -40,8 +40,11 @@ CREATE TABLE SCREENING_ROOM (
 INSERT INTO SCREENING_ROOM (ID_no, Row_Numbers, Column_Numbers, Theatre_Number)
 VALUES
     (300, 8, 7, 400),
-    (301, 6, 6, 403),
-    (302, 7, 8, 401);
+    (301, 6, 6, 401),
+    (302, 7, 8, 402), 
+	(303, 7, 5, 403), 
+	(304, 6, 6, 404), 
+	(305, 5, 4, 405); 
 
 -- Drop the THEATRE table if it exists, then create it
 DROP TABLE IF EXISTS THEATRE;
@@ -160,16 +163,52 @@ CREATE TABLE SHOWS(
 -- Insert data into SHOWS table with showtime as a single column
 INSERT INTO SHOWS (ID_no, Movie_ID, Screening_Room, Showtime)
 VALUES
-    (700, 200, 300, '01:15:00'),  -- 'The Adventures of Quantum Cat' at Room 300 at 1:15
-    (701, 201, 300, '00:55:00'),  -- 'Romance in the Rain' at Room 300 at 0:55
-    (702, 200, 301, '02:15:00'),  -- 'The Adventures of Quantum Cat' at Room 301 at 2:15
-    (703, 202, 301, '01:30:00'),  -- 'Battle of the Titans' at Room 301 at 1:30
-    (704, 203, 302, '01:11:00'),  -- 'The Haunted Melody' at Room 302 at 1:11
-    (705, 204, 302, '01:09:00'),  -- 'Laugh Out Loud' at Room 302 at 1:09
-    (706, 205, 300, '02:00:00'),  -- 'Planet Ocean' at Room 300 at 2:00
-    (707, 206, 301, '01:45:00'),  -- 'Chasing Shadows' at Room 301 at 1:45
-    (708, 207, 302, '03:00:00'),  -- 'The Digital Heist' at Room 302 at 3:00
-    (709, 208, 300, '02:30:00');  -- 'Eternal Echoes' at Room 300 at 2:30
+    -- Cineplex Crowfoot shows
+    (710, 200, 300, '13:30:00'), -- 'The Adventures of Quantum Cat' at Room 300
+    (726, 200, 300, '18:15:00'), -- 'The Adventures of Quantum Cat' at Room 300
+    (727, 200, 300, '21:00:00'), -- 'The Adventures of Quantum Cat' at Room 300
+
+    (711, 201, 300, '16:00:00'), -- 'Romance in the Rain' at Room 300
+    (728, 201, 300, '08:30:00'), -- 'Romance in the Rain' at Room 300
+
+    (712, 202, 300, '19:45:00'), -- 'Battle of the Titans' at Room 300
+    (729, 202, 300, '07:15:00'), -- 'Battle of the Titans' at Room 300
+    (730, 202, 300, '12:30:00'), -- 'Battle of the Titans' at Room 300
+
+    -- Cineplex University District shows
+    (713, 203, 301, '14:15:00'), -- 'The Haunted Melody' at Room 301
+    (731, 203, 301, '17:30:00'), -- 'The Haunted Melody' at Room 301
+
+    (714, 204, 301, '17:00:00'), -- 'Laugh Out Loud' at Room 301
+	(732, 204, 301, '8:15:00'), -- 'Laugh Out Loud' at Room 301
+	(733, 204, 301, '10:30:00'), -- 'Laugh Out Loud' at Room 301
+
+    (715, 205, 301, '20:30:00'), -- 'Planet Ocean' at Room 301
+	(734, 205, 301, '10:00:00'), -- 'Planet Ocean' at Room 301
+
+    -- Landmark Cinemas Country Hills shows
+    (716, 206, 302, '11:30:00'), -- 'Chasing Shadows' at Room 302
+    (717, 207, 302, '14:45:00'), -- 'The Digital Heist' at Room 302
+    (718, 207, 302, '18:00:00'), -- 'The Digital Heist' at Room 302, second show
+
+    -- Landmark Cinemas Market Mall shows
+    (719, 208, 303, '12:00:00'), -- 'Eternal Echoes' at Room 303
+    (720, 208, 303, '16:30:00'), -- 'Eternal Echoes' at Room 303, second show
+
+    -- Cineplex Odeon Sunridge shows
+    (721, 200, 304, '10:45:00'), -- 'The Adventures of Quantum Cat' at Room 304
+    (735, 200, 304, '15:45:00'), -- 'The Adventures of Quantum Cat' at Room 304
+
+    (722, 202, 304, '13:20:00'), -- 'Battle of the Titans' at Room 304
+
+    -- Cineplex Odeon Westhills shows
+    (723, 201, 305, '15:00:00'), -- 'Romance in the Rain' at Room 305
+    (736, 201, 305, '12:30:00'), -- 'Romance in the Rain' at Room 305
+
+    (724, 203, 305, '18:15:00'), -- 'The Haunted Melody' at Room 305
+    (737, 203, 305, '20:30:00'), -- 'The Haunted Melody' at Room 305
+
+    (725, 206, 305, '20:00:00'); -- 'Chasing Shadows' at Room 305
 
 
 -- Drop the ANNOUNCEMENTS table if it exists, then create it
