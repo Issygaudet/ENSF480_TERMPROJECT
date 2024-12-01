@@ -102,10 +102,21 @@ public class CheckoutView extends JPanel {
         });
 
         confirmButton.addActionListener(e -> {
-            if (validateFields()) {
+            if (validateFields() || InstanceController.getInstance().getUser() instanceof UserRegistered) {
                 InstanceController.getInstance().getTicketCart().checkout();
+                
+                // FIND CORRECT EMAIL TO SEND RECEIPT
+                String email;
+                if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
+                    UserRegistered user = (UserRegistered) InstanceController.getInstance().getUser();
+                    email = user.getEmail();
+                } else {
+                    email = emailField.getText();
+                }
+
+                // SEND EMAIL RECEIPT AND TICKET
                 JOptionPane.showMessageDialog(parentFrame, 
-                    "Payment successful! Your tickets have been booked. A copy of your tickets along with an email receipt have been sent to " + emailField.getText(),
+                    "Payment successful! Your tickets have been booked. A copy of your tickets along with an email receipt have been sent to " + email,
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
                 
