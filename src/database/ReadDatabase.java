@@ -11,14 +11,14 @@ public class ReadDatabase {
     private ControlDatabase controlDatabase;
     private Connection conn;
 
-    private Connection getConnection() {
+    public Connection getConnection() {
         if (conn != null) {
             return conn;
         }
         controlDatabase = ControlDatabase.getInstance();
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_theatre_app?" +
-            "user=registered_user&password=registered_pass");
+            "user=admin&password=admin_pass");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             conn = null;
@@ -141,18 +141,16 @@ public class ReadDatabase {
             int movieID = resultSet.getInt(2);       
             Movie movie = controlDatabase.getMovie(movieID);  
             int roomID = resultSet.getInt(3);        
-            int hour = resultSet.getInt(4);          
-            int mins = resultSet.getInt(5);          
+            String showtime = resultSet.getString(4);
             
             // Create a Time object from the hour and minutes
-            Time showtime = Time.valueOf(String.format("%02d:%02d:00", hour, mins));
-            
+
             // Create the Showtime object with the correct number of parameters
             Showtime show = new Showtime(
                 showID, 
                 movieID, 
                 movie, 
-                controlDatabase.getScreeningRoom(roomID).getTheatre(), 
+                controlDatabase.getScreeningRoom(roomID).getTheatre(),
                 showtime
             );
             

@@ -128,20 +128,21 @@ VALUES
 -- Drop the BANK_INFO table if it exists, then create it
 DROP TABLE IF EXISTS BANK_INFO;
 CREATE TABLE BANK_INFO (
-    ID_no          integer,
-    First_Name     varchar(50) not null,
-    Last_Name      varchar(50) not null,
-    Card_Number    integer,
+    ID_no          	integer,
+    Card_Holder   	varchar(50) not null,
+    Card_Number    	integer not null,
+    Expiry_Date		varchar(5) not null,
+    CVV				integer,
     primary key (ID_no)
 );
 
 -- Insert data into BANK_INFO table
-INSERT INTO BANK_INFO (ID_no, First_Name, Last_Name, Card_Number)
+INSERT INTO BANK_INFO (ID_no, Card_Holder, Card_Number, Expiry_Date, CVV)
 VALUES
-	(100, 'Kamand', 'Ghorbanzadeh', 1290283),
-	(101, 'Spiro', 'Douvis', 732792), 
-    (102, 'Issy', 'Douvis', 732792), 
-    (103, 'Spiro', 'Douvis', 732792); 
+	(100, 'Kamand Ghorbanzadeh', 1290283, "02/28", 123),
+	(101, 'Spiro Douvis', 732792, "02/28", 244), 
+    (102, 'Issy Douvis', 732792, "05/28", 321), 
+    (103, 'Spiro Douvis', 732792, "03/28", 456); 
     alter TABLE REGISTERED_USER
     add foreign key (User_Bank_Info) references BANK_INFO(ID_no);
     
@@ -150,15 +151,14 @@ CREATE TABLE SHOWS(
 	ID_no				integer,
     Movie_ID			integer,
     Screening_Room		integer,
-    Time_in_Hours		integer, 
-    Time_in_Minutes		integer,
+    Showtime			varchar(10),
     primary key (ID_no), 
     foreign key (Movie_ID) references MOVIE(ID_no), 
     foreign key (Screening_Room) references SCREENING_ROOM(ID_no)
 );
 
--- Insert data into SHOW_TIME table with showtime as a single column
-INSERT INTO SHOW_TIME (ID_no, Movie_ID, Screening_Room, Showtime)
+-- Insert data into SHOWS table with showtime as a single column
+INSERT INTO SHOWS (ID_no, Movie_ID, Screening_Room, Showtime)
 VALUES
     (700, 200, 300, '01:15:00'),  -- 'The Adventures of Quantum Cat' at Room 300 at 1:15
     (701, 201, 300, '00:55:00'),  -- 'Romance in the Rain' at Room 300 at 0:55
