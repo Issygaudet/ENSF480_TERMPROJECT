@@ -120,7 +120,7 @@ public class MainView extends JPanel {
         // Price label moved down one row
         priceLabel = new JLabel("Price per ticket: $12.00");
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.gridwidth = 2;
         add(priceLabel, gbc);
 
@@ -142,7 +142,7 @@ public class MainView extends JPanel {
 
 
         gbc.gridx = 0;
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.gridwidth = 2;
         add(buttonPanel, gbc);
     }
