@@ -36,7 +36,8 @@ public class CheckoutView extends JPanel {
         add(titleLabel, gbc);
 
         // Order Summary
-        JLabel summaryLabel = new JLabel("Order Total: $24.00");
+        float orderTotal = InstanceController.getInstance().getTicketCart().getTotalPrice();
+        JLabel summaryLabel = new JLabel("Order Total: $" + String.format("%.2f", orderTotal));
         summaryLabel.setFont(new Font("Arial", Font.BOLD, 16));
         gbc.gridy = 1;
         add(summaryLabel, gbc);
