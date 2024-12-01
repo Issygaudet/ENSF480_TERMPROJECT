@@ -221,10 +221,13 @@ public class MainView extends JPanel {
 
             if (selectedMovieName != null && selectedShowtime != null) {
                 Movie selectedMovie = movieMap.get(selectedMovieName);
-                // (Movie movie, Theatre theatre, String date, Showtime showtime, String seat) 
-                Ticket ticket = new Ticket(selectedMovie, null, null, null, "A5");
-                InstanceController.getInstance().getTicketCart().addToCart(ticket);
-                
+                Showtime showtime = showtimeMap.get(selectedShowtime);
+                Theatre selectedTheatre = theatreMap.get((String) theaterSelector.getSelectedItem());
+
+                for (int i = 0; i < quantity; i++) {
+                    Ticket ticket = new Ticket(selectedMovie, selectedTheatre, showtime.getTime().toString(), showtime, "A" + (i + 1));
+                    InstanceController.getInstance().getTicketCart().addToCart(ticket);
+                }
 
                 JOptionPane.showMessageDialog(parentFrame, 
                     "Added to cart successfully!",
