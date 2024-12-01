@@ -27,6 +27,7 @@ public class MainView extends JPanel {
     private Map<String, Movie> movieMap; // Map to store movie names and corresponding Movie objects
     private Map<String, Theatre> theatreMap;
     private Map<String, Showtime> showtimeMap; 
+    private JButton viewAccountDetailsButton;
 
     public MainView(JFrame parent) {
         this.parentFrame = parent;
@@ -37,6 +38,7 @@ public class MainView extends JPanel {
         initializeComponents();
         loadMoviesFromDatabase(); // Fetch movies from the database
         loadTheatersFromDatabase(); // Fetch theaters from the database
+        setupActionListeners();
     }
 
     private void initializeComponents() {
@@ -102,9 +104,11 @@ public class MainView extends JPanel {
         addToCartButton = new JButton("Add to Cart");
         viewCartButton = new JButton("View Cart");
         backButton = new JButton("Return to Login Page");
+        viewAccountDetailsButton = new JButton("View Account Details");
         buttonPanel.add(addToCartButton);
         buttonPanel.add(viewCartButton);
         buttonPanel.add(backButton);
+        buttonPanel.add(viewAccountDetailsButton);
 
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -264,6 +268,13 @@ public class MainView extends JPanel {
             // Navigate to login view
             LoginView loginView = new LoginView(parentFrame);
             parentFrame.setContentPane(loginView);
+            parentFrame.revalidate();
+            parentFrame.repaint();
+        });
+
+        viewAccountDetailsButton.addActionListener(e -> {
+            AccountDetailsView accountDetailsView = new AccountDetailsView(parentFrame);
+            parentFrame.setContentPane(accountDetailsView);
             parentFrame.revalidate();
             parentFrame.repaint();
         });
