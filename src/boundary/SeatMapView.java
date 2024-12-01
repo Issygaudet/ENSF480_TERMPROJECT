@@ -83,7 +83,7 @@ public class SeatMapView extends JPanel {
                 
                 // Return to MainView and enable Add to Cart button
                 MainView mainView = new MainView(parentFrame);
-                mainView.enableAddToCart(); // Add this method to MainView
+                // mainView.enableAddToCart(); // Add this method to MainView
                 parentFrame.setContentPane(mainView);
                 parentFrame.revalidate();
                 parentFrame.repaint();
