@@ -8,7 +8,6 @@
  public class AccountDetailsView extends JPanel {
      private JLabel nameLabel;
      private JLabel emailLabel;
-     private JButton editDetailsButton;
      private JButton backButton;
      private JFrame parentFrame;
 
@@ -45,9 +44,7 @@
 
          // Buttons
          JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
-         editDetailsButton = new JButton("Edit Details");
          backButton = new JButton("Back to Main");
-         buttonPanel.add(editDetailsButton);
          buttonPanel.add(backButton);
 
          gbc.gridx = 0;
@@ -67,9 +64,5 @@
              parentFrame.repaint();
          });
 
-         editDetailsButton.addActionListener(e -> {
-             // Implement the logic to edit account details
-             JOptionPane.showMessageDialog(parentFrame, "Edit Details functionality not implemented yet.");
-         });
      }
  }
