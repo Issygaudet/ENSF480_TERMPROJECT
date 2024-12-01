@@ -1,7 +1,5 @@
 package entity;
 
-import java.sql.Time;
-
 public class Showtime {
     private int showtimeId;
     private int movieId;

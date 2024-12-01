@@ -1,5 +1,10 @@
 package entity;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class Ticket {
@@ -21,10 +26,12 @@ public class Ticket {
 
     public Ticket(Movie movie, Theatre theatre, String date, Showtime showtime, String seat) {
         this.ticketID = new Random().nextInt(5) + "";
+        this.movie = movie;
+        this.theatre = theatre;
+        this.date = date;
         this.showtime = showtime;
         this.seat = seat;
     }
-
 
     public String getTicketID() {
         return ticketID;
@@ -72,5 +79,14 @@ public class Ticket {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean canCancel() {
+        ZonedDateTime currentDateTime = ZonedDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDateTime showtimeLocalDateTime = LocalDateTime.parse(showtime.getTime(), formatter);
+        ZonedDateTime showtimeDateTime = showtimeLocalDateTime.atZone(ZoneId.systemDefault());
+        Duration duration = Duration.between(currentDateTime, showtimeDateTime);
+        return duration.toHours() >= 72;
     }
 }

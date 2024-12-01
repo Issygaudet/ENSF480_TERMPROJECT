@@ -80,6 +80,8 @@ public class SeatMapView extends JPanel {
                         " Seat " + ((seat.getSeatId() % screeningRoom.getColumns()) + 1)
                     ));
                 }
+
+                JOptionPane.showMessageDialog(parentFrame, "Seats added to cart successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 
                 // Return to MainView and enable Add to Cart button
                 MainView mainView = new MainView(parentFrame);
