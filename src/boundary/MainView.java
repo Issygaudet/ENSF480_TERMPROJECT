@@ -20,6 +20,7 @@ import java.sql.SQLException;
 
 public class MainView extends JPanel {
     private JComboBox<String> theaterSelector; // Add a JComboBox for theater selection
+    private JTextField searchedMovie;
     private JComboBox<String> movieSelector;
     private JComboBox<String> showtimeSelector;
     private JSpinner ticketQuantity;
@@ -69,9 +70,19 @@ public class MainView extends JPanel {
         gbc.gridx = 1;
         add(theaterSelector, gbc);
 
-        // Initially hide movie selection, showtime, and ticket quantity
-        JLabel movieLabel = new JLabel("Select Movie:");
+         // Initially hide movie selection, showtime, and ticket quantity
+        JLabel movieSearchLabel = new JLabel("Search for a movie:");
+        searchedMovie = new JTextField(20);
+        gbc.gridx = 0;
         gbc.gridy = 2;
+        add(movieSearchLabel, gbc);
+
+        gbc.gridy = 2;
+        gbc.gridx = 1;
+        add(searchedMovie, gbc);
+
+        JLabel movieLabel = new JLabel("Select Movie:");
+        gbc.gridy = 3;
         gbc.gridx = 0;
         movieSelector = new JComboBox<>();
         movieSelector.setEnabled(false);  // Initially disable movieSelector
@@ -81,7 +92,7 @@ public class MainView extends JPanel {
 
         JLabel showtimeLabel = new JLabel("Select Showtime:");
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         showtimeSelector = new JComboBox<>();
         showtimeSelector.setEnabled(false);  // Initially disable showtimeSelector
         add(showtimeLabel, gbc);
@@ -91,7 +102,7 @@ public class MainView extends JPanel {
         // Ticket Quantity
         JLabel quantityLabel = new JLabel("Number of Tickets:");
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         ticketQuantity = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
         ticketQuantity.setEnabled(false);  // Initially disable ticketQuantity
         add(quantityLabel, gbc);
@@ -102,7 +113,7 @@ public class MainView extends JPanel {
         selectSeatsButton = new JButton("Select Seats");
         selectSeatsButton.setEnabled(false); // Initially disabled
         gbc.gridx = 0;
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.gridwidth = 2;
         add(selectSeatsButton, gbc);
 
@@ -191,8 +202,21 @@ public class MainView extends JPanel {
         theaterSelector.addActionListener(e -> {
             updateMovieSelector();
             showtimeSelector.removeAllItems(); // Clear showtimes when theatre changes
+            searchedMovie.setText("");
             showtimeSelector.setEnabled(false); // Disable until movie is selected
             ticketQuantity.setEnabled(false); // Disable until showtime is selected
+        });
+
+        searchedMovie.addActionListener(e -> {
+            updateMovieSelector();
+            String searchedMovieName = searchedMovie.getText();
+            if (searchedMovieName != null) {
+                for (Movie m : movieMap.values()) {
+                    if (!m.getName().toLowerCase().contains(searchedMovieName.toLowerCase())) {
+                        movieSelector.removeItem(m.getName());
+                    }
+                }
+            }
         });
     
         // Update price label when a new movie is selected

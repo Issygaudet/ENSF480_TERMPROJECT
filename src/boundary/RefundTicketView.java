@@ -5,13 +5,10 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class RefundTicketView extends JPanel {
     private JFrame parentFrame;
     private JTextField ticketNumber;
-    private JButton confirmButton;
-    private JButton cancelButton;
 
     public RefundTicketView(JFrame parent) {
         this.parentFrame = parent;
