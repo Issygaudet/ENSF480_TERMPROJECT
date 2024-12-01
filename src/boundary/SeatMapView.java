@@ -4,10 +4,7 @@ package boundary;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import entity.ScreeningRoom;
-import entity.Seat;
-import entity.Ticket;
-import entity.TicketCart;
+import entity.*;
 import controller.InstanceController;
 
 public class SeatMapView extends JPanel {
@@ -16,11 +13,15 @@ public class SeatMapView extends JPanel {
     private int ticketsToSelect;
     private ArrayList<Seat> selectedSeats = new ArrayList<>();
     private JButton[][] seatButtons;
+    private Movie selectedMovie;        // Add these
+    private Showtime selectedShowtime;  // fields
 
-    public SeatMapView(JFrame parent, ScreeningRoom room, int tickets) {
+    public SeatMapView(JFrame parent, ScreeningRoom room, int tickets, Movie movie, Showtime showtime) {
         this.parentFrame = parent;
         this.screeningRoom = room;
         this.ticketsToSelect = tickets;
+        this.selectedMovie = movie;         // Store the
+        this.selectedShowtime = showtime;   // selected values
         setLayout(new BorderLayout(10, 10));
         initializeComponents();
     }
@@ -66,15 +67,14 @@ public class SeatMapView extends JPanel {
         // Action listener for Confirm button
         confirmButton.addActionListener(e -> {
             if (selectedSeats.size() == ticketsToSelect) {
-                // Add selected seats to the cart
-                TicketCart cart = InstanceController.getInstance().getTicketCart(); // Updated line
+                TicketCart cart = InstanceController.getInstance().getTicketCart();
                 for (Seat seat : selectedSeats) {
                     cart.addToCart(new Ticket(
                         generateTicketId(),
-                        null, // Movie will be set from MainView
+                        selectedMovie,                // Use the stored movie
                         screeningRoom.getTheatre(),
-                        "", // Date will be set from MainView
-                        null, // Showtime will be set from MainView
+                        java.time.LocalDate.now().toString(), // Current date
+                        selectedShowtime,             // Use the stored showtime
                         "Row " + ((seat.getSeatId() / screeningRoom.getColumns()) + 1) + 
                         " Seat " + ((seat.getSeatId() % screeningRoom.getColumns()) + 1)
                     ));

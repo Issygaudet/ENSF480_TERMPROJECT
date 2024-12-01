@@ -13,6 +13,10 @@ import entity.*;
 import database.ControlDatabase;
 
 import java.util.Calendar;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MainView extends JPanel {
     private JComboBox<String> theaterSelector; // Add a JComboBox for theater selection
@@ -213,40 +217,47 @@ public class MainView extends JPanel {
             ticketQuantity.setEnabled(true);
         });
 
-        // Add to Cart button functionality
-                addToCartButton.addActionListener(e -> {
+        addToCartButton.addActionListener(e -> {
             String selectedMovieName = (String) movieSelector.getSelectedItem();
             String selectedShowtime = (String) showtimeSelector.getSelectedItem();
             int quantity = (Integer) ticketQuantity.getValue();
-        
+            
             if (selectedMovieName != null && selectedShowtime != null) {
-                Movie selectedMovie = movieMap.get(selectedMovieName);
-                Theatre selectedTheatre = theatreMap.get((String) theaterSelector.getSelectedItem());
+                Showtime selectedShow = showtimeMap.get(selectedShowtime);
                 
-                // Get screening room for the selected movie and theatre
+                // Query SHOWS table to get screening room
                 ControlDatabase database = ControlDatabase.getInstance();
-                ScreeningRoom room = database.getScreeningRoom(selectedMovie.getMovieId());
-        
-                if (room != null) {
-                    // Open seat selection view
-                    SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity);
-                    parentFrame.setContentPane(seatMapView);
-                    parentFrame.revalidate();
-                    parentFrame.repaint();
-                } else {
+                String query = "SELECT Screening_Room FROM SHOWS WHERE ID_no = ?";
+                int screeningRoomId;
+                
+                try (Connection conn = database.getConnection();
+                     PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setInt(1, selectedShow.getShowtimeId());
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+                        screeningRoomId = rs.getInt("Screening_Room");
+                        ScreeningRoom room = database.getScreeningRoom(screeningRoomId);
+                        
+                        if (room != null) {
+                            Movie selectedMovie = movieMap.get(selectedMovieName);
+                            Showtime selectedShowCShowtime = showtimeMap.get(selectedShowtime);
+
+                            SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity, selectedMovie, selectedShowCShowtime);
+                            parentFrame.setContentPane(seatMapView);
+                                parentFrame.revalidate();
+                                parentFrame.repaint();
+                            }
+                        }
+                    
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(this,
-                        "No screening room available for this movie.",
-                        "Error",
+                        "Error retrieving screening room information",
+                        "Database Error",
                         JOptionPane.ERROR_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(this,
-                    "Please select a movie and showtime.",
-                    "Selection Error",
-                    JOptionPane.ERROR_MESSAGE);
             }
         });
-
         backButton.addActionListener(e -> {
             // Check if a user is logged in
             if (InstanceController.getInstance().getUser() != null) {
