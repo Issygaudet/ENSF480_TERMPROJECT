@@ -102,51 +102,57 @@ public class SeatMapView extends JPanel {
         });
     }
 
-        private JButton createSeatButton(Seat seat) {
-        JButton button = new JButton();
-        button.setPreferredSize(new Dimension(40, 40));
+              private JButton createSeatButton(Seat seat) {
+            JButton button = new JButton();
+            button.setPreferredSize(new Dimension(40, 40));
+            
+            // Calculate total seats and 10% reserved seats (rounded up)
+            int totalSeats = screeningRoom.getRows() * screeningRoom.getColumns();
+            int reservedSeatsCount = (int) Math.ceil(totalSeats * 0.1);
+            
+            // Calculate if this seat is in the reserved section
+            // Reserved seats start from the left of the 3rd row
+            int row = (seat.getSeatId() / screeningRoom.getColumns()) + 1;
+            int col = (seat.getSeatId() % screeningRoom.getColumns()) + 1;
+            boolean isReservedSeat = (row == 3 && col <= reservedSeatsCount);
+            
+            // Check if user is registered
+            boolean isRegisteredUser = InstanceController.getInstance().getUser() instanceof UserRegistered;
+            
+            // Set initial color
+            if (isReservedSeat) {
+                button.setBackground(Color.RED);
+            } else {
+                button.setBackground(seat.isAvailable() ? Color.GREEN : Color.RED);
+            }
+            
+            button.setOpaque(true);
+            button.setBorderPainted(false);
         
-        // Calculate which seats are reserved (3rd row)
-        int row = (seat.getSeatId() / screeningRoom.getColumns()) + 1;
-        boolean isReservedSeat = (row == 3);
+            button.addActionListener(e -> {
+                if (seat.isAvailable()) {
+                    // Check if guest user is trying to select reserved seat
+                    if (isReservedSeat && !isRegisteredUser) {
+                        JOptionPane.showMessageDialog(this,
+                            "This seat is reserved for registered users only.",
+                            "Reserved Seat",
+                            JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    
+                    if (!selectedSeats.contains(seat) && selectedSeats.size() < ticketsToSelect) {
+                        selectedSeats.add(seat);
+                        button.setBackground(Color.BLUE);
+                    } else if (selectedSeats.contains(seat)) {
+                        selectedSeats.remove(seat);
+                        button.setBackground(isReservedSeat ? Color.RED : Color.GREEN);
+                    }
+                }
+            });
         
-        // Check if user is registered
-        boolean isRegisteredUser = InstanceController.getInstance().getUser() instanceof UserRegistered;
-        
-        // Set initial color
-        if (isReservedSeat) {
-            button.setBackground(Color.RED);
-        } else {
-            button.setBackground(seat.isAvailable() ? Color.GREEN : Color.RED);
+            return button;
         }
         
-        button.setOpaque(true);
-        button.setBorderPainted(false);
-    
-        button.addActionListener(e -> {
-            if (seat.isAvailable()) {
-                // Check if guest user is trying to select reserved seat
-                if (isReservedSeat && !isRegisteredUser) {
-                    JOptionPane.showMessageDialog(this,
-                        "This seat is reserved for registered users only.",
-                        "Reserved Seat",
-                        JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-                
-                if (!selectedSeats.contains(seat) && selectedSeats.size() < ticketsToSelect) {
-                    selectedSeats.add(seat);
-                    button.setBackground(Color.BLUE);
-                } else if (selectedSeats.contains(seat)) {
-                    selectedSeats.remove(seat);
-                    button.setBackground(isReservedSeat ? Color.RED : Color.GREEN);
-                }
-            }
-        });
-    
-        return button;
-    }
-
     /**
      * Generates a unique ticket ID based on the current timestamp.
      * @return A unique ticket identifier.
