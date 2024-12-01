@@ -102,25 +102,48 @@ public class SeatMapView extends JPanel {
         });
     }
 
-    private JButton createSeatButton(Seat seat) {
+        private JButton createSeatButton(Seat seat) {
         JButton button = new JButton();
         button.setPreferredSize(new Dimension(40, 40));
-        button.setBackground(seat.isAvailable() ? Color.GREEN : Color.RED);
+        
+        // Calculate which seats are reserved (3rd row)
+        int row = (seat.getSeatId() / screeningRoom.getColumns()) + 1;
+        boolean isReservedSeat = (row == 3);
+        
+        // Check if user is registered
+        boolean isRegisteredUser = InstanceController.getInstance().getUser() instanceof UserRegistered;
+        
+        // Set initial color
+        if (isReservedSeat) {
+            button.setBackground(Color.RED);
+        } else {
+            button.setBackground(seat.isAvailable() ? Color.GREEN : Color.RED);
+        }
+        
         button.setOpaque(true);
         button.setBorderPainted(false);
-
+    
         button.addActionListener(e -> {
             if (seat.isAvailable()) {
+                // Check if guest user is trying to select reserved seat
+                if (isReservedSeat && !isRegisteredUser) {
+                    JOptionPane.showMessageDialog(this,
+                        "This seat is reserved for registered users only.",
+                        "Reserved Seat",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                
                 if (!selectedSeats.contains(seat) && selectedSeats.size() < ticketsToSelect) {
                     selectedSeats.add(seat);
                     button.setBackground(Color.BLUE);
                 } else if (selectedSeats.contains(seat)) {
                     selectedSeats.remove(seat);
-                    button.setBackground(Color.GREEN);
+                    button.setBackground(isReservedSeat ? Color.RED : Color.GREEN);
                 }
             }
         });
-
+    
         return button;
     }
 
