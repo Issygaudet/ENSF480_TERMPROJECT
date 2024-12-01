@@ -96,15 +96,36 @@ public class CheckoutView extends JPanel {
         });
 
         confirmButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(parentFrame, 
-                "Payment successful! Your tickets have been booked.",
-                "Success",
-                JOptionPane.INFORMATION_MESSAGE);
-            
-            MainView mainView = new MainView(parentFrame);
-            parentFrame.setContentPane(mainView);
-            parentFrame.revalidate();
-            parentFrame.repaint();
+            if (validateFields()) {
+                JOptionPane.showMessageDialog(parentFrame, 
+                    "Payment successful! Your tickets have been booked.",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                MainView mainView = new MainView(parentFrame);
+                parentFrame.setContentPane(mainView);
+                parentFrame.revalidate();
+                parentFrame.repaint();
+            }
         });
+
+    }
+
+    private boolean validateFields() {
+        // Basic validation
+        if (!(InstanceController.getInstance().getUser() instanceof UserRegistered)) {
+            if (cardHolder.getText().isEmpty() || 
+                cardNumberField.getText().isEmpty() ||
+                expiryField.getText().isEmpty() ||
+                cvvField.getText().isEmpty()) {
+                
+                JOptionPane.showMessageDialog(this,
+                    "Please fill in all card details",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        }
+        return true;
     }
 }
