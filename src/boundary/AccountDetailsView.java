@@ -3,13 +3,14 @@ package boundary;
 import javax.swing.*;
 import java.awt.*;
 import controller.InstanceController;
-import entity.UserRegistered;
+import entity.UserOrdinary;
 
 public class AccountDetailsView extends JPanel {
     private JLabel nameLabel;
     private JLabel emailLabel;
     private JButton editDetailsButton;
     private JButton backButton;
+    private JButton requestRefundButton;
     private JFrame parentFrame;
 
     public AccountDetailsView(JFrame parent) {
@@ -32,7 +33,7 @@ public class AccountDetailsView extends JPanel {
         add(titleLabel, gbc);
 
         // User Details
-        UserRegistered user = (UserRegistered) InstanceController.getInstance().getUser();
+        UserOrdinary user = InstanceController.getInstance().getUser();
 
         nameLabel = new JLabel("Name: " + user.getName());
         gbc.gridy = 1;
@@ -47,11 +48,13 @@ public class AccountDetailsView extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         editDetailsButton = new JButton("Edit Details");
         backButton = new JButton("Back to Main");
+        requestRefundButton = new JButton("Request Refund");
         buttonPanel.add(editDetailsButton);
         buttonPanel.add(backButton);
+        buttonPanel.add(requestRefundButton);
 
         gbc.gridx = 0;
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(buttonPanel, gbc);
@@ -70,6 +73,11 @@ public class AccountDetailsView extends JPanel {
         editDetailsButton.addActionListener(e -> {
             // Implement the logic to edit account details
             JOptionPane.showMessageDialog(parentFrame, "Edit Details functionality not implemented yet.");
+        });
+
+        requestRefundButton.addActionListener(e -> {
+            // Implement the logic to request a refund
+            JOptionPane.showMessageDialog(parentFrame, "Request Refund functionality not implemented yet.");
         });
     }
 }
