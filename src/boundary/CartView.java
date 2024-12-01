@@ -2,12 +2,9 @@ package boundary;
 
 import javax.swing.*;
 import java.awt.*;
-
 import java.util.ArrayList;
 import entity.*;
 import controller.InstanceController;
-
-
 
 public class CartView extends JPanel {
     private JList<String> cartItems;
@@ -28,6 +25,20 @@ public class CartView extends JPanel {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(titleLabel, BorderLayout.NORTH);
 
+        // Cart Items Panel
+        JPanel cartItemsPanel = new JPanel();
+        cartItemsPanel.setLayout(new BoxLayout(cartItemsPanel, BoxLayout.Y_AXIS));
+        cartItemsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Order Summary Label
+        JLabel orderSummaryLabel = new JLabel("Order Summary");
+        orderSummaryLabel.setFont(new Font("Arial", Font.BOLD, 20)); // Set larger font size
+        orderSummaryLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cartItemsPanel.add(orderSummaryLabel);
+
+        // Add a blank line under Order Summary
+        cartItemsPanel.add(Box.createVerticalStrut(10));
+
         // Cart Items
         DefaultListModel<String> listModel = new DefaultListModel<>();
         ArrayList<Ticket> tickets = InstanceController.getInstance().getTicketCart().getTicketsInCart();
@@ -35,20 +46,27 @@ public class CartView extends JPanel {
             listModel.addElement("Cart is currently empty.");
         } else {
             for (Ticket ticket : tickets) {
-                listModel.addElement(ticket.toString());
+                String itemText = String.format("%s - %s - %s    $%.2f",
+                        ticket.getShowtime().getMovie().getName(),
+                        ticket.getShowtime().getTheatre().getLocation(),
+                        ticket.getShowtime().getTime().toString(),
+                        ticket.getShowtime().getMovie().getPrice());
+                listModel.addElement(itemText);
             }
         }
-        // listModel.addElement("Movie 1 - 2:00 PM (2 tickets) - $24.00");
         cartItems = new JList<>(listModel);
         cartItems.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(cartItems);
-        add(scrollPane, BorderLayout.CENTER);
+        cartItemsPanel.add(scrollPane);
+        add(cartItemsPanel, BorderLayout.CENTER);
+
 
         // South Panel (Total + Buttons)
         JPanel southPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         
         // totalLabel = new JLabel("Total: $24.00", SwingConstants.RIGHT);
-        totalLabel = new JLabel("Total: $" + InstanceController.getInstance().getTicketCart().getTotalPrice(), SwingConstants.RIGHT);
+        double total = InstanceController.getInstance().getTicketCart().getTotalPrice();
+        totalLabel = new JLabel("Total: $" + String.format("%.2f", total), SwingConstants.RIGHT);
         totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
         southPanel.add(totalLabel);
 
