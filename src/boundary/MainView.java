@@ -103,7 +103,7 @@ public class MainView extends JPanel {
         JLabel quantityLabel = new JLabel("Number of Tickets:");
         gbc.gridx = 0;
         gbc.gridy = 5;
-        ticketQuantity = new JSpinner(new SpinnerNumberModel(1, 1, 10, 1));
+        ticketQuantity = new JSpinner(new SpinnerNumberModel(0, 0, 10, 1));
         ticketQuantity.setEnabled(false);  // Initially disable ticketQuantity
         add(quantityLabel, gbc);
         gbc.gridx = 1;
@@ -319,7 +319,11 @@ public class MainView extends JPanel {
 
             // Enable select seats button when quantity is selected
             ticketQuantity.addChangeListener(e -> {
-                selectSeatsButton.setEnabled(true);
+                if ((Integer) ticketQuantity.getValue() > 0) {
+                    selectSeatsButton.setEnabled(true);
+                } else {
+                    selectSeatsButton.setEnabled(false);
+                }
             });
         
             // Select Seats button listener

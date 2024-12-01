@@ -6,9 +6,9 @@ public class Showtime {
     private Movie movie;
     private String time;  // Change from String to Time
     private Theatre theatre;
+    private Date date;
 
-    // Constructor updated to use java.sql.Time for time
-    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, String time) {
+    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, Date date, String time) {
         this.showtimeId = showtimeId;
         this.movieId = movieId;
         this.movie = movie;
@@ -49,15 +49,19 @@ public class Showtime {
     }
 
     public String getTime() {
-        return time;  // Return time as Time object
+        return time;
     }
 
     public void setTime(String time) {
         this.time = time;
     }
 
-    // Utility method to get formatted time as String if needed
-    public String getFormattedTime() {
-        return time.toString();  // Returns the time in HH:mm:ss format
+    public Date getDate() {
+        return date;
     }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }

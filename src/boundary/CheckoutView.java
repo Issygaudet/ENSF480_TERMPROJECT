@@ -103,6 +103,7 @@ public class CheckoutView extends JPanel {
 
         confirmButton.addActionListener(e -> {
             if (validateFields()) {
+                InstanceController.getInstance().getTicketCart().checkout();
                 JOptionPane.showMessageDialog(parentFrame, 
                     "Payment successful! Your tickets have been booked.",
                     "Success",

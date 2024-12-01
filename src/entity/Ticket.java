@@ -13,9 +13,9 @@ public class Ticket {
     private String seat;
     private Movie movie;
     private Theatre theatre;
-    private String date;
+    private Date date;
 
-    public Ticket(String ticketID, Movie movie, Theatre theatre, String date, Showtime showtime, String seat) {
+    public Ticket(String ticketID, Movie movie, Theatre theatre, Date date, Showtime showtime, String seat) {
         this.ticketID = ticketID;
         this.movie = movie;
         this.theatre = theatre;
@@ -24,7 +24,7 @@ public class Ticket {
         this.seat = seat;
     }
 
-    public Ticket(Movie movie, Theatre theatre, String date, Showtime showtime, String seat) {
+    public Ticket(Movie movie, Theatre theatre, Date date, Showtime showtime, String seat) {
         this.ticketID = new Random().nextInt(5) + "";
         this.movie = movie;
         this.theatre = theatre;
@@ -73,11 +73,11 @@ public class Ticket {
         this.theatre = theatre;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

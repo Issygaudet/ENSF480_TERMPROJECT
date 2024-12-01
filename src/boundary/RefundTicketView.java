@@ -26,7 +26,7 @@ public class RefundTicketView extends JPanel {
 
         // Ticket number input
         JPanel ticketNumberPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        JLabel ticketNumberLabel = new JLabel("Ticket Number:");
+        JLabel ticketNumberLabel = new JLabel("Ticket Number (ex: TKT00000): ");
         ticketNumber = new JTextField(10);
         ticketNumberPanel.add(ticketNumberLabel);
         ticketNumberPanel.add(ticketNumber);
@@ -60,12 +60,9 @@ public class RefundTicketView extends JPanel {
         //     goToMain();
         // });
 
-        // cancelButton.addActionListener(e -> {
-        //     goToMain();
-        // });
         confirmButton.addActionListener(e -> {
             String ticketNumberStr = ticketNumber.getText();
-            if (!ticketNumberStr.matches("[0-9]+")) {
+            if (!ticketNumberStr.matches("TKT[0-9]+")) {
                 JOptionPane.showMessageDialog(parentFrame, "Please enter a valid ticket number.");
                 return;
             }
