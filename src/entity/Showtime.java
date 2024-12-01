@@ -6,11 +6,11 @@ public class Showtime {
     private int showtimeId;
     private int movieId;
     private Movie movie;
-    private Time time;  // Change from String to Time
+    private String time;  // Change from String to Time
     private Theatre theatre;
 
     // Constructor updated to use java.sql.Time for time
-    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, Time time) {
+    public Showtime(int showtimeId, int movieId, Movie movie, Theatre theatre, String time) {
         this.showtimeId = showtimeId;
         this.movieId = movieId;
         this.movie = movie;
@@ -50,11 +50,11 @@ public class Showtime {
         this.theatre = theatre;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;  // Return time as Time object
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
