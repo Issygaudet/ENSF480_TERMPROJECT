@@ -105,7 +105,7 @@ public class CheckoutView extends JPanel {
             if (validateFields()) {
                 InstanceController.getInstance().getTicketCart().checkout();
                 JOptionPane.showMessageDialog(parentFrame, 
-                    "Payment successful! Your tickets have been booked.",
+                    "Payment successful! Your tickets have been booked. A copy of your tickets along with an email receipt have been sent to " + emailField.getText(),
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
                 
