@@ -70,4 +70,11 @@ public class InstanceController {
     public TicketCart getTicketCart() {
         return ticketCart;
     }
+    
+    public void logout() {
+        this.user = null;
+        this.selectedSeat = null;
+        this.selectedShowtimeId = 0;
+        this.ticketCart = new TicketCart(); // Reset the ticket cart
+    }
 }

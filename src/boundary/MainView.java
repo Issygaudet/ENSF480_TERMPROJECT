@@ -277,12 +277,8 @@ public class MainView extends JPanel {
             }
         });
         backButton.addActionListener(e -> {
-            // Check if a user is logged in
-            if (InstanceController.getInstance().getUser() != null) {
-                // Perform logout
-                // InstanceController.getInstance().logout();
-        
-                // Show logout success message
+            if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
+                InstanceController.getInstance().logout();
                 JOptionPane.showMessageDialog(parentFrame, 
                     "Logged out successfully!",
                     "Success",

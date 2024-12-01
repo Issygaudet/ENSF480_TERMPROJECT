@@ -14,7 +14,7 @@ public class InitGUI {
     }
 
     private void initializeFrame() {
-        mainFrame = new JFrame("Movie Ticket Reservation System");
+        mainFrame = new JFrame("AcmePlex Cinemas Ticket Booking");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         mainFrame.setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
