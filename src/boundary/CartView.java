@@ -3,6 +3,12 @@ package boundary;
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.ArrayList;
+import entity.*;
+import controller.InstanceController;
+
+
+
 public class CartView extends JPanel {
     private JList<String> cartItems;
     private JLabel totalLabel;
@@ -24,7 +30,15 @@ public class CartView extends JPanel {
 
         // Cart Items
         DefaultListModel<String> listModel = new DefaultListModel<>();
-        listModel.addElement("Movie 1 - 2:00 PM (2 tickets) - $24.00");
+        ArrayList<Ticket> tickets = InstanceController.getInstance().getTicketCart().getTicketsInCart();
+        if (tickets.isEmpty()) {
+            listModel.addElement("Cart is currently empty.");
+        } else {
+            for (Ticket ticket : tickets) {
+                listModel.addElement(ticket.toString());
+            }
+        }
+        // listModel.addElement("Movie 1 - 2:00 PM (2 tickets) - $24.00");
         cartItems = new JList<>(listModel);
         cartItems.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(cartItems);
@@ -33,7 +47,8 @@ public class CartView extends JPanel {
         // South Panel (Total + Buttons)
         JPanel southPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         
-        totalLabel = new JLabel("Total: $24.00", SwingConstants.RIGHT);
+        // totalLabel = new JLabel("Total: $24.00", SwingConstants.RIGHT);
+        totalLabel = new JLabel("Total: $" + InstanceController.getInstance().getTicketCart().getTotalPrice(), SwingConstants.RIGHT);
         totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
         southPanel.add(totalLabel);
 
