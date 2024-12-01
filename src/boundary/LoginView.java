@@ -26,7 +26,7 @@ public class LoginView extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // Title
-        JLabel titleLabel = new JLabel("Movie Ticket Reservation System");
+        JLabel titleLabel = new JLabel("AcmePlex Cinemas Ticket Booking"); 
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         gbc.gridx = 0;
         gbc.gridy = 0;

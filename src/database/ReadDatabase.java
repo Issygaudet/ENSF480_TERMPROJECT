@@ -35,6 +35,7 @@ public class ReadDatabase {
             getTheatres();
             getScreeningRooms();
             getShows();
+            getTickets();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             conn = null;
@@ -133,15 +134,23 @@ public class ReadDatabase {
             room.setTheatre(controlDatabase.getTheatre(theatreID));  // Associate room with the correct theater
             controlDatabase.addScreeningRoom(room);
         }
-    }private void getShows() throws SQLException {
+    }
+    private void getShows() throws SQLException {
         Statement statement = getConnection().createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM movie_theatre_app.shows;");
         while (resultSet.next()) {
             int showID = resultSet.getInt(1);        
             int movieID = resultSet.getInt(2);       
             Movie movie = controlDatabase.getMovie(movieID);  
-            int roomID = resultSet.getInt(3);        
+            int roomID = resultSet.getInt(3);
+
             String showtime = resultSet.getString(4);
+            String dateStr = resultSet.getString("Showdate");
+
+            Date date = new Date();
+            date.setDay(Integer.parseInt(dateStr.substring(0, 2)));
+            date.setMonth(Integer.parseInt(dateStr.substring(3, 5)));
+            date.setYear(Integer.parseInt(dateStr.substring(6)));
             
             // Create a Time object from the hour and minutes
 
@@ -151,6 +160,7 @@ public class ReadDatabase {
                 movieID, 
                 movie, 
                 controlDatabase.getScreeningRoom(roomID).getTheatre(),
+                date,
                 showtime
             );
             
@@ -158,7 +168,29 @@ public class ReadDatabase {
             ControlDatabase.getInstance().addShowtime(show);
         }
     }
-    
+    private void getTickets() throws  SQLException {
+        conn = getConnection();
+        Statement statement = conn.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM movie_theatre_app.tickets;");
+//        (ID_no, Show_ID, User_ID, Seat)
+        while (resultSet.next()) {
+            String ticketID = resultSet.getString(1);
+            int showID = resultSet.getInt(2);
+            int userID = resultSet.getInt(3);
+            String seatcode = resultSet.getString(4);
+            Showtime showtime = controlDatabase.getShowtime(showID);
+
+            // Get the seat information
+            String[] seatParts = seatcode.split("(?<=\\D)(?=\\d)");
+            int row = Integer.parseInt(seatParts[1]);
+            char colLetter = seatParts[0].charAt(0);
+            int col = colLetter - 'A' + 1;
+            String seat = String.format("Row %d Seat %d", row, col);
+
+            Ticket ticket = new Ticket(ticketID, showtime.getMovie(), showtime.getTheatre(), showtime.getDate(), showtime, seat);
+            ControlDatabase.getInstance().addTicket(ticket);
+        }
+    }
 
 
     public static void main(String[] args) {

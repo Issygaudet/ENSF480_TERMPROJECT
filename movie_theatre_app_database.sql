@@ -155,60 +155,61 @@ CREATE TABLE SHOWS(
     Movie_ID			integer,
     Screening_Room		integer,
     Showtime			varchar(10),
+    Showdate            varchar(10),
     primary key (ID_no), 
     foreign key (Movie_ID) references MOVIE(ID_no), 
     foreign key (Screening_Room) references SCREENING_ROOM(ID_no)
 );
 
 -- Insert data into SHOWS table with showtime as a single column
-INSERT INTO SHOWS (ID_no, Movie_ID, Screening_Room, Showtime)
+INSERT INTO SHOWS (ID_no, Movie_ID, Screening_Room, Showtime, Showdate)
 VALUES
     -- Cineplex Crowfoot shows
-    (710, 200, 300, '13:30:00'), -- 'The Adventures of Quantum Cat' at Room 300
-    (726, 200, 300, '18:15:00'), -- 'The Adventures of Quantum Cat' at Room 300
-    (727, 200, 300, '21:00:00'), -- 'The Adventures of Quantum Cat' at Room 300
+    (710, 200, 300, '13:30:00', '05/12/2024'), -- 'The Adventures of Quantum Cat' at Room 300
+    (726, 200, 300, '18:15:00', '05/12/2024'), -- 'The Adventures of Quantum Cat' at Room 300
+    (727, 200, 300, '21:00:00', '05/12/2024'), -- 'The Adventures of Quantum Cat' at Room 300
 
-    (711, 201, 300, '16:00:00'), -- 'Romance in the Rain' at Room 300
-    (728, 201, 300, '08:30:00'), -- 'Romance in the Rain' at Room 300
+    (711, 201, 300, '16:00:00', '05/12/2024'), -- 'Romance in the Rain' at Room 300
+    (728, 201, 300, '08:30:00', '05/12/2024'), -- 'Romance in the Rain' at Room 300
 
-    (712, 202, 300, '19:45:00'), -- 'Battle of the Titans' at Room 300
-    (729, 202, 300, '07:15:00'), -- 'Battle of the Titans' at Room 300
-    (730, 202, 300, '12:30:00'), -- 'Battle of the Titans' at Room 300
+    (712, 202, 300, '19:45:00', '05/12/2024'), -- 'Battle of the Titans' at Room 300
+    (729, 202, 300, '07:15:00', '05/12/2024'), -- 'Battle of the Titans' at Room 300
+    (730, 202, 300, '12:30:00', '05/12/2024'), -- 'Battle of the Titans' at Room 300
 
     -- Cineplex University District shows
-    (713, 203, 301, '14:15:00'), -- 'The Haunted Melody' at Room 301
-    (731, 203, 301, '17:30:00'), -- 'The Haunted Melody' at Room 301
+    (713, 203, 301, '14:15:00', '05/12/2024'), -- 'The Haunted Melody' at Room 301
+    (731, 203, 301, '17:30:00', '05/12/2024'), -- 'The Haunted Melody' at Room 301
 
-    (714, 204, 301, '17:00:00'), -- 'Laugh Out Loud' at Room 301
-	(732, 204, 301, '8:15:00'), -- 'Laugh Out Loud' at Room 301
-	(733, 204, 301, '10:30:00'), -- 'Laugh Out Loud' at Room 301
+    (714, 204, 301, '17:00:00', '05/12/2024'), -- 'Laugh Out Loud' at Room 301
+	(732, 204, 301, '8:15:00', '05/12/2024'), -- 'Laugh Out Loud' at Room 301
+	(733, 204, 301, '10:30:00', '05/12/2024'), -- 'Laugh Out Loud' at Room 301
 
-    (715, 205, 301, '20:30:00'), -- 'Planet Ocean' at Room 301
-	(734, 205, 301, '10:00:00'), -- 'Planet Ocean' at Room 301
+    (715, 205, 301, '20:30:00', '05/12/2024'), -- 'Planet Ocean' at Room 301
+	(734, 205, 301, '10:00:00', '05/12/2024'), -- 'Planet Ocean' at Room 301
 
     -- Landmark Cinemas Country Hills shows
-    (716, 206, 302, '11:30:00'), -- 'Chasing Shadows' at Room 302
-    (717, 207, 302, '14:45:00'), -- 'The Digital Heist' at Room 302
-    (718, 207, 302, '18:00:00'), -- 'The Digital Heist' at Room 302, second show
+    (716, 206, 302, '11:30:00', '05/12/2024'), -- 'Chasing Shadows' at Room 302
+    (717, 207, 302, '14:45:00', '05/12/2024'), -- 'The Digital Heist' at Room 302
+    (718, 207, 302, '18:00:00', '05/12/2024'), -- 'The Digital Heist' at Room 302, second show
 
     -- Landmark Cinemas Market Mall shows
-    (719, 208, 303, '12:00:00'), -- 'Eternal Echoes' at Room 303
-    (720, 208, 303, '16:30:00'), -- 'Eternal Echoes' at Room 303, second show
+    (719, 208, 303, '12:00:00', '05/12/2024'), -- 'Eternal Echoes' at Room 303
+    (720, 208, 303, '16:30:00', '05/12/2024'), -- 'Eternal Echoes' at Room 303, second show
 
     -- Cineplex Odeon Sunridge shows
-    (721, 200, 304, '10:45:00'), -- 'The Adventures of Quantum Cat' at Room 304
-    (735, 200, 304, '15:45:00'), -- 'The Adventures of Quantum Cat' at Room 304
+    (721, 200, 304, '10:45:00', '05/12/2024'), -- 'The Adventures of Quantum Cat' at Room 304
+    (735, 200, 304, '15:45:00', '05/12/2024'), -- 'The Adventures of Quantum Cat' at Room 304
 
-    (722, 202, 304, '13:20:00'), -- 'Battle of the Titans' at Room 304
+    (722, 202, 304, '13:20:00', '05/12/2024'), -- 'Battle of the Titans' at Room 304
 
     -- Cineplex Odeon Westhills shows
-    (723, 201, 305, '15:00:00'), -- 'Romance in the Rain' at Room 305
-    (736, 201, 305, '12:30:00'), -- 'Romance in the Rain' at Room 305
+    (723, 201, 305, '15:00:00', '05/12/2024'), -- 'Romance in the Rain' at Room 305
+    (736, 201, 305, '12:30:00', '05/12/2024'), -- 'Romance in the Rain' at Room 305
 
-    (724, 203, 305, '18:15:00'), -- 'The Haunted Melody' at Room 305
-    (737, 203, 305, '20:30:00'), -- 'The Haunted Melody' at Room 305
+    (724, 203, 305, '18:15:00', '05/12/2024'), -- 'The Haunted Melody' at Room 305
+    (737, 203, 305, '20:30:00', '05/12/2024'), -- 'The Haunted Melody' at Room 305
 
-    (725, 206, 305, '20:00:00'); -- 'Chasing Shadows' at Room 305
+    (725, 206, 305, '20:00:00', '05/12/2024'); -- 'Chasing Shadows' at Room 305
 
 
 -- Drop the ANNOUNCEMENTS table if it exists, then create it
@@ -234,6 +235,45 @@ VALUES
     (802, 1, 12, 2024, 25, 12, 2024, 202), -- 'Battle of the Titans' announcement
     (803, 10, 12, 2024, 15, 12, 2024, 203), -- 'The Haunted Melody' announcement
     (804, 20, 12, 2024, 25, 12, 2024, 204); -- 'Laugh Out Loud' announcement
+
+-- Drop the TICKETS table if it exists, then create it
+DROP TABLE IF EXISTS TICKETS;
+CREATE TABLE TICKETS(
+    ID_no				varchar(10),
+    Show_ID				integer,
+    User_ID				integer,
+    Seat                varchar(5),
+    primary key (ID_no),
+    foreign key (Show_ID) references SHOWS(ID_no),
+    foreign key (User_ID) references REGISTERED_USER(ID_no)
+);
+
+-- Insert data into TICKETS table
+INSERT INTO TICKETS (ID_no, Show_ID, User_ID, Seat)
+VALUES
+    (900, 710, 0, 'A1'), -- Kamand Ghorbanzadeh buys a ticket for 'The Adventures of Quantum Cat' at Cineplex Crowfoot
+    (901, 726, 0, 'B3'), -- Kamand Ghorbanzadeh buys a ticket for 'The Adventures of Quantum Cat' at Cineplex Crowfoot
+    (902, 727, 0, 'C5'), -- Kamand Ghorbanzadeh buys a ticket for 'The Adventures of Quantum Cat' at Cineplex Crowfoot
+
+    (903, 711, 1, 'A2'), -- Spiro Douvis buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+    (904, 728, 1, 'B4'), -- Spiro Douvis buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+
+    (905, 712, 2, 'A3'), -- Issy Gaudet buys a ticket for 'Battle of the Titans' at Cineplex Crowfoot
+    (906, 729, 2, 'B5'), -- Issy Gaudet buys a ticket for 'Battle of the Titans' at Cineplex Crowfoot
+    (907, 730, 2, 'C6'), -- Issy Gaudet buys a ticket for 'Battle of the Titans' at Cineplex Crowfoot
+
+    (908, 713, 3, 'A4'), -- Dylan Wenaas buys a ticket for 'The Haunted Melody' at Cineplex University District
+    (909, 731, 3, 'B6'), -- Dylan Wenaas buys a ticket for 'The Haunted Melody' at Cineplex University District
+
+    (910, 714, 3, 'A5'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
+    (911, 732, 3, 'B7'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
+    (912, 733, 3, 'C8'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
+
+    (913, 711, 1, 'B5'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+    (914, 711, 1, 'B6'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+    (915, 711, 1, 'B7'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+    (916, 711, 1, 'B8'); -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+
 
 
 -- Drop roles if they exist

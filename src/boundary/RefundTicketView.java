@@ -5,13 +5,11 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class RefundTicketView extends JPanel {
     private JFrame parentFrame;
     private JTextField ticketNumber;
-    private JButton confirmButton;
-    private JButton cancelButton;
 
     public RefundTicketView(JFrame parent) {
         this.parentFrame = parent;
@@ -28,7 +26,7 @@ public class RefundTicketView extends JPanel {
 
         // Ticket number input
         JPanel ticketNumberPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-        JLabel ticketNumberLabel = new JLabel("Ticket Number:");
+        JLabel ticketNumberLabel = new JLabel("Ticket Number (ex: TKT00000): ");
         ticketNumber = new JTextField(10);
         ticketNumberPanel.add(ticketNumberLabel);
         ticketNumberPanel.add(ticketNumber);
@@ -44,22 +42,58 @@ public class RefundTicketView extends JPanel {
         add(controlPanel, BorderLayout.SOUTH);
 
         // Add action listeners
+        // confirmButton.addActionListener(e -> {
+        //     String ticketNumberStr = ticketNumber.getText();
+        //     if (!ticketNumberStr.matches("[0-9]+")) {
+        //         JOptionPane.showMessageDialog(parentFrame, "Please enter a valid ticket number.");
+        //         return;
+        //     }
+        //     int ticketNumber = Integer.parseInt(ticketNumberStr);
+        //     //temp
+        //     double ticketPrice = 10.00; //TODO get ticket price from database
+        //     double refundAmount = 0.85;
+        //     if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
+        //         refundAmount = 1.00;
+        //     }
+        //     JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumber + " refunded successfully. $" +
+        //             (ticketPrice * refundAmount) + " has been refunded to your account.");
+        //     goToMain();
+        // });
+
         confirmButton.addActionListener(e -> {
             String ticketNumberStr = ticketNumber.getText();
-            if (!ticketNumberStr.matches("[0-9]+")) {
+            if (!ticketNumberStr.matches("TKT[0-9]+")) {
                 JOptionPane.showMessageDialog(parentFrame, "Please enter a valid ticket number.");
                 return;
             }
-            int ticketNumber = Integer.parseInt(ticketNumberStr);
-            //temp
-            double ticketPrice = 10.00; //TODO get ticket price from database
-            double refundAmount = 0.85;
-            if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
-                refundAmount = 1.00;
+
+            String ticketId = ticketNumberStr.trim();
+            List<Ticket> tickets = InstanceController.getInstance().getTicketCart().getTicketsInCart();
+            Ticket ticketToRefund = null;
+            for (Ticket ticket : tickets) {
+                if (ticket.getTicketID().equals(ticketId)) {
+                    ticketToRefund = ticket;
+                    break;
+                }
             }
-            JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumber + " refunded successfully. $" +
-                    (ticketPrice * refundAmount) + " has been refunded to your account.");
-            goToMain();
+
+            if (ticketToRefund != null) {
+                //IF MORE THAN 72 HRS
+                if (ticketToRefund.canCancel()) {
+                    InstanceController.getInstance().getTicketCart().removeFromCart(ticketToRefund);
+                    double ticketPrice = ticketToRefund.getMovie().getPrice();
+                    double refundAmount = 0.85;
+                    if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
+                        refundAmount = 1.00;
+                    }
+                    JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumberStr + " refunded successfully. $" +
+                            (ticketPrice * refundAmount) + " has been refunded to your account.");
+                } else {
+                    JOptionPane.showMessageDialog(parentFrame, "Tickets can only be refunded up to 72 hours prior to the show.", "Refund Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(parentFrame, "Ticket not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         cancelButton.addActionListener(e -> {

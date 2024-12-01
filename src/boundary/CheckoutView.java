@@ -12,6 +12,7 @@ public class CheckoutView extends JPanel {
     private JTextField cardNumberField;
     private JTextField expiryField;
     private JTextField cvvField;
+    private JTextField emailField;
     private JButton confirmButton;
     private JButton backButton;
     private JFrame parentFrame;
@@ -47,6 +48,7 @@ public class CheckoutView extends JPanel {
         gbc.anchor = GridBagConstraints.EAST;
 
         // ONLY RQST CARD DETAILS IF NOT RU
+        // AND EMAIL TO SEND RECEIPT AND TICKET
         if (!(InstanceController.getInstance().getUser() instanceof UserRegistered)) {
             // Card Holder
             addField("Card Holder:", cardHolder = new JTextField(20), gbc, 2);
@@ -58,6 +60,9 @@ public class CheckoutView extends JPanel {
             
             // CVV
             addField("CVV:", cvvField = new JTextField(3), gbc, 5);
+
+            // Email
+            addField("Email:", emailField= new JTextField(20), gbc, 6);
         }
 
         // Buttons
@@ -69,7 +74,7 @@ public class CheckoutView extends JPanel {
 
         gbc.gridx = 0;
         // gbc.gridy = 5;
-        gbc.gridy= (InstanceController.getInstance().getUser() == null) ?2:6;
+        gbc.gridy= (InstanceController.getInstance().getUser() == null) ?2:7;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(buttonPanel, gbc);
@@ -98,6 +103,7 @@ public class CheckoutView extends JPanel {
 
         confirmButton.addActionListener(e -> {
             if (validateFields()) {
+                InstanceController.getInstance().getTicketCart().checkout();
                 JOptionPane.showMessageDialog(parentFrame, 
                     "Payment successful! Your tickets have been booked.",
                     "Success",

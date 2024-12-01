@@ -1,5 +1,7 @@
 package entity;
 
+import database.ControlDatabase;
+
 import java.util.ArrayList;
 
 public class TicketCart {
@@ -21,7 +23,18 @@ public class TicketCart {
     public float getTotalPrice() {
         return totalPrice;
     }
-    public void Checkout() {}
-
+    public void checkout() {
+        for (Ticket ticket : tickets_in_cart) {
+            System.out.println(
+                    "Booked ticket for " +
+                            ticket.getShowtime().getMovie().getName() +
+                            " at " + ticket.getShowtime().getTime() +
+                            "(Ticket number: " + ticket.getTicketID() + ")");
+            // Book ticket in database
+            ControlDatabase.getInstance().bookTicket(ticket);
+        }
+        tickets_in_cart.clear();
+        totalPrice = 0;
+    }
 
 }

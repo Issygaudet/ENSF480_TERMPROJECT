@@ -1,5 +1,6 @@
 package database;
 
+import controller.InstanceController;
 import entity.*;
 import entity.Date;
 
@@ -16,7 +17,7 @@ public class WriteDatabase {
         controlDatabase = ControlDatabase.getInstance();
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/movie_theatre_app?" +
-            "user=registered_user&password=registered_pass");
+                    "user=admin&password=admin_pass");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             conn = null;
@@ -24,16 +25,34 @@ public class WriteDatabase {
         return conn;
     }
 
-    private void saveAnnouncements() throws SQLException {}
-    private void saveBankInfo() throws SQLException {}
-    
+    public void saveAll() {
+        try {
+            saveAnnouncements();
+            saveBankInfo();
+            saveRegisteredUsers();
+            saveTheatres();
+            saveScreeningRooms();
+            saveShows();
+            saveTickets();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            conn = null;
+        }
+    }
+
+    private void saveAnnouncements() throws SQLException {
+    }
+
+    private void saveBankInfo() throws SQLException {
+    }
+
     private void saveRegisteredUsers() throws SQLException {
         String sql = "INSERT INTO registered_user (ID_no, User_Password, First_Name, Last_Name, " +
-                     "User_Email, User_Bank_Info, User_Day, User_Month, User_Year) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                     "ON DUPLICATE KEY UPDATE User_Password=?, First_Name=?, Last_Name=?, " +
-                     "User_Email=?, User_Bank_Info=?, User_Day=?, User_Month=?, User_Year=?";
-        
+                "User_Email, User_Bank_Info, User_Day, User_Month, User_Year) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE User_Password=?, First_Name=?, Last_Name=?, " +
+                "User_Email=?, User_Bank_Info=?, User_Day=?, User_Month=?, User_Year=?";
+
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             for (UserRegistered user : controlDatabase.getAllRegisteredUsers().values()) {
                 // Insert values
@@ -46,7 +65,7 @@ public class WriteDatabase {
                 stmt.setInt(7, user.getJoinDay());
                 stmt.setInt(8, user.getJoinMonth());
                 stmt.setInt(9, user.getJoinYear());
-    
+
                 // Update values for ON DUPLICATE KEY
                 stmt.setString(10, user.getPassword());
                 stmt.setString(11, user.getName().split(" ")[0]); // First name
@@ -56,7 +75,7 @@ public class WriteDatabase {
                 stmt.setInt(15, user.getJoinDay());
                 stmt.setInt(16, user.getJoinMonth());
                 stmt.setInt(17, user.getJoinYear());
-    
+
                 stmt.executeUpdate();
             }
         } catch (Exception e) {
@@ -66,11 +85,11 @@ public class WriteDatabase {
 
     public void saveSingleUser(UserRegistered user) throws SQLException {
         String sql = "INSERT INTO registered_user (ID_no, User_Password, First_Name, Last_Name, " +
-                     "User_Email, User_Bank_Info, User_Day, User_Month, User_Year) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                     "ON DUPLICATE KEY UPDATE User_Password=?, First_Name=?, Last_Name=?, " +
-                     "User_Email=?, User_Bank_Info=?, User_Day=?, User_Month=?, User_Year=?";
-        
+                "User_Email, User_Bank_Info, User_Day, User_Month, User_Year) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE User_Password=?, First_Name=?, Last_Name=?, " +
+                "User_Email=?, User_Bank_Info=?, User_Day=?, User_Month=?, User_Year=?";
+
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             // Insert values
             stmt.setInt(1, user.getUserID());
@@ -82,7 +101,7 @@ public class WriteDatabase {
             stmt.setInt(7, user.getJoinDay());
             stmt.setInt(8, user.getJoinMonth());
             stmt.setInt(9, user.getJoinYear());
-    
+
             // Update values for ON DUPLICATE KEY
             stmt.setString(10, user.getPassword());
             stmt.setString(11, user.getName().split(" ")[0]); // First name
@@ -92,15 +111,58 @@ public class WriteDatabase {
             stmt.setInt(15, user.getJoinDay());
             stmt.setInt(16, user.getJoinMonth());
             stmt.setInt(17, user.getJoinYear());
-    
+
             stmt.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }    
+    }
 
-    private void saveTheatres() throws SQLException {}
-    private void saveScreeningRooms() throws SQLException {}
-    private void saveShows() throws SQLException {}
+    private void saveTheatres() throws SQLException {
+    }
 
+    private void saveScreeningRooms() throws SQLException {
+    }
+
+    private void saveShows() throws SQLException {
+    }
+
+    public void saveTickets() {
+        String checkSql = "SELECT COUNT(*) FROM tickets WHERE ID_no = ?";
+        String insertSql = "INSERT INTO tickets (ID_no, Show_ID, User_ID, Seat) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement checkStmt = getConnection().prepareStatement(checkSql);
+             PreparedStatement insertStmt = getConnection().prepareStatement(insertSql)) {
+            for (Ticket ticket : controlDatabase.getAllTickets()) {
+                checkStmt.setString(1, ticket.getTicketID());
+                ResultSet rs = checkStmt.executeQuery();
+                rs.next();
+                int count = rs.getInt(1);
+
+                String seatInfo = ticket.getSeat();
+                String[] parts = seatInfo.split("Row | Seat ");
+                int row = Integer.parseInt(parts[1].trim());
+                int col = Integer.parseInt(parts[2].trim());
+
+                // Convert column number to letter (1=A, 2=B, etc)
+                char colLetter = (char)('A' + (col - 1));
+                // Create seat code (e.g., "B5")
+                String seatCode = String.format("%c%d", colLetter, row);
+
+                if (count == 0) {
+                    insertStmt.setString(1, ticket.getTicketID());
+                    insertStmt.setInt(2, ticket.getShowtime().getShowtimeId());
+                    if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
+                        insertStmt.setInt(3, (InstanceController.getInstance().getUser()).getUserID());
+                    } else {
+                        insertStmt.setNull(3, Types.INTEGER);
+                    }
+                    insertStmt.setString(4, seatCode);
+                    insertStmt.executeUpdate();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

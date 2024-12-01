@@ -4,6 +4,8 @@ package boundary;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+
+import database.ControlDatabase;
 import entity.*;
 import controller.InstanceController;
 
@@ -37,9 +39,19 @@ public class SeatMapView extends JPanel {
         JPanel seatsPanel = new JPanel(new GridLayout(screeningRoom.getRows(), screeningRoom.getColumns(), 5, 5));
         seatButtons = new JButton[screeningRoom.getRows()][screeningRoom.getColumns()];
 
+        ArrayList<Ticket> tickets = ControlDatabase.getInstance().getTicketsForShowtime(selectedShowtime);
+        for (Ticket ticket : tickets) {
+//            Seat in form A4 where A is the row and 4 is the column, A = row 1, B = row 2, etc.
+            String[] seatParts = ticket.getSeat().split("");
+            int row = (int) seatParts[0].charAt(0) - 65 + 1;
+            int col = Integer.parseInt(seatParts[1]);
+            screeningRoom.getSeat(row, col).setUnavailable();
+            System.out.println("Seat " + ticket.getSeat() + " is unavailable.");
+        }
         for (int i = 0; i < screeningRoom.getRows(); i++) {
             for (int j = 0; j < screeningRoom.getColumns(); j++) {
                 Seat seat = screeningRoom.getSeat(i + 1, j + 1);
+
                 if (seat == null) {
                     System.out.println("Seat not found at Row " + (i + 1) + ", Column " + (j + 1));
                     JButton placeholder = new JButton("N/A");
@@ -67,22 +79,26 @@ public class SeatMapView extends JPanel {
         // Action listener for Confirm button
         confirmButton.addActionListener(e -> {
             if (selectedSeats.size() == ticketsToSelect) {
+                // Add selected seats to the cart
                 TicketCart cart = InstanceController.getInstance().getTicketCart();
                 for (Seat seat : selectedSeats) {
                     cart.addToCart(new Ticket(
                         generateTicketId(),
-                        selectedMovie,                // Use the stored movie
+                        selectedMovie,
                         screeningRoom.getTheatre(),
-                        java.time.LocalDate.now().toString(), // Current date
-                        selectedShowtime,             // Use the stored showtime
-                        "Row " + ((seat.getSeatId() / screeningRoom.getColumns()) + 1) + 
+                        selectedShowtime.getDate(),
+                        selectedShowtime,
+                        "Row " + ((seat.getSeatId() / screeningRoom.getColumns()) + 1) +
                         " Seat " + ((seat.getSeatId() % screeningRoom.getColumns()) + 1)
                     ));
                 }
 
-                // Navigate to CartView
-                CartView cartView = new CartView(parentFrame);
-                parentFrame.setContentPane(cartView);
+                JOptionPane.showMessageDialog(parentFrame, "Seats added to cart successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                
+                // Return to MainView and enable Add to Cart button
+                MainView mainView = new MainView(parentFrame);
+                // mainView.enableAddToCart(); // Add this method to MainView
+                parentFrame.setContentPane(mainView);
                 parentFrame.revalidate();
                 parentFrame.repaint();
             } else {
@@ -102,7 +118,7 @@ public class SeatMapView extends JPanel {
         });
     }
 
-              private JButton createSeatButton(Seat seat) {
+    private JButton createSeatButton(Seat seat) {
             JButton button = new JButton();
             button.setPreferredSize(new Dimension(40, 40));
             
@@ -152,12 +168,12 @@ public class SeatMapView extends JPanel {
         
             return button;
         }
-        
+
     /**
      * Generates a unique ticket ID based on the current timestamp.
      * @return A unique ticket identifier.
      */
     private String generateTicketId() {
-        return "TKT" + System.currentTimeMillis();
+        return "TKT" + System.currentTimeMillis() % 100000;
     }
 }
