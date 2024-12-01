@@ -46,14 +46,27 @@ public class CartView extends JPanel {
             listModel.addElement("Cart is currently empty.");
         } else {
             for (Ticket ticket : tickets) {
-                String itemText = String.format("%s - %s - %s    $%.2f",
+                // Parse the existing seat string to get row and column numbers
+                String seatInfo = ticket.getSeat();
+                String[] parts = seatInfo.split("Row | Seat ");
+                int row = Integer.parseInt(parts[1].trim());
+                int col = Integer.parseInt(parts[2].trim());
+                
+                // Convert column number to letter (1=A, 2=B, etc)
+                char colLetter = (char)('A' + (col - 1));
+                // Create seat code (e.g., "B5")
+                String seatCode = String.format("%c%d", colLetter, row);
+                
+                String itemText = String.format("%s - %s - %s - Seat %s    $%.2f",
                         ticket.getShowtime().getMovie().getName(),
                         ticket.getShowtime().getTheatre().getLocation(),
-                        ticket.getShowtime().getTime().toString(),
+                        ticket.getShowtime().getTime(),
+                        seatCode,
                         ticket.getShowtime().getMovie().getPrice());
                 listModel.addElement(itemText);
             }
         }
+        
         cartItems = new JList<>(listModel);
         cartItems.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(cartItems);
