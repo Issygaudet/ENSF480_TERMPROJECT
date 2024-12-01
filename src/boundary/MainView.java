@@ -32,6 +32,7 @@ public class MainView extends JPanel {
     private Map<String, Theatre> theatreMap;
     private Map<String, Showtime> showtimeMap; 
     private JButton viewAccountDetailsButton;
+    private JButton refundTicketButton;
 
     public MainView(JFrame parent) {
         this.parentFrame = parent;
@@ -109,17 +110,20 @@ public class MainView extends JPanel {
         viewCartButton = new JButton("View Cart");
         backButton = new JButton("Return to Login Page");
         viewAccountDetailsButton = new JButton("View Account Details");
+        refundTicketButton = new JButton("Refund Ticket");
         buttonPanel.add(addToCartButton);
         buttonPanel.add(viewCartButton);
         buttonPanel.add(backButton);
-        buttonPanel.add(viewAccountDetailsButton);
+        buttonPanel.add(refundTicketButton);
+        if (InstanceController.getInstance().getUser() instanceof  UserRegistered) {
+            buttonPanel.add(viewAccountDetailsButton);
+        }
+
 
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 2;
         add(buttonPanel, gbc);
-
-        setupActionListeners();
     }
 
     private void loadMoviesFromDatabase() {
@@ -283,6 +287,10 @@ public class MainView extends JPanel {
         });
 
         viewAccountDetailsButton.addActionListener(e -> {
+            if (InstanceController.getInstance().getUser() == null ||
+                    !(InstanceController.getInstance().getUser() instanceof  UserRegistered)) {
+                return;
+            }
             AccountDetailsView accountDetailsView = new AccountDetailsView(parentFrame);
             parentFrame.setContentPane(accountDetailsView);
             parentFrame.revalidate();
@@ -293,6 +301,14 @@ public class MainView extends JPanel {
         viewCartButton.addActionListener(e -> {
             CartView cartView = new CartView(parentFrame);
             parentFrame.setContentPane(cartView);
+            parentFrame.revalidate();
+            parentFrame.repaint();
+        });
+
+        // Refund ticket button functionality
+        refundTicketButton.addActionListener(e -> {
+            RefundTicketView refundTicketView = new RefundTicketView(parentFrame);
+            parentFrame.setContentPane(refundTicketView);
             parentFrame.revalidate();
             parentFrame.repaint();
         });
