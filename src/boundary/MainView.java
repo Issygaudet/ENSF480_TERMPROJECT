@@ -214,31 +214,31 @@ public class MainView extends JPanel {
         });
 
         // Add to Cart button functionality
-        addToCartButton.addActionListener(e -> {
+                addToCartButton.addActionListener(e -> {
             String selectedMovieName = (String) movieSelector.getSelectedItem();
             String selectedShowtime = (String) showtimeSelector.getSelectedItem();
             int quantity = (Integer) ticketQuantity.getValue();
         
             if (selectedMovieName != null && selectedShowtime != null) {
                 Movie selectedMovie = movieMap.get(selectedMovieName);
-                Showtime showtime = showtimeMap.get(selectedShowtime);
                 Theatre selectedTheatre = theatreMap.get((String) theaterSelector.getSelectedItem());
-
-                for (int i = 0; i < quantity; i++) {
-                    Ticket ticket = new Ticket(selectedMovie, selectedTheatre, showtime.getTime().toString(), showtime, "A" + (i + 1));
-                    InstanceController.getInstance().getTicketCart().addToCart(ticket);
+                
+                // Get screening room for the selected movie and theatre
+                ControlDatabase database = ControlDatabase.getInstance();
+                ScreeningRoom room = database.getScreeningRoom(selectedMovie.getMovieId());
+        
+                if (room != null) {
+                    // Open seat selection view
+                    SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity);
+                    parentFrame.setContentPane(seatMapView);
+                    parentFrame.revalidate();
+                    parentFrame.repaint();
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                        "No screening room available for this movie.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
                 }
-
-                JOptionPane.showMessageDialog(parentFrame, 
-                    "Added to cart successfully!",
-                    "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-                // Refresh the MainView
-                MainView mainView = new MainView(parentFrame);
-                parentFrame.setContentPane(mainView);
-                parentFrame.revalidate();
-                parentFrame.repaint();
             } else {
                 JOptionPane.showMessageDialog(this,
                     "Please select a movie and showtime.",
