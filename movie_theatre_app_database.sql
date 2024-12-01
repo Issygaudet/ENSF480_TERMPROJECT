@@ -57,12 +57,12 @@ CREATE TABLE THEATRE (
 -- Insert data into THEATRE table
 INSERT INTO THEATRE (ID_no, Theatre_Name)
 VALUES
-    (400, 'Cineplex Crowfoot'),
-    (401, 'Cineplex University District'),
-    (402, 'Landmark Cinemas Country Hills'),
-    (403, 'Landmark Cinemas Market Mall'),
-    (404, 'Cineplex Odeon Sunridge'),
-    (405, 'Cineplex Odeon Westhills');
+    (400, 'AcmePlex Crowfoot'),
+    (401, 'AcmePlex University District'),
+    (402, 'AcmePlex Cinemas Country Hills'),
+    (403, 'AcmePlex Cinemas Market Mall'),
+    (404, 'AcmePlex Odeon Sunridge'),
+    (405, 'AcmePlex Odeon Westhills');
 
 -- Add foreign key constraint on SCREENING_ROOM table (for Theatre_Number referencing THEATRE)
 ALTER TABLE SCREENING_ROOM 
@@ -133,8 +133,8 @@ DROP TABLE IF EXISTS BANK_INFO;
 CREATE TABLE BANK_INFO (
     ID_no          	integer,
     Card_Holder   	varchar(50) not null,
-    Card_Number    	integer not null,
-    Expiry_Date		varchar(5) not null,
+    Card_Number    	varchar(20) not null,
+    Expiry_Date varchar(5) not null,
     CVV				integer,
     primary key (ID_no)
 );
@@ -142,10 +142,10 @@ CREATE TABLE BANK_INFO (
 -- Insert data into BANK_INFO table
 INSERT INTO BANK_INFO (ID_no, Card_Holder, Card_Number, Expiry_Date, CVV)
 VALUES
-	(100, 'Kamand Ghorbanzadeh', 1290283, "02/28", 123),
-	(101, 'Spiro Douvis', 732792, "02/28", 244), 
-    (102, 'Issy Douvis', 732792, "05/28", 321), 
-    (103, 'Spiro Douvis', 732792, "03/28", 456); 
+	(100, 'Kamand Ghorbanzadeh', '1290283', "02/28", 123),
+	(101, 'Spiro Douvis', '732792', "02/28", 244), 
+    (102, 'Issy Douvis', '732792', "05/28", 321), 
+    (103, 'Spiro Douvis', '732792', "03/28", 456); 
     alter TABLE REGISTERED_USER
     add foreign key (User_Bank_Info) references BANK_INFO(ID_no);
     
