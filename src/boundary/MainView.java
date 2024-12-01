@@ -22,7 +22,6 @@ public class MainView extends JPanel {
     private JButton addToCartButton;
     private JButton viewCartButton;
     private JButton backButton;
-    private JButton logoutButton;
     private JLabel priceLabel;
     private JFrame parentFrame;
     private Map<String, Movie> movieMap; // Map to store movie names and corresponding Movie objects
@@ -103,11 +102,9 @@ public class MainView extends JPanel {
         addToCartButton = new JButton("Add to Cart");
         viewCartButton = new JButton("View Cart");
         backButton = new JButton("Return to Login Page");
-        logoutButton = new JButton("Logout");
         buttonPanel.add(addToCartButton);
         buttonPanel.add(viewCartButton);
         buttonPanel.add(backButton);
-        buttonPanel.add(logoutButton);
 
         gbc.gridx = 0;
         gbc.gridy = 6;
@@ -248,14 +245,19 @@ public class MainView extends JPanel {
         });
 
         backButton.addActionListener(e -> {
-            LoginView loginView = new LoginView(parentFrame);
-            parentFrame.setContentPane(loginView);
-            parentFrame.revalidate();
-            parentFrame.repaint();
-        });
-    
-        logoutButton.addActionListener(e -> {
-            InstanceController.getInstance().setUser(null);
+            // Check if a user is logged in
+            if (InstanceController.getInstance().getUser() != null) {
+                // Perform logout
+                // InstanceController.getInstance().logout();
+        
+                // Show logout success message
+                JOptionPane.showMessageDialog(parentFrame, 
+                    "Logged out successfully!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        
+            // Navigate to login view
             LoginView loginView = new LoginView(parentFrame);
             parentFrame.setContentPane(loginView);
             parentFrame.revalidate();
