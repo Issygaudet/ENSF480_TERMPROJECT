@@ -75,7 +75,7 @@ public class RegistrationView extends JPanel {
         addField("Confirm Password:", confirmPasswordField = new JPasswordField(20), gbc, 4);
 
         // Add credit card fields
-        JLabel paymentLabel = new JLabel("Payment Information - $20 Monthly Fee");
+        JLabel paymentLabel = new JLabel("Payment Information - $20 Annual Fee");
         paymentLabel.setFont(new Font("Arial", Font.BOLD, 16));
         gbc.gridx = 0;
         gbc.gridy = 5;
