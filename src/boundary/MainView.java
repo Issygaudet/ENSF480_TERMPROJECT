@@ -239,11 +239,6 @@ public class MainView extends JPanel {
                     
                     for (Showtime showtime : showtimes) {
                         if (showtime != null && showtime.getTime() != null) {
-                            Calendar calendar = Calendar.getInstance();
-//                            calendar.setTime(showtime.getTime());
-//                            String timeStr = String.format("%02d:%02d",
-//                                calendar.get(Calendar.HOUR_OF_DAY),
-//                                calendar.get(Calendar.MINUTE));
                             String timeStr = showtime.getTime();
                             showtimeSelector.addItem(timeStr);
                             showtimeMap.put(timeStr, showtime);
@@ -258,48 +253,6 @@ public class MainView extends JPanel {
         showtimeSelector.addActionListener(e -> {
             ticketQuantity.setEnabled(true);
         });
-
-        // addToCartButton.addActionListener(e -> {
-        //     String selectedMovieName = (String) movieSelector.getSelectedItem();
-        //     String selectedShowtime = (String) showtimeSelector.getSelectedItem();
-        //     int quantity = (Integer) ticketQuantity.getValue();
-            
-        //     if (selectedMovieName != null && selectedShowtime != null) {
-        //         Showtime selectedShow = showtimeMap.get(selectedShowtime);
-                
-        //         // Query SHOWS table to get screening room
-        //         ControlDatabase database = ControlDatabase.getInstance();
-        //         String query = "SELECT Screening_Room FROM SHOWS WHERE ID_no = ?";
-        //         int screeningRoomId;
-                
-        //         try (Connection conn = database.getConnection();
-        //              PreparedStatement stmt = conn.prepareStatement(query)) {
-        //             stmt.setInt(1, selectedShow.getShowtimeId());
-        //             ResultSet rs = stmt.executeQuery();
-        //             if (rs.next()) {
-        //                 screeningRoomId = rs.getInt("Screening_Room");
-        //                 ScreeningRoom room = database.getScreeningRoom(screeningRoomId);
-                        
-        //                 if (room != null) {
-        //                     Movie selectedMovie = movieMap.get(selectedMovieName);
-        //                     Showtime selectedShowCShowtime = showtimeMap.get(selectedShowtime);
-
-        //                     SeatMapView seatMapView = new SeatMapView(parentFrame, room, quantity, selectedMovie, selectedShowCShowtime);
-        //                     parentFrame.setContentPane(seatMapView);
-        //                         parentFrame.revalidate();
-        //                         parentFrame.repaint();
-        //                     }
-        //                 }
-                    
-        //         } catch (SQLException ex) {
-        //             ex.printStackTrace();
-        //             JOptionPane.showMessageDialog(this,
-        //                 "Error retrieving screening room information",
-        //                 "Database Error",
-        //                 JOptionPane.ERROR_MESSAGE);
-        //         }
-        //     }
-        // });
 
         backButton.addActionListener(e -> {
             if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
@@ -318,7 +271,7 @@ public class MainView extends JPanel {
         });
 
             // Enable select seats button when quantity is selected
-            ticketQuantity.addChangeListener(e -> {
+        ticketQuantity.addChangeListener(e -> {
                 if ((Integer) ticketQuantity.getValue() > 0) {
                     selectSeatsButton.setEnabled(true);
                 } else {
@@ -327,7 +280,7 @@ public class MainView extends JPanel {
             });
         
             // Select Seats button listener
-            selectSeatsButton.addActionListener(e -> {
+        selectSeatsButton.addActionListener(e -> {
                 String selectedMovieName = (String) movieSelector.getSelectedItem();
                 String selectedShowtime = (String) showtimeSelector.getSelectedItem();
                 int quantity = (Integer) ticketQuantity.getValue();
@@ -360,16 +313,7 @@ public class MainView extends JPanel {
                     }
                 }
             });
-        
-            // // Add to Cart button listener
-            // addToCartButton.addActionListener(e -> {
-            //     CartView cartView = new CartView(parentFrame);
-            //     parentFrame.setContentPane(cartView);
-            //     parentFrame.revalidate();
-            //     parentFrame.repaint();
-            // });
-        
-    
+
         viewAccountDetailsButton.addActionListener(e -> {
             if (InstanceController.getInstance().getUser() == null ||
                     !(InstanceController.getInstance().getUser() instanceof  UserRegistered)) {

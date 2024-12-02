@@ -43,25 +43,6 @@ public class RefundTicketView extends JPanel {
         controlPanel.add(cancelButton);
         add(controlPanel, BorderLayout.SOUTH);
 
-        // Add action listeners
-        // confirmButton.addActionListener(e -> {
-        //     String ticketNumberStr = ticketNumber.getText();
-        //     if (!ticketNumberStr.matches("[0-9]+")) {
-        //         JOptionPane.showMessageDialog(parentFrame, "Please enter a valid ticket number.");
-        //         return;
-        //     }
-        //     int ticketNumber = Integer.parseInt(ticketNumberStr);
-        //     //temp
-        //     double ticketPrice = 10.00; //TODO get ticket price from database
-        //     double refundAmount = 0.85;
-        //     if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
-        //         refundAmount = 1.00;
-        //     }
-        //     JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumber + " refunded successfully. $" +
-        //             (ticketPrice * refundAmount) + " has been refunded to your account.");
-        //     goToMain();
-        // });
-
         confirmButton.addActionListener(e -> {
             String ticketNumberStr = ticketNumber.getText();
             if (!ticketNumberStr.matches("TKT[0-9]+")) {
@@ -70,22 +51,13 @@ public class RefundTicketView extends JPanel {
             }
 
             String ticketId = ticketNumberStr.trim();
-            List<Ticket> tickets = InstanceController.getInstance().getTicketCart().getTicketsInCart();
             Ticket ticketToRefund = null;
+
+            List<Ticket> tickets = ControlDatabase.getInstance().getAllTickets();
             for (Ticket ticket : tickets) {
                 if (ticket.getTicketID().equals(ticketId)) {
                     ticketToRefund = ticket;
                     break;
-                }
-            }
-
-            if (ticketToRefund == null) {
-                tickets = ControlDatabase.getInstance().getAllTickets();
-                for (Ticket ticket : tickets) {
-                    if (ticket.getTicketID().equals(ticketId)) {
-                        ticketToRefund = ticket;
-                        break;
-                    }
                 }
             }
 
@@ -95,13 +67,14 @@ public class RefundTicketView extends JPanel {
                     InstanceController.getInstance().getTicketCart().removeFromCart(ticketToRefund);
                     double ticketPrice = ticketToRefund.getMovie().getPrice();
                     double refundAmount = 0.85;
+                    InstanceController.getInstance().getUser().cancelBooking(Integer.parseInt(ticketToRefund.getTicketID().substring(3)));
                     if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
                         refundAmount = 1.00;
                     }
-                    JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumberStr + " refunded successfully. $" +
-                            String.format("%.2f", ticketPrice * refundAmount) + " has been refunded to your account.");
                     ControlDatabase.getInstance().removeTicket(ticketToRefund);
                     new ReadDatabase().populateDatabase();
+                    JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumberStr + " refunded successfully. $" +
+                            String.format("%.2f", ticketPrice * refundAmount) + " has been refunded to your account.");
                     goToMain();
                 } else {
                     JOptionPane.showMessageDialog(parentFrame, "Tickets can only be refunded up to 72 hours prior to the show.", "Refund Error", JOptionPane.ERROR_MESSAGE);

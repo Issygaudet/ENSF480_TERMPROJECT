@@ -191,11 +191,4 @@ public class ReadDatabase {
             ControlDatabase.getInstance().addTicket(ticket);
         }
     }
-
-
-    public static void main(String[] args) {
-        ReadDatabase readDatabase = new ReadDatabase();
-        readDatabase.populateDatabase();
-    }
-
 }
