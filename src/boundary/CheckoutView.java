@@ -3,6 +3,8 @@ package boundary;
 import javax.swing.*;
 
 import controller.InstanceController;
+import entity.Ticket;
+import entity.TicketCart;
 import entity.UserRegistered;
 
 import java.awt.*;
@@ -103,7 +105,8 @@ public class CheckoutView extends JPanel {
 
         confirmButton.addActionListener(e -> {
             if (validateFields() || InstanceController.getInstance().getUser() instanceof UserRegistered) {
-                InstanceController.getInstance().getTicketCart().checkout();
+                TicketCart ticketCart = InstanceController.getInstance().getTicketCart();
+                ticketCart.checkout();
                 
                 // FIND CORRECT EMAIL TO SEND RECEIPT
                 String email;
@@ -115,8 +118,19 @@ public class CheckoutView extends JPanel {
                 }
 
                 // SEND EMAIL RECEIPT AND TICKET
+
+                StringBuilder tickets = new StringBuilder();
+                for (Ticket ticket : ticketCart.getTicketsInCart()) {
+                    tickets.append(ticket.getTicketID()).append("\n");
+                }
+
+                ticketCart.clearCart();
+
                 JOptionPane.showMessageDialog(parentFrame, 
-                    "Payment successful! Your tickets have been booked. A copy of your tickets along with an email receipt have been sent to " + email,
+                    "Payment successful! Your tickets have been booked! " + "\n" +
+                            "Tickets:" + "\n" +
+                            tickets +
+                            "A copy of your tickets along with an email receipt have been sent to " + email,
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
                 

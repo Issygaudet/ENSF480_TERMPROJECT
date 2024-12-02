@@ -1,6 +1,8 @@
 package boundary;
 
 import controller.InstanceController;
+import database.ControlDatabase;
+import database.ReadDatabase;
 import entity.*;
 
 import javax.swing.*;
@@ -77,6 +79,16 @@ public class RefundTicketView extends JPanel {
                 }
             }
 
+            if (ticketToRefund == null) {
+                tickets = ControlDatabase.getInstance().getAllTickets();
+                for (Ticket ticket : tickets) {
+                    if (ticket.getTicketID().equals(ticketId)) {
+                        ticketToRefund = ticket;
+                        break;
+                    }
+                }
+            }
+
             if (ticketToRefund != null) {
                 //IF MORE THAN 72 HRS
                 if (ticketToRefund.canCancel()) {
@@ -87,7 +99,10 @@ public class RefundTicketView extends JPanel {
                         refundAmount = 1.00;
                     }
                     JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumberStr + " refunded successfully. $" +
-                            (ticketPrice * refundAmount) + " has been refunded to your account.");
+                            String.format("%.2f", ticketPrice * refundAmount) + " has been refunded to your account.");
+                    ControlDatabase.getInstance().removeTicket(ticketToRefund);
+                    new ReadDatabase().populateDatabase();
+                    goToMain();
                 } else {
                     JOptionPane.showMessageDialog(parentFrame, "Tickets can only be refunded up to 72 hours prior to the show.", "Refund Error", JOptionPane.ERROR_MESSAGE);
                 }

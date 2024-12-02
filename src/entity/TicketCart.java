@@ -53,14 +53,11 @@ public class TicketCart {
      */
     public void checkout() {
         for (Ticket ticket : tickets_in_cart) {
-            System.out.println(
-                    "Booked ticket for " +
-                            ticket.getShowtime().getMovie().getName() +
-                            " at " + ticket.getShowtime().getTime() +
-                            "(Ticket number: " + ticket.getTicketID() + ")");
             // Book ticket in database
             ControlDatabase.getInstance().bookTicket(ticket);
         }
+    }
+    public void clearCart() {
         tickets_in_cart.clear();
         totalPrice = 0;
     }

@@ -481,4 +481,9 @@ public class ControlDatabase {
     public ArrayList<Ticket> getAllTickets() {
         return new ArrayList<>(ticketMap.values());
     }
+
+    public void removeTicket(Ticket ticket) {
+        ticketMap.remove(ticket.getTicketID());
+        new WriteDatabase().removeTicket(ticket);
+    }
 }
