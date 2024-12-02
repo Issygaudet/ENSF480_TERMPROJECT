@@ -1,3 +1,10 @@
+// Course: ENSF 480
+// Assignment: Term Project
+// Instructor: Syed Shah
+// Students: L01 - Group 14 (Issy Gaudet, Spiro Douvis, Kamand Ghorbanzadeh, Dylan Wenaas.)
+// Date Submitted: 2024-12-01
+// Description: This file contains the InstanceController class, responsible for managing user sessions, seat selections, and ticket operations for the movie theatre application.
+
 package controller;
 
 import java.sql.SQLException;
@@ -14,10 +21,18 @@ public class InstanceController {
 
     private static InstanceController instance = null;
 
+    /**
+     * CONSTRUCTOR FOR InstanceController.
+     * Initializes the ticket cart.
+     */
     private InstanceController() {
         ticketCart = new TicketCart();
     }
 
+    /**
+     * RETURNS THE SINGLETON INSTANCE OF InstanceController.
+     * @return The singleton instance of InstanceController
+     */
     public static InstanceController getInstance() {
         if (instance == null) {
             instance = new InstanceController();
@@ -25,7 +40,10 @@ public class InstanceController {
         return instance;
     }
 
-    // Manage user
+    /**
+     * SETS THE CURRENT USER.
+     * @param user The UserOrdinary object representing the current user
+     */
     public void setUser(UserOrdinary user) {
         this.user = user;
         if (user instanceof UserRegistered) {
@@ -33,44 +51,68 @@ public class InstanceController {
         }
     }
 
+    /**
+     * RETURNS THE CURRENT USER.
+     * @return The UserOrdinary object representing the current user
+     */
     public UserOrdinary getUser() {
         return user;
     }
 
-    // Fetch user from database
+    /**
+     * FETCHES A REGISTERED USER FROM THE DATABASE.
+     * @param userId The ID of the user to fetch
+     * @return The UserRegistered object representing the fetched user
+     */
     public UserRegistered fetchUser(int userId) {
         UserRegistered registeredUser = ControlDatabase.getInstance().getUserRegistered(userId);
         setUser(registeredUser);
         return registeredUser;
     }
 
-    // Save user to database
+    /**
+     * SAVES THE CURRENT USER TO THE DATABASE.
+     */
     public void saveUser() {
-    if (user instanceof UserRegistered) {
-        WriteDatabase writeDatabase = new WriteDatabase();
-        try {
-            writeDatabase.saveSingleUser((UserRegistered) user);
-            System.out.println("User saved to database.");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (user instanceof UserRegistered) {
+            WriteDatabase writeDatabase = new WriteDatabase();
+            try {
+                writeDatabase.saveSingleUser((UserRegistered) user);
+                System.out.println("User saved to database.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
-}
 
-    // Manage seat selection
+    /**
+     * SETS THE SELECTED SEAT.
+     * @param seat The Seat object representing the selected seat
+     */
     public void setSelectedSeat(Seat seat) {
         this.selectedSeat = seat;
     }
 
+    /**
+     * RETURNS THE SELECTED SEAT.
+     * @return The Seat object representing the selected seat
+     */
     public Seat getSelectedSeat() {
         return selectedSeat;
     }
 
-    // Manage tickets
+    /**
+     * RETURNS THE TICKET CART.
+     * @return The TicketCart object representing the ticket cart
+     */
     public TicketCart getTicketCart() {
         return ticketCart;
     }
-    
+
+    /**
+     * LOGS OUT THE CURRENT USER.
+     * Resets the user, selected seat, selected showtime ID, and ticket cart.
+     */
     public void logout() {
         this.user = null;
         this.selectedSeat = null;

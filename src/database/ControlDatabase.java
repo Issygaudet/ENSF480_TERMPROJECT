@@ -1,3 +1,10 @@
+// Course: ENSF 480
+// Assignment: Term Project
+// Instructor: Syed Shah
+// Students: L01 - Group 14 (Issy Gaudet, Spiro Douvis, Kamand Ghorbanzadeh, Dylan Wenaas.)
+// Date Submitted: 2024-12-01
+// Description: This file contains the ControlDatabase class, responsible for saving data to the database for the movie theatre application.
+
 package database;
 
 import java.sql.*;
@@ -29,13 +36,6 @@ public class ControlDatabase {
     // Method to get the connection
     public static Connection getConnection() throws SQLException {
         return new ReadDatabase().getConnection();
-//      try {
-//          // Load the MySQL JDBC driver
-//          Class.forName("com.mysql.cj.jdbc.Driver");
-//          return DriverManager.getConnection(URL, USER, PASSWORD);
-//      } catch (ClassNotFoundException | SQLException e) {
-//          throw new SQLException("Failed to create database connection.", e);
-//      }
     }
 
 
