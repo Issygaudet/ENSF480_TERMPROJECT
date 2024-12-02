@@ -2,6 +2,7 @@ package boundary;
 
 import controller.InstanceController;
 import database.ControlDatabase;
+import database.ReadDatabase;
 import entity.*;
 
 import javax.swing.*;
@@ -100,6 +101,7 @@ public class RefundTicketView extends JPanel {
                     JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumberStr + " refunded successfully. $" +
                             String.format("%.2f", ticketPrice * refundAmount) + " has been refunded to your account.");
                     ControlDatabase.getInstance().removeTicket(ticketToRefund);
+                    new ReadDatabase().populateDatabase();
                     goToMain();
                 } else {
                     JOptionPane.showMessageDialog(parentFrame, "Tickets can only be refunded up to 72 hours prior to the show.", "Refund Error", JOptionPane.ERROR_MESSAGE);
