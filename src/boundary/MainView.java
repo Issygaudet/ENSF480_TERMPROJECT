@@ -196,7 +196,7 @@ public class MainView extends JPanel {
             theatreMap.put(theatre.getLocation(), theatre); // Map theatre name to the Theatre object
         }
     }
-}
+
 
     // Method to load showtimes from the database
     private void loadShowtimesFromDatabase(Movie movie, Theatre theatre) {
