@@ -186,4 +186,15 @@ public class WriteDatabase {
             e.printStackTrace();
         }
     }
+
+    public void removeTicket(Ticket ticket) {
+        String sql = "DELETE FROM tickets WHERE ID_no = ?";
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            stmt.setString(1, ticket.getTicketID());
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

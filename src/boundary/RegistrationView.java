@@ -103,8 +103,12 @@ public class RegistrationView extends JPanel {
                 return;
             }
             // Create UserBankInfo object
+            int bankID = new Random().nextInt() % 10000;
+            if (bankID < 0) {
+                bankID *= -1;
+            }
                 UserBankInfo bankInfo = new UserBankInfo(
-                    new Random().nextInt() % 10000, // bankInfoID
+                    bankID, // bankInfoID
                     cardNumberField.getText(), // No need to parse as int anymore
                     cardHolderField.getText(),
                     new Date(1, month, 2000 + year), // example expiry date
@@ -114,8 +118,13 @@ public class RegistrationView extends JPanel {
             Date registrationDate = new Date(1, 1, 2024);
 
             // Create UserRegistered object
+            int userID = new Random().nextInt() % 10000;
+            if (userID < 0) {
+                userID *= -1;
+            }
+
             UserRegistered newUser = new UserRegistered(
-                    new Random().nextInt() % 10000,  // Add userID as first parameter
+                    userID,  // Add userID as first parameter
                 nameField.getText(), 
                 emailField.getText(),
                 new String(passwordField.getPassword()),

@@ -159,8 +159,11 @@ public class Ticket {
      */
     public boolean canCancel() {
         ZonedDateTime currentDateTime = ZonedDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime showtimeLocalDateTime = LocalDateTime.parse(showtime.getTime(), formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd:HH:mm:ss");
+        Date date1 = showtime.getDate();
+        String dayString = date1.getDay() < 10 ? "0" + date1.getDay() : date1.getDay() + "";
+        String dateTime = date1.getYear() + "-" + date1.getMonth() + "-" + dayString + ":" + showtime.getTime();
+        LocalDateTime showtimeLocalDateTime = LocalDateTime.parse(dateTime, formatter);
         ZonedDateTime showtimeDateTime = showtimeLocalDateTime.atZone(ZoneId.systemDefault());
         Duration duration = Duration.between(currentDateTime, showtimeDateTime);
         return duration.toHours() >= 72;
