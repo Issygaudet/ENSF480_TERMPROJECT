@@ -1,3 +1,10 @@
+// Course: ENSF 480
+// Assignment: Term Project
+// Instructor: Syed Shah
+// Students: L01 - Group 14 (Issy Gaudet, Spiro Douvis, Kamand Ghorbanzadeh, Dylan Wenaas.)
+// Date Submitted: 2024-12-01
+// Description: This file contains the RegistrationView class, responsible for handling user registration and payment for the movie theatre application.
+
 package boundary;
 
 import javax.swing.*;
@@ -26,12 +33,21 @@ public class RegistrationView extends JPanel {
     private JTextField cardHolderField;
     private final float MONTHLY_FEE = 20.0f;
 
+    /**
+     * CONSTRUCTOR FOR RegistrationView.
+     * Initializes the registration view with the given parent frame.
+     * @param parent The parent JFrame
+     */
     public RegistrationView(JFrame parent) {
         this.parentFrame = parent;
         setLayout(new GridBagLayout());
         initializeComponents();
     }
 
+    /**
+     * INITIALIZES THE COMPONENTS OF THE REGISTRATION VIEW.
+     * Sets up the form fields, labels, and buttons.
+     */
     private void initializeComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -90,23 +106,22 @@ public class RegistrationView extends JPanel {
         add(buttonPanel, gbc);
 
         // Add action listeners
-
-          registerButton.addActionListener(e -> {
-        if (validateFields()) {
-            int month = Integer.parseInt(cardExpiryField.getText().substring(0, 2));
-            int year = Integer.parseInt(cardExpiryField.getText().substring(3, 5));
-            if (month < 1 || month > 12 || year < 21) {
-                JOptionPane.showMessageDialog(this,
-                    "Invalid expiry date",
-                    "Validation Error",
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Create UserBankInfo object
-            int bankID = new Random().nextInt() % 10000;
-            if (bankID < 0) {
-                bankID *= -1;
-            }
+        registerButton.addActionListener(e -> {
+            if (validateFields()) {
+                int month = Integer.parseInt(cardExpiryField.getText().substring(0, 2));
+                int year = Integer.parseInt(cardExpiryField.getText().substring(3, 5));
+                if (month < 1 || month > 12 || year < 21) {
+                    JOptionPane.showMessageDialog(this,
+                        "Invalid expiry date",
+                        "Validation Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // Create UserBankInfo object
+                int bankID = new Random().nextInt() % 10000;
+                if (bankID < 0) {
+                    bankID *= -1;
+                }
                 UserBankInfo bankInfo = new UserBankInfo(
                     bankID, // bankInfoID
                     cardNumberField.getText(), // No need to parse as int anymore
@@ -115,52 +130,52 @@ public class RegistrationView extends JPanel {
                     Integer.parseInt(cardCVVField.getText())
                 );
 
-            Date registrationDate = new Date(1, 1, 2024);
+                Date registrationDate = new Date(1, 1, 2024);
 
-            // Create UserRegistered object
-            int userID = new Random().nextInt() % 10000;
-            if (userID < 0) {
-                userID *= -1;
-            }
+                // Create UserRegistered object
+                int userID = new Random().nextInt() % 10000;
+                if (userID < 0) {
+                    userID *= -1;
+                }
 
-            UserRegistered newUser = new UserRegistered(
+                UserRegistered newUser = new UserRegistered(
                     userID,  // Add userID as first parameter
-                nameField.getText(), 
-                emailField.getText(),
-                new String(passwordField.getPassword()),
-                bankInfo, 
-                registrationDate
-            );
+                    nameField.getText(), 
+                    emailField.getText(),
+                    new String(passwordField.getPassword()),
+                    bankInfo, 
+                    registrationDate
+                );
 
-            // Process initial payment
-            Payment initialPayment = new Payment(0, MONTHLY_FEE, new Date(1, 1, 2024)); // Example date
-            newUser.makePayment(initialPayment);
-            newUser.payAnnualFee(); // Mark as paid
+                // Process initial payment
+                Payment initialPayment = new Payment(0, MONTHLY_FEE, new Date(1, 1, 2024)); // Example date
+                newUser.makePayment(initialPayment);
+                newUser.payAnnualFee(); // Mark as paid
 
-            // Set user in InstanceController
-            InstanceController.getInstance().setUser(newUser);
+                // Set user in InstanceController
+                InstanceController.getInstance().setUser(newUser);
 
-            // Save user to database
-            try {
-                new WriteDatabase().saveSingleBankInfo(bankInfo);
-                new WriteDatabase().saveSingleUser(newUser);
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
+                // Save user to database
+                try {
+                    new WriteDatabase().saveSingleBankInfo(bankInfo);
+                    new WriteDatabase().saveSingleUser(newUser);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                // message
+                JOptionPane.showMessageDialog(parentFrame, 
+                    "Registration and payment successful!",
+                    "Success",
+                    JOptionPane.INFORMATION_MESSAGE);
+                
+                // Navigate to MainView
+                MainView mainView = new MainView(parentFrame);
+                parentFrame.setContentPane(mainView);
+                parentFrame.revalidate();
+                parentFrame.repaint();
             }
-
-            // message
-            JOptionPane.showMessageDialog(parentFrame, 
-                "Registration and payment successful!",
-                "Success",
-                JOptionPane.INFORMATION_MESSAGE);
-            
-            // Navigate to MainView
-            MainView mainView = new MainView(parentFrame);
-            parentFrame.setContentPane(mainView);
-            parentFrame.revalidate();
-            parentFrame.repaint();
-        }
-    });
+        });
         
         backToLoginButton.addActionListener(e -> {
             LoginView loginView = new LoginView(parentFrame); 
@@ -170,6 +185,13 @@ public class RegistrationView extends JPanel {
         });
     }
 
+    /**
+     * ADDS A FIELD TO THE FORM.
+     * @param labelText The label text for the field
+     * @param field The JTextField object
+     * @param gbc The GridBagConstraints object
+     * @param row The row number for the field
+     */
     private void addField(String labelText, JTextField field, GridBagConstraints gbc, int row) {
         JLabel label = new JLabel(labelText);
         gbc.gridx = 0;
@@ -183,6 +205,11 @@ public class RegistrationView extends JPanel {
         add(field, gbc);
     }
 
+    /**
+     * VALIDATES THE FORM FIELDS.
+     * Checks if all required fields are filled in.
+     * @return true if all fields are valid, false otherwise
+     */
     private boolean validateFields() {
         // Basic validation
         if (nameField.getText().isEmpty() || 

@@ -1,3 +1,10 @@
+// Course: ENSF 480
+// Assignment: Term Project
+// Instructor: Syed Shah
+// Students: L01 - Group 14 (Issy Gaudet, Spiro Douvis, Kamand Ghorbanzadeh, Dylan Wenaas.)
+// Date Submitted: 2024-12-01
+// Description: This file contains the RefundTicketView class, responsible for handling ticket refunds for the movie theatre application.
+
 package boundary;
 
 import controller.InstanceController;
@@ -13,12 +20,21 @@ public class RefundTicketView extends JPanel {
     private JFrame parentFrame;
     private JTextField ticketNumber;
 
+    /**
+     * CONSTRUCTOR FOR RefundTicketView.
+     * Initializes the refund ticket view with the given parent frame.
+     * @param parent The parent JFrame
+     */
     public RefundTicketView(JFrame parent) {
         this.parentFrame = parent;
         setLayout(new BorderLayout(10, 10));
         initializeComponents();
     }
 
+    /**
+     * INITIALIZES THE COMPONENTS OF THE REFUND TICKET VIEW.
+     * Sets up the screen label, ticket number input, and control panel.
+     */
     private void initializeComponents() {
         // Screen label at top
         JLabel screenLabel = new JLabel("Refund Ticket", SwingConstants.CENTER);
@@ -44,24 +60,6 @@ public class RefundTicketView extends JPanel {
         add(controlPanel, BorderLayout.SOUTH);
 
         // Add action listeners
-        // confirmButton.addActionListener(e -> {
-        //     String ticketNumberStr = ticketNumber.getText();
-        //     if (!ticketNumberStr.matches("[0-9]+")) {
-        //         JOptionPane.showMessageDialog(parentFrame, "Please enter a valid ticket number.");
-        //         return;
-        //     }
-        //     int ticketNumber = Integer.parseInt(ticketNumberStr);
-        //     //temp
-        //     double ticketPrice = 10.00; //TODO get ticket price from database
-        //     double refundAmount = 0.85;
-        //     if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
-        //         refundAmount = 1.00;
-        //     }
-        //     JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumber + " refunded successfully. $" +
-        //             (ticketPrice * refundAmount) + " has been refunded to your account.");
-        //     goToMain();
-        // });
-
         confirmButton.addActionListener(e -> {
             String ticketNumberStr = ticketNumber.getText();
             if (!ticketNumberStr.matches("TKT[0-9]+")) {
@@ -90,7 +88,7 @@ public class RefundTicketView extends JPanel {
             }
 
             if (ticketToRefund != null) {
-                //IF MORE THAN 72 HRS
+                // IF MORE THAN 72 HRS
                 if (ticketToRefund.canCancel()) {
                     InstanceController.getInstance().getTicketCart().removeFromCart(ticketToRefund);
                     double ticketPrice = ticketToRefund.getMovie().getPrice();
@@ -116,6 +114,10 @@ public class RefundTicketView extends JPanel {
         });
     }
 
+    /**
+     * NAVIGATES BACK TO THE MAIN VIEW.
+     * Sets the content pane to MainView and refreshes the frame.
+     */
     private void goToMain() {
         MainView mainView = new MainView(parentFrame);
         parentFrame.setContentPane(mainView);

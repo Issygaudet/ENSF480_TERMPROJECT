@@ -1,4 +1,10 @@
-// src/boundary/SeatMapView.java
+// Course: ENSF 480
+// Assignment: Term Project
+// Instructor: Syed Shah
+// Students: L01 - Group 14 (Issy Gaudet, Spiro Douvis, Kamand Ghorbanzadeh, Dylan Wenaas.)
+// Date Submitted: 2024-12-01
+// Description: This file contains the SeatMapView class, responsible for displaying the seat map and handling seat selection for the movie theatre application.
+
 package boundary;
 
 import javax.swing.*;
@@ -15,21 +21,34 @@ public class SeatMapView extends JPanel {
     private int ticketsToSelect;
     private ArrayList<Seat> selectedSeats = new ArrayList<>();
     private JButton[][] seatButtons;
-    private Movie selectedMovie;        // Add these
-    private Showtime selectedShowtime;  // fields
+    private Movie selectedMovie;
+    private Showtime selectedShowtime;
 
     static int offset = 1;
 
+    /**
+     * CONSTRUCTOR FOR SeatMapView.
+     * Initializes the seat map view with the given parameters.
+     * @param parent The parent JFrame
+     * @param room The screening room
+     * @param tickets The number of tickets to select
+     * @param movie The selected movie
+     * @param showtime The selected showtime
+     */
     public SeatMapView(JFrame parent, ScreeningRoom room, int tickets, Movie movie, Showtime showtime) {
         this.parentFrame = parent;
         this.screeningRoom = room;
         this.ticketsToSelect = tickets;
-        this.selectedMovie = movie;         // Store the
-        this.selectedShowtime = showtime;   // selected values
+        this.selectedMovie = movie;
+        this.selectedShowtime = showtime;
         setLayout(new BorderLayout(10, 10));
         initializeComponents();
     }
 
+    /**
+     * INITIALIZES THE COMPONENTS OF THE SEAT MAP VIEW.
+     * Sets up the screen label, seat grid, and control panel.
+     */
     private void initializeComponents() {
         // Screen label at the top
         JLabel screenLabel = new JLabel("SCREEN", SwingConstants.CENTER);
@@ -119,63 +138,69 @@ public class SeatMapView extends JPanel {
         });
     }
 
+    /**
+     * CREATES A BUTTON FOR A SEAT.
+     * Sets the button's appearance and action listener.
+     * @param seat The Seat object
+     * @return The JButton representing the seat
+     */
     private JButton createSeatButton(Seat seat) {
-            JButton button = new JButton();
-            button.setPreferredSize(new Dimension(40, 40));
-            
-            // Calculate total seats and 10% reserved seats (rounded up)
-            int totalSeats = screeningRoom.getRows() * screeningRoom.getColumns();
-            int reservedSeatsCount = (int) Math.ceil(totalSeats * 0.1);
-            
-            // Calculate if this seat is in the reserved section
-            // Reserved seats start from the left of the 3rd row
-            int row = (seat.getSeatId() / screeningRoom.getColumns()) + 1;
-            int col = (seat.getSeatId() % screeningRoom.getColumns()) + 1;
-            boolean isReservedSeat = (row == 3 && col <= reservedSeatsCount);
-            
-            // Check if user is registered
-            boolean isRegisteredUser = InstanceController.getInstance().getUser() instanceof UserRegistered;
-            
-            // Set initial color
-            if (isReservedSeat) {
-                button.setBackground(Color.RED);
-            } else {
-                button.setBackground(seat.isAvailable() ? Color.GREEN : Color.RED);
-            }
-            
-            button.setOpaque(true);
-            button.setBorderPainted(false);
+        JButton button = new JButton();
+        button.setPreferredSize(new Dimension(40, 40));
         
-            button.addActionListener(e -> {
-                if (seat.isAvailable()) {
-                    // Check if guest user is trying to select reserved seat
-                    if (isReservedSeat && !isRegisteredUser) {
-                        JOptionPane.showMessageDialog(this,
-                            "This seat is reserved for registered users only.",
-                            "Reserved Seat",
-                            JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-                    
-                    if (!selectedSeats.contains(seat) && selectedSeats.size() < ticketsToSelect) {
-                        selectedSeats.add(seat);
-                        button.setBackground(Color.BLUE);
-                    } else if (selectedSeats.contains(seat)) {
-                        selectedSeats.remove(seat);
-                        button.setBackground(isReservedSeat ? Color.RED : Color.GREEN);
-                    }
-                }
-            });
+        // Calculate total seats and 10% reserved seats (rounded up)
+        int totalSeats = screeningRoom.getRows() * screeningRoom.getColumns();
+        int reservedSeatsCount = (int) Math.ceil(totalSeats * 0.1);
         
-            return button;
+        // Calculate if this seat is in the reserved section
+        // Reserved seats start from the left of the 3rd row
+        int row = (seat.getSeatId() / screeningRoom.getColumns()) + 1;
+        int col = (seat.getSeatId() % screeningRoom.getColumns()) + 1;
+        boolean isReservedSeat = (row == 3 && col <= reservedSeatsCount);
+        
+        // Check if user is registered
+        boolean isRegisteredUser = InstanceController.getInstance().getUser() instanceof UserRegistered;
+        
+        // Set initial color
+        if (isReservedSeat) {
+            button.setBackground(Color.RED);
+        } else {
+            button.setBackground(seat.isAvailable() ? Color.GREEN : Color.RED);
         }
+        
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+    
+        button.addActionListener(e -> {
+            if (seat.isAvailable()) {
+                // Check if guest user is trying to select reserved seat
+                if (isReservedSeat && !isRegisteredUser) {
+                    JOptionPane.showMessageDialog(this,
+                        "This seat is reserved for registered users only.",
+                        "Reserved Seat",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                
+                if (!selectedSeats.contains(seat) && selectedSeats.size() < ticketsToSelect) {
+                    selectedSeats.add(seat);
+                    button.setBackground(Color.BLUE);
+                } else if (selectedSeats.contains(seat)) {
+                    selectedSeats.remove(seat);
+                    button.setBackground(isReservedSeat ? Color.RED : Color.GREEN);
+                }
+            }
+        });
+    
+        return button;
+    }
 
     /**
-     * Generates a unique ticket ID based on the current timestamp.
+     * GENERATES A UNIQUE TICKET ID BASED ON THE CURRENT TIMESTAMP.
      * @return A unique ticket identifier.
      */
     private String generateTicketId() {
         offset += 1;
-        return "TKT" + (System.currentTimeMillis() + offset* 100L) % 100000;
+        return "TKT" + (System.currentTimeMillis() + offset * 100L) % 100000;
     }
 }

@@ -1,3 +1,10 @@
+// Course: ENSF 480
+// Assignment: Term Project
+// Instructor: Syed Shah
+// Students: L01 - Group 14 (Issy Gaudet, Spiro Douvis, Kamand Ghorbanzadeh, Dylan Wenaas.)
+// Date Submitted: 2024-12-01
+// Description: This file contains the LoginView class, responsible for handling user login and navigation to registration or guest access for the movie theatre application.
+
 package boundary;
 
 import javax.swing.*;
@@ -14,6 +21,11 @@ public class LoginView extends JPanel {
     private InstanceController instance;
     private JFrame parentFrame;
 
+    /**
+     * CONSTRUCTOR FOR LoginView.
+     * Initializes the login view with the given parent frame.
+     * @param parent The parent JFrame
+     */
     public LoginView(JFrame parent) {
         this.parentFrame = parent;
         this.instance = InstanceController.getInstance();
@@ -21,6 +33,10 @@ public class LoginView extends JPanel {
         initializeComponents();
     }
 
+    /**
+     * INITIALIZES THE COMPONENTS OF THE LOGIN VIEW.
+     * Sets up the form fields, labels, and buttons.
+     */
     private void initializeComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -82,7 +98,6 @@ public class LoginView extends JPanel {
         add(buttonPanel, gbc);
 
         // Add action listeners
-
         submitLoginButton.addActionListener(e -> {
             String email = getUsername();  // Get email from usernameField
             String password = getPassword();  // Get password from passwordField
@@ -120,33 +135,53 @@ public class LoginView extends JPanel {
         });
     }
 
+    /**
+     * VALIDATES THE LOGIN CREDENTIALS.
+     * Checks if the provided email and password match a registered user.
+     * @param email The email entered by the user
+     * @param password The password entered by the user
+     * @return true if the credentials are valid, false otherwise
+     */
     private boolean validateLogin(String email, String password) {
-      System.out.println("Validating login for email: " + email);  // Log the email
-      UserRegistered user = ControlDatabase.getInstance().getUserRegisteredByEmail(email);
-  
-      if (user != null) {
-          System.out.println("Found user with email: " + user.getEmail());  // Log found user info
-          System.out.println("Password from DB: " + user.getPassword());  // Log stored password
-          System.out.println("Entered password: " + password);  // Log entered password
-  
-          // Compare the entered password with the one stored in the database
-          if (user.getPassword().equals(password)) {
-              // Login successful
-              instance.setUser(user);
-              return true;
-          }
-      }
-      // Login failed
-      return false;
-  }
+        System.out.println("Validating login for email: " + email);  // Log the email
+        UserRegistered user = ControlDatabase.getInstance().getUserRegisteredByEmail(email);
+
+        if (user != null) {
+            System.out.println("Found user with email: " + user.getEmail());  // Log found user info
+            System.out.println("Password from DB: " + user.getPassword());  // Log stored password
+            System.out.println("Entered password: " + password);  // Log entered password
+
+            // Compare the entered password with the one stored in the database
+            if (user.getPassword().equals(password)) {
+                // Login successful
+                instance.setUser(user);
+                return true;
+            }
+        }
+        // Login failed
+        return false;
+    }
+
+    /**
+     * RETURNS THE USERNAME ENTERED BY THE USER.
+     * @return The username (email) entered by the user
+     */
     public String getUsername() {
         return usernameField.getText();  // Return email from usernameField
     }
 
+    /**
+     * RETURNS THE PASSWORD ENTERED BY THE USER.
+     * @return The password entered by the user
+     */
     public String getPassword() {
         return new String(passwordField.getPassword());  // Return password from passwordField
     }
 
+    /**
+     * CLEARS THE LOGIN FIELDS.
+     * Resets the username and password fields to empty.
+     */
     public void clearFields() {
         usernameField.setText("");  // Clear username field
         passwordField.setText("");  // Clear password field
