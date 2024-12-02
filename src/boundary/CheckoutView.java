@@ -1,3 +1,10 @@
+// Course: ENSF 480
+// Assignment: Term Project
+// Instructor: Syed Shah
+// Students: L01 - Group 14 (Issy Gaudet, Spiro Douvis, Kamand Ghorbanzadeh, Dylan Wenaas.)
+// Date Submitted: 2024-12-01
+// Description: This file contains the CheckoutView class, responsible for handling the checkout process, including payment and order summary, for the movie theatre application.
+
 package boundary;
 
 import javax.swing.*;
@@ -19,12 +26,21 @@ public class CheckoutView extends JPanel {
     private JButton backButton;
     private JFrame parentFrame;
 
+    /**
+     * CONSTRUCTOR FOR CheckoutView.
+     * Initializes the checkout view with the given parent frame.
+     * @param parent The parent JFrame
+     */
     public CheckoutView(JFrame parent) {
         this.parentFrame = parent;
         setLayout(new GridBagLayout());
         initializeComponents();
     }
 
+    /**
+     * INITIALIZES THE COMPONENTS OF THE CHECKOUT VIEW.
+     * Sets up the form fields, labels, and buttons.
+     */
     private void initializeComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -49,7 +65,7 @@ public class CheckoutView extends JPanel {
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.EAST;
 
-        // ONLY RQST CARD DETAILS IF NOT RU
+        // ONLY REQUEST CARD DETAILS IF NOT REGISTERED USER
         // AND EMAIL TO SEND RECEIPT AND TICKET
         if (!(InstanceController.getInstance().getUser() instanceof UserRegistered)) {
             // Card Holder
@@ -64,7 +80,7 @@ public class CheckoutView extends JPanel {
             addField("CVV:", cvvField = new JTextField(3), gbc, 5);
 
             // Email
-            addField("Email:", emailField= new JTextField(20), gbc, 6);
+            addField("Email:", emailField = new JTextField(20), gbc, 6);
         }
 
         // Buttons
@@ -75,8 +91,7 @@ public class CheckoutView extends JPanel {
         buttonPanel.add(confirmButton);
 
         gbc.gridx = 0;
-        // gbc.gridy = 5;
-        gbc.gridy= (InstanceController.getInstance().getUser() == null) ?2:7;
+        gbc.gridy = (InstanceController.getInstance().getUser() == null) ? 2 : 7;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(buttonPanel, gbc);
@@ -84,6 +99,13 @@ public class CheckoutView extends JPanel {
         setupActionListeners();
     }
 
+    /**
+     * ADDS A FIELD TO THE FORM.
+     * @param labelText The label text for the field
+     * @param field The JTextField object
+     * @param gbc The GridBagConstraints object
+     * @param row The row number for the field
+     */
     private void addField(String labelText, JTextField field, GridBagConstraints gbc, int row) {
         JLabel label = new JLabel(labelText);
         gbc.gridx = 0;
@@ -95,6 +117,10 @@ public class CheckoutView extends JPanel {
         add(field, gbc);
     }
 
+    /**
+     * SETS UP ACTION LISTENERS FOR THE BUTTONS.
+     * Handles the actions for the back and confirm buttons.
+     */
     private void setupActionListeners() {
         backButton.addActionListener(e -> {
             CartView cartView = new CartView(parentFrame);
@@ -140,9 +166,13 @@ public class CheckoutView extends JPanel {
                 parentFrame.repaint();
             }
         });
-
     }
 
+    /**
+     * VALIDATES THE FORM FIELDS.
+     * Checks if all required fields are filled in.
+     * @return true if all fields are valid, false otherwise
+     */
     private boolean validateFields() {
         // Basic validation
         if (!(InstanceController.getInstance().getUser() instanceof UserRegistered)) {
