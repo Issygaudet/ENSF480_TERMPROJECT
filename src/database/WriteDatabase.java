@@ -28,7 +28,6 @@ public class WriteDatabase {
     public void saveAll() {
         try {
             saveAnnouncements();
-            saveBankInfo();
             saveRegisteredUsers();
             saveTheatres();
             saveScreeningRooms();
@@ -43,7 +42,29 @@ public class WriteDatabase {
     private void saveAnnouncements() throws SQLException {
     }
 
-    private void saveBankInfo() throws SQLException {
+    public void saveSingleBankInfo(UserBankInfo bankInfo) throws SQLException {
+        String sql = "INSERT INTO bank_info (ID_no, Card_Holder, Card_Number, Expiry_Date, CVV) " +
+                "VALUES (?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE Card_Holder=?, Card_Number=?, Expiry_Date=?, CVV=?";
+
+        try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
+            // Insert values
+            stmt.setInt(1, bankInfo.getBankInfoID());
+            stmt.setString(2, bankInfo.getCardHolder());
+            stmt.setString(3, bankInfo.getCardNumber());
+            stmt.setString(4, bankInfo.getExpiryDate().getMonth() + "/" + (bankInfo.getExpiryDate().getYear()-2000));
+            stmt.setInt(5, bankInfo.getCvv());
+
+            // Update values for ON DUPLICATE KEY
+            stmt.setString(6, bankInfo.getCardHolder());
+            stmt.setString(7, bankInfo.getCardNumber());
+            stmt.setString(8, bankInfo.getExpiryDate().getMonth() + "/" + (bankInfo.getExpiryDate().getYear()-2000));
+            stmt.setInt(9, bankInfo.getCvv());
+
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void saveRegisteredUsers() throws SQLException {

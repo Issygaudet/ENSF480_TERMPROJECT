@@ -5,6 +5,10 @@ import javax.swing.*;
 import controller.InstanceController;
 
 import java.awt.*;
+import java.sql.SQLException;
+import java.util.Random;
+
+import database.WriteDatabase;
 import entity.*;
 
 public class RegistrationView extends JPanel {
@@ -89,12 +93,21 @@ public class RegistrationView extends JPanel {
 
           registerButton.addActionListener(e -> {
         if (validateFields()) {
+            int month = Integer.parseInt(cardExpiryField.getText().substring(0, 2));
+            int year = Integer.parseInt(cardExpiryField.getText().substring(3, 5));
+            if (month < 1 || month > 12 || year < 21) {
+                JOptionPane.showMessageDialog(this,
+                    "Invalid expiry date",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             // Create UserBankInfo object
                 UserBankInfo bankInfo = new UserBankInfo(
-                    0, // bankInfoID
+                    new Random().nextInt() % 10000, // bankInfoID
                     cardNumberField.getText(), // No need to parse as int anymore
                     cardHolderField.getText(),
-                    new Date(1, 1, 2024), // example expiry date
+                    new Date(1, month, 2000 + year), // example expiry date
                     Integer.parseInt(cardCVVField.getText())
                 );
 
@@ -102,7 +115,7 @@ public class RegistrationView extends JPanel {
 
             // Create UserRegistered object
             UserRegistered newUser = new UserRegistered(
-                0,  // Add userID as first parameter
+                    new Random().nextInt() % 10000,  // Add userID as first parameter
                 nameField.getText(), 
                 emailField.getText(),
                 new String(passwordField.getPassword()),
@@ -117,6 +130,14 @@ public class RegistrationView extends JPanel {
 
             // Set user in InstanceController
             InstanceController.getInstance().setUser(newUser);
+
+            // Save user to database
+            try {
+                new WriteDatabase().saveSingleBankInfo(bankInfo);
+                new WriteDatabase().saveSingleUser(newUser);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
 
             // message
             JOptionPane.showMessageDialog(parentFrame, 
