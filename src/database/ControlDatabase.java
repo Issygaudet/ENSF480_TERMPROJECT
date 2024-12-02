@@ -471,7 +471,7 @@ public class ControlDatabase {
             new ReadDatabase().populateDatabase();
         }
         for (Ticket ticket : ticketMap.values()) {
-            if (ticket.getShowtime().equals(showtime)) {
+            if (ticket.getShowtime().getShowtimeId() == showtime.getShowtimeId()) {
                 tickets.add(ticket);
             }
         }

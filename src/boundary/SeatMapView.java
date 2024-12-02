@@ -18,6 +18,8 @@ public class SeatMapView extends JPanel {
     private Movie selectedMovie;        // Add these
     private Showtime selectedShowtime;  // fields
 
+    static int offset = 1;
+
     public SeatMapView(JFrame parent, ScreeningRoom room, int tickets, Movie movie, Showtime showtime) {
         this.parentFrame = parent;
         this.screeningRoom = room;
@@ -41,12 +43,11 @@ public class SeatMapView extends JPanel {
 
         ArrayList<Ticket> tickets = ControlDatabase.getInstance().getTicketsForShowtime(selectedShowtime);
         for (Ticket ticket : tickets) {
-//            Seat in form A4 where A is the row and 4 is the column, A = row 1, B = row 2, etc.
-            String[] seatParts = ticket.getSeat().split("");
-            int row = (int) seatParts[0].charAt(0) - 65 + 1;
-            int col = Integer.parseInt(seatParts[1]);
+            String[] seatParts = ticket.getSeat().split(" ");
+            int row = Integer.parseInt(seatParts[1]);
+            int col = Integer.parseInt(seatParts[3]);
+
             screeningRoom.getSeat(row, col).setUnavailable();
-            System.out.println("Seat " + ticket.getSeat() + " is unavailable.");
         }
         for (int i = 0; i < screeningRoom.getRows(); i++) {
             for (int j = 0; j < screeningRoom.getColumns(); j++) {
@@ -174,6 +175,7 @@ public class SeatMapView extends JPanel {
      * @return A unique ticket identifier.
      */
     private String generateTicketId() {
-        return "TKT" + System.currentTimeMillis() % 100000;
+        offset += 1;
+        return "TKT" + (System.currentTimeMillis() + offset* 100L) % 100000;
     }
 }
