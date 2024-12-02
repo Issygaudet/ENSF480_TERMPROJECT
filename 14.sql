@@ -25,7 +25,7 @@ VALUES
     (1, 'pwd', 'Spiro', 'Douvis', 'sdouvis@gmail.com', 101, 2, 12, 2024),
     (2, 'pwd', 'Issy', 'Gaudet', 'igaudet@gmail.com', 102, 3, 12, 2024),
     (3, 'pwd', 'Dylan', 'Wenaas', 'dwenaas@gmail.com', 103, 4, 7, 2024);
-    
+
 -- Drop the SCREENING_ROOM table if it exists, then create it
 DROP TABLE IF EXISTS SCREENING_ROOM;
 CREATE TABLE SCREENING_ROOM (
