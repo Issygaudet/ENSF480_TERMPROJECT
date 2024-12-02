@@ -59,25 +59,6 @@ public class RefundTicketView extends JPanel {
         controlPanel.add(cancelButton);
         add(controlPanel, BorderLayout.SOUTH);
 
-        // Add action listeners
-        // confirmButton.addActionListener(e -> {
-        //     String ticketNumberStr = ticketNumber.getText();
-        //     if (!ticketNumberStr.matches("[0-9]+")) {
-        //         JOptionPane.showMessageDialog(parentFrame, "Please enter a valid ticket number.");
-        //         return;
-        //     }
-        //     int ticketNumber = Integer.parseInt(ticketNumberStr);
-        //     //temp
-        //     double ticketPrice = 10.00; //TODO get ticket price from database
-        //     double refundAmount = 0.85;
-        //     if (InstanceController.getInstance().getUser() instanceof UserRegistered) {
-        //         refundAmount = 1.00;
-        //     }
-        //     JOptionPane.showMessageDialog(parentFrame, "Ticket number: " + ticketNumber + " refunded successfully. $" +
-        //             (ticketPrice * refundAmount) + " has been refunded to your account.");
-        //     goToMain();
-        // });
-
         confirmButton.addActionListener(e -> {
             String ticketNumberStr = ticketNumber.getText();
             if (!ticketNumberStr.matches("TKT[0-9]+")) {
