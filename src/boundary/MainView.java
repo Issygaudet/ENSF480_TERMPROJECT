@@ -261,6 +261,10 @@ public class MainView extends JPanel {
                     for (Showtime showtime : showtimes) {
                         if (showtime != null && showtime.getTime() != null) {
                             Calendar calendar = Calendar.getInstance();
+//                            calendar.setTime(showtime.getTime());
+//                            String timeStr = String.format("%02d:%02d",
+//                                calendar.get(Calendar.HOUR_OF_DAY),
+//                                calendar.get(Calendar.MINUTE));
                             String timeStr = showtime.getTime();
                             showtimeSelector.addItem(timeStr);
                             showtimeMap.put(timeStr, showtime);
@@ -293,7 +297,7 @@ public class MainView extends JPanel {
         });
 
             // Enable select seats button when quantity is selected
-            ticketQuantity.addChangeListener(e -> {
+        ticketQuantity.addChangeListener(e -> {
                 if ((Integer) ticketQuantity.getValue() > 0) {
                     selectSeatsButton.setEnabled(true);
                 } else {
@@ -302,7 +306,7 @@ public class MainView extends JPanel {
             });
 
             // Select Seats button listener
-            selectSeatsButton.addActionListener(e -> {
+        selectSeatsButton.addActionListener(e -> {
                 String selectedMovieName = (String) movieSelector.getSelectedItem();
                 String selectedShowtime = (String) showtimeSelector.getSelectedItem();
                 int quantity = (Integer) ticketQuantity.getValue();
@@ -335,6 +339,15 @@ public class MainView extends JPanel {
                     }
                 }
             });
+        
+            // // Add to Cart button listener
+            // addToCartButton.addActionListener(e -> {
+            //     CartView cartView = new CartView(parentFrame);
+            //     parentFrame.setContentPane(cartView);
+            //     parentFrame.revalidate();
+            //     parentFrame.repaint();
+            // });
+        
     
         viewAccountDetailsButton.addActionListener(e -> {
             if (InstanceController.getInstance().getUser() == null ||
