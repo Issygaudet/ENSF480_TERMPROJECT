@@ -263,16 +263,16 @@ VALUES
     (907, 730, 2, 'C6'), -- Issy Gaudet buys a ticket for 'Battle of the Titans' at Cineplex Crowfoot
 
     (908, 713, 3, 'A4'), -- Dylan Wenaas buys a ticket for 'The Haunted Melody' at Cineplex University District
-    (909, 731, 3, 'B6'), -- Dylan Wenaas buys a ticket for 'The Haunted Melody' at Cineplex University District
+    (909, 731, 3, 'B2'), -- Dylan Wenaas buys a ticket for 'The Haunted Melody' at Cineplex University District
 
     (910, 714, 3, 'A5'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
-    (911, 732, 3, 'B7'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
-    (912, 733, 3, 'C8'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
+    (911, 732, 3, 'B5'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
+    (912, 733, 3, 'C5'), -- Dylan Wenaas buys a ticket for 'Laugh Out Loud' at Cineplex University District
 
     (913, 711, 1, 'B5'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
-    (914, 711, 1, 'B6'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
-    (915, 711, 1, 'B7'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
-    (916, 711, 1, 'B8'); -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+    (914, 711, 1, 'B1'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+    (915, 711, 1, 'B3'), -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
+    (916, 711, 1, 'B2'); -- Guest buys a ticket for 'Romance in the Rain' at Cineplex Crowfoot
 
 
 
